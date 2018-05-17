@@ -1,32 +1,53 @@
 // 用于测量访问速度
-let performancetTiming = performance.timing;
+let t = performance.timing;
+function formatTime(time) {
+    return time > 0 ? time : 0;
+}
+
 
 export let performanceTime = {
-    // 1.阶段耗时
+    // 1.区间阶段耗时
     //  DNS 解析耗时 
-    dns: performancetTiming.domainLookupEnd - performancetTiming.domainLookupStart,
+    dns: formatTime(t.domainLookupEnd - t.domainLookupStart),
     // TCP 连接耗时
-    tcp: performancetTiming.connectEnd - performancetTiming.connectStart,
+    tcp: formatTime(t.connectEnd - t.connectStart),
     // SSL 安全连接耗时
-    ssl: performancetTiming.connectEnd - performancetTiming.secureConnectionStart,
-    // Time to First Byte（TTFB），网络请求耗时
-    ttfb: performancetTiming.responseStart - performancetTiming.requestStart,
+    ssl: formatTime(t.connectEnd - t.secureConnectionStart),
+    // Time to First Byte（TTFB），网络请求耗时 TTFB 有多种计算方式，ARMS 以 Google Development 定义为准
+    ttfb: formatTime(t.responseStart - t.requestStart),
     // 数据传输耗时
-    trans: performancetTiming.responseEnd - performancetTiming.responseStart,
+    trans: formatTime(t.responseEnd - t.responseStart),
     // DOM 解析耗时
-    dom: performancetTiming.domInteractive - performancetTiming.responseEnd,
+    dom: formatTime(t.domInteractive - t.responseEnd),
     // 资源加载耗时
-    res: performancetTiming.domInteractive - performancetTiming.domContentLoadedEventEnd,
-    
+    res: formatTime(t.domInteractive - t.domContentLoadedEventEnd),
+
     // 2.关键性能指标
     // 首包时间
-    firstbyte: performancetTiming.responseStart - performancetTiming.domainLookupStart,
+    firstbyte: formatTime(t.responseStart - t.domainLookupStart),
     // First Paint Time, 首次渲染时间 / 白屏时间
-    fpt: performancetTiming.responseEnd - performancetTiming.fetchStart,
+    fpt: formatTime(t.responseEnd - t.fetchStart),
     // Time to Interact，首次可交互时间
-    tti: performancetTiming.domInteractive - performancetTiming.fetchStart,
+    tti: formatTime(t.domInteractive - t.fetchStart),
     // HTML 加载完成时间， 即 DOM Ready 时间
-    ready: performancetTiming.domContentLoadEventEnd - performancetTiming.fetchStart,
+    ready: formatTime(t.domContentLoadEventEnd - t.fetchStart),
     // 页面完全加载时间
-    load: performancetTiming.loadEventStart - performancetTiming.fetchStart
+    load: formatTime(t.loadEventStart - t.fetchStart),
+    navt: (function () {
+        switch (performance.navigation.type) {
+            case 0:
+                return 'NAVIGATE';
+                break;
+            case 1:
+                return 'RELOAD';
+                break;
+            case 2:
+                return 'BACK_FORWARD';
+                break;
+            case 255:
+                return 'RESERVED';
+                break;
+
+        }
+    })()
 };

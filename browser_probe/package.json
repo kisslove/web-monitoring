@@ -19,6 +19,7 @@
     "webpack-dev-server": "^3.1.4"
   },
   "dependencies": {
+    "ajax-hook": "^1.8.0",
     "lodash": "^4.17.10"
   }
 }

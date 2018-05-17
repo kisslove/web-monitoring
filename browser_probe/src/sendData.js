@@ -1,15 +1,32 @@
+
+import {params}from './util';
+import {performanceTime} from './performance';
+import {terminalInfo} from './terminalInfo';
+
 //上报api数据
 /**
- * 
- * @param {*} url 
- * @param {*} success 
- * @param {*} time 
- * @param {*} code 
- * @param {*} msg 
+ *发送数据
  */
-function api(url, success, time, code, msg){
+function send(param){
   let img=new Image();
-  img.src="http://www.baidu.com";
+  img.src=window.__ml&&window.__ml.config.imgUrl+params(param);
+  img.onload=img.onerror=function(){
+    img=undefined;
+  }
 }
 
-export{api}
+function uploadUserData(type){
+  if(type==1){
+    sendPerfData();
+  }
+}
+
+// 发送性能数据
+function sendPerfData(){
+  var temp={type:'perf',page:location.host};
+  _.extend(temp,terminalInfo,performanceTime);
+  console.log(temp);
+  send(temp);
+}
+
+export{uploadUserData}
