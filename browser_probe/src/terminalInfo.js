@@ -4,22 +4,22 @@ export let terminalInfo = {
     /**
     * 操作系统
     */
-    os: (function detectOS() {
+    os:(function detectOS() {
         var sUserAgent = navigator.userAgent;
-
+    
         var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
         var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
         if (isMac) return "Mac";
         var isUnix = (navigator.platform == "X11") && !isWin && !isMac;
         if (isUnix) return "Unix";
         var isLinux = (String(navigator.platform).indexOf("Linux") > -1);
-
+    
         var bIsAndroid = sUserAgent.toLowerCase().match(/android/i) == "android";
         if (isLinux) {
             if (bIsAndroid) return "Android";
             else return "Linux";
         }
-
+    
         var isiOS = !!sUserAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
         if (isiOS) {
             return "IOS";

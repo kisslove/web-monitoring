@@ -4,7 +4,6 @@ function formatTime(time) {
     return time > 0 ? time : 0;
 }
 
-
 export let performanceTime = {
     // 1.区间阶段耗时
     //  DNS 解析耗时 
@@ -30,7 +29,7 @@ export let performanceTime = {
     // Time to Interact，首次可交互时间
     tti: formatTime(t.domInteractive - t.fetchStart),
     // HTML 加载完成时间， 即 DOM Ready 时间
-    ready: formatTime(t.domContentLoadEventEnd - t.fetchStart),
+    ready: formatTime(t.domContentLoadedEventEnd - t.fetchStart),
     // 页面完全加载时间
     load: formatTime(t.loadEventStart - t.fetchStart),
     navt: (function () {
