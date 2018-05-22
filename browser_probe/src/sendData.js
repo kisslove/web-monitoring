@@ -2,7 +2,8 @@
 import { params } from './util';
 import { performanceTime } from './performance';
 import { terminalInfo } from './terminalInfo';
-
+import{networkInfo} from './networkInfo';
+import{getNetworkInfoAsync}from './networkInfo';
 //上报api数据
 function uploadUserData(type, ext) {
   switch (type) {
@@ -25,21 +26,28 @@ function uploadUserData(type, ext) {
 // 发送性能数据
 function sendPerfData() {
   var temp = { type: 'perf', page: location.host };
-  _.extend(temp, terminalInfo, performanceTime);
-  send(temp);
+  getNetworkInfoAsync().then(v=>{
+    _.extend(temp, terminalInfo,v, performanceTime);
+    send(temp);
+  });
+  
 }
 // 发送api请求数据
 function sendApiData(ext) {
   var temp = { type: 'api', page: location.href };
-  _.extend(temp, terminalInfo, ext);
-  send(temp);
+  getNetworkInfoAsync().then(v=>{
+    _.extend(temp, terminalInfo,v, ext);
+    send(temp);
+  });
 }
 
 // 发送js错误数据
 function sendJsErrData(ext) {
   var temp = { type: 'js', page: location.href };
-  _.extend(temp, terminalInfo, ext);
-  send(temp);
+  getNetworkInfoAsync().then(v=>{
+    _.extend(temp, terminalInfo,v, ext);
+    send(temp);
+  });
 }
 
 // 发送数据
@@ -51,5 +59,7 @@ function send(param) {
     img = undefined;
   };
 }
+
+window.__ml.uploadUserData=uploadUserData;
 
 export { uploadUserData }
