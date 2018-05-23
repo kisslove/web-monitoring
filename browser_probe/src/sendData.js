@@ -1,5 +1,5 @@
 
-import { params } from './util';
+import { params,currentPageUrl } from './util';
 import { performanceTime } from './performance';
 import { terminalInfo } from './terminalInfo';
 import{networkInfo} from './networkInfo';
@@ -15,6 +15,9 @@ function uploadUserData(type, ext) {
       break;
     case 3:
       sendJsErrData(ext)
+      break;
+    case 4:
+      sendPageVData(ext)
       break;
     default:
       console.log('未定义类型');
@@ -34,7 +37,7 @@ function sendPerfData() {
 }
 // 发送api请求数据
 function sendApiData(ext) {
-  var temp = { type: 'api', page: location.href };
+  var temp = { type: 'api', page: currentPageUrl() };
   getNetworkInfoAsync().then(v=>{
     _.extend(temp, terminalInfo,v, ext);
     send(temp);
@@ -43,9 +46,18 @@ function sendApiData(ext) {
 
 // 发送js错误数据
 function sendJsErrData(ext) {
-  var temp = { type: 'js', page: location.href };
+  var temp = { type: 'js', page: currentPageUrl() };
   getNetworkInfoAsync().then(v=>{
     _.extend(temp, terminalInfo,v, ext);
+    send(temp);
+  });
+}
+
+// 发送PV数据
+function sendPageVData() {
+  var temp = { type: 'pv', page: currentPageUrl() };
+  getNetworkInfoAsync().then(v=>{
+    _.extend(temp, terminalInfo,v);
     send(temp);
   });
 }
@@ -61,5 +73,22 @@ function send(param) {
 }
 
 window.__ml.uploadUserData=uploadUserData;
+
+// api接口调用成功率上报
+window.__ml.api=function(api,success,time,code,msg){
+  sendApiData({
+    api: api,
+    success: success,
+    time: time,
+    code: code,
+    msg: msg
+  });
+};
+// js error 上报
+window.__ml.error=function(errorobj){
+  sendJsErrData({
+    error: errorobj
+  });
+};
 
 export { uploadUserData }
