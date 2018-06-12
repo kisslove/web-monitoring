@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "allowJs": true,
+    "module": "commonjs",
+    "removeComments": true,
+   // 可以使用 Promise, async, await等新语法
+    "target": "es2017"
+  }
+}
