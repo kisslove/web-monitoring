@@ -4,6 +4,7 @@ import { terminalInfo } from './terminalInfo';
 import { getNetworkInfoAsync } from './networkInfo';
 // import * as _lodash from 'lodash';
 declare var window:any
+// declare var Object
 //上报api数据
 function uploadUserData(type, ext) {
   switch (type) {
@@ -53,7 +54,7 @@ function sendApiData(ext) {
 function sendJsErrData(ext) {
   var temp = { page: currentPageUrl(), appKey: window.__ml.config.appKey };
   getNetworkInfoAsync(function(v){
-    Object.assign(temp, terminalInfo, v, ext);
+    Object.assign(temp, terminalInfo, v, {error:encodeURIComponent(JSON.stringify(ext))});
     send({
       type: 'js',
       paramsJson: JSON.stringify(temp)
@@ -97,9 +98,7 @@ window.__ml.api = function (api, success, time, code, msg) {
 };
 // js error 上报
 window.__ml.error = function (errorobj) {
-  sendJsErrData({
-    error: errorobj
-  });
+  sendJsErrData(errorobj);
 };
 
 export { uploadUserData }

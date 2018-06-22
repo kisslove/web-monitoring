@@ -17,7 +17,7 @@ function itemContains(data:Array<string>,item){
     var temp=-1;
     if(data.length>0){
         for (let i = 0, max = data.length;i<max; i++) {
-            if(data[i]==item)
+            if(data[i]==item||item&&item.indexOf(data[i])!=-1)
             {
                 temp= i;
                 break;

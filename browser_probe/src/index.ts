@@ -1,4 +1,5 @@
 
+// import 'core-js/es5';
 // import 'core-js/es6/symbol';
 // import 'core-js/es6/object';
 // import 'core-js/es6/function';
@@ -18,13 +19,51 @@ import { uploadUserData } from './sendData';
 import { itemContains } from './util';
 declare var window: any;
 // import { performanceTime } from './performance';
-let apiWhiteList = ['http://ip.wheff7.com/ipinfo', "https://ip.wheff7.com/ipinfo", 'http://localhost:5004/sockjs-node/info?t=1527665280210'];
-if (window.__ml) {
-
+let apiWhiteList = ["//ip.wheff7.com/ipinfo", '/sockjs-node/', "/signalr/abort"];
     //监听perf
-    function formatTime(time) {
-        return time > 0 && time < 100000 ? time : 0;
+function formatTime(time) {
+    return time > 0 && time < 100000 ? time : 0;
+}
+
+function onLoadEnd() {
+    if (itemContains(apiWhiteList, this.responseURL || this.__zone_symbol__xhrURL) != -1) {
+        return;
     }
+    var time = Date.now() - window.__ml.apiStartTime;
+    uploadUserData(2, {
+        api: this.responseURL,
+        success: this.status == 200 ? true : false,
+        time: time,
+        code: this.status,
+        msg: this.status == 200 ? "成功" : this.statusText
+    });
+}
+function onError(xhr, textStatus, errorThrown) {
+    if (itemContains(apiWhiteList, this.responseURL || this.__zone_symbol__xhrURL) != -1) {
+        return;
+    }
+    var time = Date.now() - window.__ml.apiStartTime;
+    uploadUserData(2, {
+        api: this.responseURL || this.__zone_symbol__xhrURL,
+        success: false,
+        time: time,
+        code: this.status,
+        msg: this.statusText
+    });
+}
+
+function onLoadStart() {
+    if (itemContains(apiWhiteList, this.responseURL || this.__zone_symbol__xhrURL) != -1) {
+        return;
+    }
+    window.__ml.apiStartTime = Date.now();
+}
+
+function jsError($event,a,b,c) {
+    console.log($event,a,b,c);
+    // uploadUserData(3, event);
+}
+if (window.__ml) {
 
     let performanceTime = function () {
         var timing = performance.timing;
@@ -131,43 +170,10 @@ if (window.__ml) {
         })(XMLHttpRequest.prototype);
     }
 
-    function onLoadEnd() {
-        if (itemContains(apiWhiteList, this.responseURL || this.__zone_symbol__xhrURL) != -1) {
-            return;
-        }
-        var time = Date.now() - window.__ml.apiStartTime;
-        uploadUserData(2, {
-            api: this.responseURL,
-            success: this.status == 200 ? true : false,
-            time: time,
-            code: this.status,
-            msg: this.status == 200 ? "成功" : this.statusText
-        });
-    }
-    function onError(xhr, textStatus, errorThrown) {
-        if (itemContains(apiWhiteList, this.responseURL || this.__zone_symbol__xhrURL) != -1) {
-            return;
-        }
-        var time = Date.now() - window.__ml.apiStartTime;
-        uploadUserData(2, {
-            api: this.responseURL || this.__zone_symbol__xhrURL,
-            success: false,
-            time: time,
-            code: this.status,
-            msg: this.statusText
-        });
-    }
-
-    function onLoadStart() {
-        if (itemContains(apiWhiteList, this.responseURL || this.__zone_symbol__xhrURL) != -1) {
-            return;
-        }
-        window.__ml.apiStartTime = Date.now();
-    }
 
 
-    if (window.__ml.config.disableJS) {
-        // 监听js错误（注：Angular2+不会触发）
+    if (!window.__ml.config.disableJS) {
+        // 监听js错误 （注：Angular2+不会触发）
         /** 
     * @param {String} errorMessage  错误信息 
     * @param {String} scriptURI   出错的文件 
