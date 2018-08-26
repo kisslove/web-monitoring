@@ -1,0 +1,50 @@
+<div style="padding:24px;">
+  <h3>SDK扩展配置项</h3>
+  <p>注意：更改以下配置项后，BI探针内容也会相应的变化，需要将BI探针内容重新复制/粘贴到页面HTML中，并且部署后才会生效。</p>
+
+  <div class="setting-gutter">
+    站点ID:
+    <label>{{currentSite.appKey}}</label>
+  </div>
+  <div class="setting-gutter">
+    业务系统ID:
+    <input style="display: inline-block;width: 300px;" nz-input (input)="settingChangeInput($event)" [(ngModel)]="currentSite.systemId">
+  </div>
+  <div class="setting-gutter">
+    关闭API自动上报:
+    <label nz-checkbox (ngModelChange)="settingChange1($event)" [ngModel]="currentSite.disableHook">勾选此项后，需手动调用 __ml.api() 方法上报API成功率。</label>
+  </div>
+  <div class="setting-gutter">
+    需要手动上传JS错误:
+    <label nz-checkbox (ngModelChange)="settingChange2($event)" [ngModel]="currentSite.disableJS">前端使用Angular2+框架，需手动上传JS错误，调用__ml.error()方法上报。</label>
+  </div>
+  <nz-divider></nz-divider>
+  <h3>复制/粘贴BI探针</h3>
+  <p>复制下方的代码，将其粘贴在页面HTML的body中。</p>
+  <p>注意：需要将代码粘贴在body内容的第一行。</p>
+  <div class="setting-code">
+    <code>
+      {{setting.code}}
+    </code>
+  </div>
+  <nz-divider></nz-divider>
+  <h3>示例展示</h3>
+  <p>1.在Angular2+中使用__ml.error(),在你应用的根模块中加载下面代码：</p>
+  <div class="setting-code">
+    <pre>
+      <code>
+        {{tip.code1}} 
+      </code>
+    </pre>
+  </div>
+  <br>
+  <p>2.手动上报API成功率__ml.api(success, time, code, msg)：</p>
+  <div class="setting-code">
+    <pre>
+        success:上传是否成功(true/false )
+        time:耗时(ms)
+        code:返回码
+        msg:消息(string/object)
+    </pre>
+  </div>
+</div>

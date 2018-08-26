@@ -1,0 +1,108 @@
+<div nz-row style="padding:24px;" [@routeAnimation]>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="5">
+      <nz-form-item nzFlex>
+        <label style="line-height: 39px;">日志等级:</label>
+        <nz-form-control>
+          <nz-select style="width: 130px;" (ngModelChange)="searchModelType($event)" [ngModel]="searchModel.logEnum">
+            <nz-option nzValue="" nzLabel="所有"></nz-option>
+            <nz-option nzValue="2" nzLabel="Error"></nz-option>
+            <nz-option nzValue="1" nzLabel="Info"></nz-option>
+            <nz-option nzValue="0" nzLabel="Debug"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="10">
+      <nz-form-item nzFlex>
+        <label style="line-height: 39px;">时间选择:</label>
+        <nz-form-control>
+          <nz-range-picker [nzShowTime]="{ nzFormat: 'HH:mm' }" nzFormat="yyyy-MM-dd HH:mm"  (nzOnOk)="onOk($event)"
+            [ngModel]="[searchModel.startTime,searchModel.endTime]"></nz-range-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <!-- <div nz-col [nzSpan]="2">
+      <nz-form-item nzFlex style="padding-top:4px;">
+        <button nz-button (click)="searchData()" nzType="primary">搜索</button>
+      </nz-form-item>
+    </div> -->
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="12">
+      <nz-form-item nzFlex>
+        <label style="line-height: 39px;padding-left: 14px;">MSG:</label>
+        <nz-form-control style="width: 88%;">
+          <input  nz-input [(ngModel)]="searchModel.msg" placeholder="请输入要查询的关键字" >
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="2">
+        <nz-form-item nzFlex style="padding-top:4px;">
+          <button nz-button (click)="searchData(true)" nzType="primary">搜索</button>
+        </nz-form-item>
+      </div>
+  </div>
+  <nz-table #nzTable [nzData]="dataSet" [nzScroll]="tableScrollSetting" [nzFrontPagination]="false" [nzLoading]="loading" [nzTotal]="total"
+    [(nzPageIndex)]="searchModel.pageIndex" [(nzPageSize)]="searchModel.pageSize" (nzPageIndexChange)="searchData()" (nzPageSizeChange)="searchData(true)">
+    <thead>
+      <tr>
+        <th nzWidth="200px">编号</th>
+        <th nzWidth="100px">日志等级</th>
+        <th nzWidth="200px">时间</th>
+        <th nzWidth="300px">日志消息</th>
+        <th nzWidth="80px">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of nzTable.data">
+        <td>{{data.Id}}</td>
+        <td>{{data.Level}}</td>
+        <td>{{data.LogDate.substr(6,13)|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+        <td *ngIf="searchModel.logEnum!=2">{{data.Message}}</td>
+        <td *ngIf="searchModel.logEnum==2">
+            {{data.Message?.substr(0,100)}}
+      </td>
+        <td>
+          <a *ngIf="data.Flag==1" (click)="goDetails(data,tplContent)">详细</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
+
+<ng-template #tplContent>
+  <nz-spin [nzSpinning]="modalLoading">
+    <nz-form-item>
+      <nz-form-label [nzSm]="2" [nzXs]="24">日志等级</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24">
+        {{logDetails?.Level}}
+      </nz-form-control>
+      <nz-form-label [nzSm]="2" [nzXs]="24">日期</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24">
+          {{logDetails?.LogDate.substr(6,13)|date:"yyyy/MM/dd HH:mm:ss"}}
+      </nz-form-control>
+      <nz-form-label [nzSm]="2" [nzXs]="24">Ip</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24">
+          {{logDetails?.MessageObj.Ip}}
+      </nz-form-control>
+      <nz-form-label [nzSm]="2" [nzXs]="24">方法</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24">
+          {{logDetails?.MessageObj.Methods||'未知'}}
+      </nz-form-control>
+      <nz-form-label [nzSm]="2" [nzXs]="24">接口</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24">
+          {{logDetails?.MessageObj.RequestInterface||'未知'}}
+      </nz-form-control>
+      <nz-form-label [nzSm]="2" [nzXs]="24">参数</nz-form-label>
+      <nz-form-control [nzSm]="10" [nzXs]="24">
+          {{logDetails?.MessageObj.Params||'未知'}}
+      </nz-form-control>
+      <nz-form-label [nzSm]="2" [nzXs]="24">详细信息</nz-form-label>
+      <nz-form-control [nzSm]="24" [nzXs]="24">
+          <pre style="padding:8px;max-height:400px;">{{logDetails?.MessageObj.Exception}}</pre>
+      </nz-form-control>
+    </nz-form-item>
+  </nz-spin>
+
+</ng-template>

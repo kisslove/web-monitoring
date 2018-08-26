@@ -1,0 +1,25 @@
+
+.line-progress{
+    display: inline-block;
+}
+
+.line-progress-left{
+    width: 15%;
+}
+
+.line-progress-center{
+    vertical-align: top;
+    width: 69%;
+    span{
+        display: inline-block;
+        height: 6px;
+        margin: 8px 0;
+        transition: all .5s;
+    }
+
+}
+
+.line-progress-right{
+    width: 10%;
+    text-align: right;
+}

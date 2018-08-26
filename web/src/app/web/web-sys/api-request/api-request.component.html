@@ -1,0 +1,231 @@
+<div nz-row style="padding-left:24px;" [@routeAnimation]>
+  <div style="overflow:auto;padding:24px 8px;border-right: 1px solid #e6ebef;" #mydetailsContent nz-col nzSpan="7">
+    <nz-tabset [nzSelectedIndex]="currentSelectedTab" (nzSelectedIndexChange)="nzSelectedIndexChange($event)">
+      <nz-tab nzTitle="成功率">
+        <nz-input-group nzSearch [nzSuffix]="suffixIconButton" style="margin-bottom: 8px;">
+          <input type="text" [(ngModel)]="keywords" nz-input placeholder="请输入要查询的关键字">
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSearch (click)="search()">
+            <i class="anticon anticon-search" ></i>
+          </button>
+        </ng-template>
+        <nz-spin [nzSpinning]="isSpinning.spin1">
+          <div (click)="selectApiListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of apiListData">
+            <span title="{{item.name}}" class="left" style="width:200px;">{{item.name}}</span>
+            <span class="right">
+              <span>{{(item.result*100).toFixed(2)}}%</span>
+              <i class="anticon anticon-right"></i>
+            </span>
+          </div>
+        </nz-spin>
+      </nz-tab>
+      <nz-tab nzTitle="Msg聚类">
+        <nz-input-group nzSearch [nzSuffix]="suffixIconButton" style="margin-bottom: 8px;">
+          <input type="text" [(ngModel)]="keywords" nz-input placeholder="请输入要查询的关键字">
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSearch (click)="search()">
+            <i class="anticon anticon-search" ></i>
+          </button>
+        </ng-template>
+        <nz-spin [nzSpinning]="isSpinning.spin1">
+          <div (click)="selectApiListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of apiListData">
+            <span title="{{item.name}}" class="left" style="width:200px;">{{item.name}}</span>
+            <span class="right">
+              <span>{{item.result}}</span>
+              <i class="anticon anticon-right"></i>
+            </span>
+          </div>
+        </nz-spin>
+      </nz-tab>
+      <nz-tab nzTitle="成功耗时">
+        <nz-input-group nzSearch [nzSuffix]="suffixIconButton" style="margin-bottom: 8px;">
+          <input type="text" [(ngModel)]="keywords" nz-input placeholder="请输入要查询的关键字">
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSearch (click)="search()">
+            <i class="anticon anticon-search" ></i>
+          </button>
+        </ng-template>
+        <nz-spin [nzSpinning]="isSpinning.spin1">
+          <div (click)="selectApiListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of apiListData">
+            <span title="{{item.name}}" class="left" style="width:200px;">{{item.name}}</span>
+            <span class="right">
+              <span>{{(item.result/1000).toFixed(2)}}s</span>
+              <i class="anticon anticon-right"></i>
+            </span>
+          </div>
+        </nz-spin>
+      </nz-tab>
+      <nz-tab nzTitle="失败耗时">
+        <nz-input-group nzSearch [nzSuffix]="suffixIconButton" style="margin-bottom: 8px;">
+          <input type="text" [(ngModel)]="keywords" nz-input placeholder="请输入要查询的关键字">
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSearch (click)="search()">
+            <i class="anticon anticon-search" ></i>
+          </button>
+        </ng-template>
+        <nz-spin [nzSpinning]="isSpinning.spin1">
+          <div (click)="selectApiListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of apiListData">
+            <span title="{{item.name}}" class="left" style="width:200px;">{{item.name}}</span>
+            <span class="right">
+              <span>{{(item.result/1000).toFixed(2)}}s</span>
+              <i class="anticon anticon-right"></i>
+            </span>
+          </div>
+        </nz-spin>
+      </nz-tab>
+    </nz-tabset>
+
+  </div>
+  <div style="overflow:auto;padding:24px 16px;" #mydetailsContent nz-col nzSpan="17">
+      <div nz-row>
+        <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
+          <nz-card nzType="inner" [nzTitle]="currentSelected_first_title" [nzExtra]="extraApiSpTemplate">
+            <nz-spin *ngIf="apiListData.length>0" [nzSpinning]="isSpinning.spin2">
+              <app-custom-highchart *ngIf="currentSelectedTab!=1" [config]="first_config"></app-custom-highchart>
+              <nz-table [nzShowPagination]="false" *ngIf="currentSelectedTab==1" #apiReqListTable2 [nzData]="apiReqListData" [nzPageSize]="5">
+                <thead>
+                  <tr>
+                    <th>API名称</th>
+                    <th>调用次数</th>
+                    <th>code</th>
+                    <th>IsSuccess</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of apiReqListTable2.data">
+                    <td style="width:400px">{{data.apiName}}</td>
+                    <td>{{data.count}}</td>
+                    <td>{{data.code}}</td>
+                    <td>{{data.isSuccess}}</td>
+                  </tr>
+                </tbody>
+              </nz-table>
+            </nz-spin>
+          </nz-card>
+          <ng-template #extraApiSpTemplate>
+            <app-time-choice-panel (selectOver)="selectOver($event,10)"></app-time-choice-panel>
+          </ng-template>
+        </div>
+      </div>
+      <div nz-row>
+        <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
+          <nz-card nzType="inner" nzTitle="地理分布" [nzExtra]="extradlTemplate">
+            <nz-spin *ngIf="apiListData.length>0" [nzSpinning]="isSpinning.spin3">
+              <div nz-col [nzSpan]="17">
+                <app-custom-highchart style="width:80%;" [config]="dl_config"></app-custom-highchart>
+              </div>
+              <div nz-col [nzSpan]="7">
+                <nz-table #basicTable2 [nzData]="mapData" [nzPageSize]="7">
+                  <thead>
+                    <tr>
+                      <th>地域</th>
+                      <th *ngIf="currentSelectedTab==0">成功率</th>
+                      <th *ngIf="currentSelectedTab==0||currentSelectedTab==1">调用次数</th>
+                      <th *ngIf="currentSelectedTab==2">成功耗时</th>
+                      <th *ngIf="currentSelectedTab==2">成功次数</th>
+                      <th *ngIf="currentSelectedTab==3">失败耗时</th>
+                      <th *ngIf="currentSelectedTab==3">失败次数</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of basicTable2.data">
+                      <td >{{data.name}}</td>
+                      <td *ngIf="currentSelectedTab==0">{{data.succRate}}%</td>
+                      <td *ngIf="currentSelectedTab==0||currentSelectedTab==1">{{data.times}}</td>
+
+                      <td *ngIf="currentSelectedTab==2||currentSelectedTab==3">{{data.avgTime}}s</td>
+                      <td *ngIf="currentSelectedTab==2||currentSelectedTab==3">{{data.times}}</td>
+                    </tr>
+                  </tbody>
+                </nz-table>
+              </div>
+            </nz-spin>
+          </nz-card>
+          <ng-template #extradlTemplate>
+            <app-time-choice-panel (selectOver)="selectOver($event,20)"></app-time-choice-panel>
+          </ng-template>
+        </div>
+      </div>
+      <div nz-row>
+        <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
+          <nz-card nzType="inner" nzTitle="终端分布" [nzExtra]="extraEndTemplate">
+            <nz-tabset>
+              <nz-tab nzTitle="浏览器">
+                <nz-spin *ngIf="apiListData.length>0"[nzSpinning]="isSpinning.spin4">
+                  <nz-table #basicBsData [nzData]="bsData" [nzShowPagination]="false">
+                    <thead>
+                      <tr>
+                        <th>浏览器</th>
+                        <th *ngIf="currentSelectedTab==0">成功率</th>
+                        <th *ngIf="currentSelectedTab==1">调用次数</th>
+                        <th *ngIf="currentSelectedTab==2||currentSelectedTab==3">耗时</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of basicBsData.data">
+                        <td>{{data.terminal}}</td>
+                        <td *ngIf="currentSelectedTab==0">{{(data.succRate*100).toFixed(2)}}%</td>
+                        <td *ngIf="currentSelectedTab==1">{{data.times}}</td>
+                        <td *ngIf="currentSelectedTab==2||currentSelectedTab==3">{{(data.avgTime/1000).toFixed(3)}}s</td>
+                      </tr>
+                    </tbody>
+                  </nz-table>
+              </nz-spin>
+              </nz-tab>
+              <nz-tab nzTitle="操作系统">
+                <nz-spin *ngIf="apiListData.length>0" [nzSpinning]="isSpinning.spin5">
+                  <nz-table #basicOsData [nzData]="osData" [nzShowPagination]="false">
+                    <thead>
+                      <tr>
+                        <th>操作系统</th>
+                        <th *ngIf="currentSelectedTab==0">成功率</th>
+                        <th *ngIf="currentSelectedTab==1">调用次数</th>
+                        <th *ngIf="currentSelectedTab==2||currentSelectedTab==3">耗时</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of basicOsData.data">
+                        <td>{{data.terminal}}</td>
+                        <td *ngIf="currentSelectedTab==0">{{(data.succRate*100).toFixed(2)}}%</td>
+                        <td *ngIf="currentSelectedTab==1">{{data.times}}</td>
+                        <td *ngIf="currentSelectedTab==2||currentSelectedTab==3">{{(data.avgTime/1000).toFixed(3)}}s</td>
+                      </tr>
+                    </tbody>
+                  </nz-table>
+                </nz-spin>
+              </nz-tab>
+              <nz-tab nzTitle="分辨率">
+                <nz-spin *ngIf="apiListData.length>0" [nzSpinning]="isSpinning.spin6">
+                  <nz-table #basicWhData [nzData]="whData" [nzShowPagination]="false">
+                    <thead>
+                      <tr>
+                        <th>分辨率</th>
+                        <th *ngIf="currentSelectedTab==0">成功率</th>
+                        <th *ngIf="currentSelectedTab==1">调用次数</th>
+                        <th *ngIf="currentSelectedTab==2||currentSelectedTab==3">耗时</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of basicWhData.data">
+                        <td>{{data.terminal}}</td>
+                        <td *ngIf="currentSelectedTab==0">{{(data.succRate*100).toFixed(2)}}%</td>
+                        <td *ngIf="currentSelectedTab==1">{{data.times}}</td>
+                        <td *ngIf="currentSelectedTab==2||currentSelectedTab==3">{{(data.avgTime/1000).toFixed(3)}}s</td>
+                      </tr>
+                    </tbody>
+                  </nz-table>
+                </nz-spin>
+              </nz-tab>
+            </nz-tabset>
+          </nz-card>
+          <ng-template #extraEndTemplate>
+            <app-time-choice-panel (selectOver)="selectOver($event,30)"></app-time-choice-panel>
+          </ng-template>
+        </div>
+      </div>
+  </div>
+</div>

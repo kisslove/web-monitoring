@@ -1,0 +1,163 @@
+<div nz-row style="padding-left:24px;">
+  <div style="overflow:auto;padding:24px 8px;border-right: 1px solid #e6ebef;" #mydetailsContent nz-col nzSpan="7">
+    <h4>页面访问速度排行</h4>
+    <nz-input-group nzSearch [nzSuffix]="suffixIconButton" style="    margin-bottom: 8px;">
+      <input type="text" [(ngModel)]="keywords" nz-input placeholder="请输入要查询的关键字">
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" (click)="search()" nzSearch>
+        <i class="anticon anticon-search" ></i>
+      </button>
+    </ng-template>
+    <nz-spin [nzSpinning]="isSpinning.spin1">
+      <div (click)="selectPageListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of pageListData">
+        <span title="{{item.page}}" class="left" style="width:200px;">{{item.page}}</span>
+        <span class="right">
+          <span>{{item.avgLoad}}ms</span>
+          <i class="anticon anticon-right"></i>
+        </span>
+      </div>
+    </nz-spin>
+  </div>
+  <div style="overflow:auto;padding:24px 16px;" #mydetailsContent nz-col nzSpan="17">
+    <div nz-row>
+      <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
+        <nz-card nzType="inner" nzTitle="页面加载时间详情" [nzExtra]="extra_key_perf_Template">
+          <nz-tabset>
+            <nz-tab nzTitle="关键性能指标">
+              <nz-spin *ngIf="pageListData.length>0" [nzSpinning]="isSpinning.spin2">
+                <app-custom-highchart [config]="key_perf_config"></app-custom-highchart>
+              </nz-spin>
+            </nz-tab>
+            <nz-tab nzTitle="区间段耗时">
+              <nz-spin *ngIf="pageListData.length>0" [nzSpinning]="isSpinning.spin3">
+                <app-custom-highchart [config]="area_perf_config"></app-custom-highchart>
+              </nz-spin>
+            </nz-tab>
+          </nz-tabset>
+        </nz-card>
+        <ng-template #extra_key_perf_Template >
+          <app-time-choice-panel (selectOver)="selectOver($event,10)"></app-time-choice-panel>
+        </ng-template>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
+        <nz-card style="height:300px;" nzType="inner" nzTitle="页面加载瀑布图" [nzExtra]="extra_page_load_Template">
+          <nz-spin *ngIf="pageListData.length>0" [nzSpinning]="isSpinning.spin4">
+            <app-line-progress [data]="page_load_data"></app-line-progress>
+          </nz-spin>
+        </nz-card>
+        <ng-template #extra_page_load_Template>
+          <app-time-choice-panel (selectOver)="selectOver($event,20)"></app-time-choice-panel>
+        </ng-template>
+      </div>
+    </div>
+    <!-- <div nz-row>
+      <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
+        <nz-card nzType="inner" nzTitle="性能样本分布" [nzExtra]="extradlTemplate">
+          <app-custom-highchart></app-custom-highchart>
+        </nz-card>
+        <ng-template #extradlTemplate>
+          <app-time-choice-panel (selectOver)="selectOver($event,30)"></app-time-choice-panel>
+        </ng-template>
+      </div>
+    </div> -->
+    <div nz-row>
+      <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
+        <nz-card nzType="inner" nzTitle="地理分布" [nzExtra]="extradlTemplate">
+          <nz-spin *ngIf="pageListData.length>0" [nzSpinning]="isSpinning.spin6">
+            <div nz-col [nzSpan]="17">
+              <app-custom-highchart style="width:80%;" [config]="dl_config"></app-custom-highchart>
+            </div>
+            <div nz-col [nzSpan]="7">
+              <nz-table #basicTable2 [nzData]="mapData" [nzPageSize]="7">
+                <thead>
+                  <tr>
+                    <th>地域</th>
+                    <th>首次渲染(ms)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of basicTable2.data">
+                    <td>{{data.name}}</td>
+                    <td>{{data.fpt}}ms</td>
+                  </tr>
+                </tbody>
+              </nz-table>
+            </div>
+          </nz-spin>
+        </nz-card>
+        <ng-template #extradlTemplate>
+          <app-time-choice-panel (selectOver)="selectOver($event,30)"></app-time-choice-panel>
+        </ng-template>
+      </div>
+    </div>
+    <div nz-row>
+      <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
+        <nz-card nzType="inner" nzTitle="终端分布" [nzExtra]="extraSysTemplate">
+          <nz-tabset>
+            <nz-tab nzTitle="浏览器">
+              <nz-spin *ngIf="pageListData.length>0" [nzSpinning]="isSpinning.spin7">
+                  <nz-table #basicBsData [nzData]="bsData" [nzShowPagination]="false">
+                    <thead>
+                      <tr>
+                        <th>浏览器</th>
+                        <th>首次渲染(ms)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of basicBsData.data">
+                        <td>{{data.terminal}}</td>
+                        <td>{{data.speed}}ms</td>
+                      </tr>
+                    </tbody>
+                  </nz-table>
+              </nz-spin>
+            </nz-tab>
+            <nz-tab nzTitle="操作系统">
+              <nz-spin *ngIf="pageListData.length>0" [nzSpinning]="isSpinning.spin8">
+                <nz-table #basicOsData [nzData]="osData" [nzShowPagination]="false">
+                  <thead>
+                    <tr>
+                      <th>操作系统</th>
+                      <th>首次渲染(ms)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of basicOsData.data">
+                      <td>{{data.terminal}}</td>
+                      <td>{{data.speed}}ms</td>
+                    </tr>
+                  </tbody>
+                </nz-table>
+              </nz-spin>
+            </nz-tab>
+            <nz-tab nzTitle="分辨率">
+              <nz-spin *ngIf="pageListData.length>0" [nzSpinning]="isSpinning.spin9">
+                <nz-table #basicWhData [nzData]="whData" [nzShowPagination]="false">
+                  <thead>
+                    <tr>
+                      <th>分辨率</th>
+                      <th>首次渲染(ms)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of basicWhData.data">
+                      <td>{{data.terminal}}</td>
+                      <td>{{data.speed}}ms</td>
+                    </tr>
+                  </tbody>
+                </nz-table>
+              </nz-spin>
+            </nz-tab>
+          </nz-tabset>
+          <!-- <app-custom-highchart></app-custom-highchart> -->
+        </nz-card>
+        <ng-template #extraSysTemplate>
+          <app-time-choice-panel (selectOver)="selectOver($event,40)"></app-time-choice-panel>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

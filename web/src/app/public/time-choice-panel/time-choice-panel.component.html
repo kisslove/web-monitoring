@@ -1,0 +1,33 @@
+<nz-popover [nzTitle]="" [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [(nzVisible)]="visible">
+  <span nz-popover style="cursor:pointer;">
+    <i class="anticon anticon-clock-circle-o"></i>
+    <label *ngIf="radioValue=='0'">30分钟</label>
+    <label *ngIf="radioValue=='1'">60分钟</label>
+    <label *ngIf="radioValue=='2'">4时</label>
+    <label *ngIf="radioValue=='3'">12时</label>
+    <label *ngIf="radioValue=='4'">24时</label>
+    <label *ngIf="radioValue=='5'">3天</label>
+    <label *ngIf="radioValue=='6'">7天</label>
+    <label *ngIf="radioValue=='7'">
+        {{customTime&&customTime[0]|date:'yyyy-MM-dd HH:mm'}}-{{customTime&&customTime[1]|date:'yyyy-MM-dd HH:mm'}}
+    </label>
+  </span>
+  <ng-template #nzTemplate> 
+    <div>
+      <nz-radio-group [ngModel]="radioValue" (ngModelChange)="ngModelChange($event)">
+        <label nz-radio-button [nzValue]="0">30分钟</label>
+        <label nz-radio-button [nzValue]="1">60分钟</label>
+        <label nz-radio-button [nzValue]="2">4时</label>
+        <label nz-radio-button [nzValue]="3">12时</label>
+        <label nz-radio-button [nzValue]="4">24时</label>
+        <label nz-radio-button [nzValue]="5">3天</label>
+        <label nz-radio-button [nzValue]="6">7天</label>
+        <label nz-radio-button [nzValue]="7">自定义</label>
+      </nz-radio-group>
+    </div> 
+    <div *ngIf="radioValue=='7'" style="margin: 16px 3px;">
+      <nz-range-picker [nzShowTime]="{ nzFormat: 'HH:mm' }" nzFormat="yyyy-MM-dd HH:mm"
+        (ngModelChange)="onChange($event)" (nzOnOk)="onOk($event)"></nz-range-picker>
+    </div>
+  </ng-template>
+</nz-popover>

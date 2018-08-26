@@ -1,0 +1,13 @@
+
+<div  class="line-progress line-progress-left">
+  <div *ngFor="let item of lineData;let i=index;" [ngStyle]="{'transform':'translateY('+(1+i)*10+'px)'}">{{item.name}}</div> 
+</div>
+
+<div  class="line-progress line-progress-center">
+  <span *ngFor="let item of lineData;let i=index;"  [ngStyle]="{'transform':'translateY('+(14+i*30.5)+'px)','background': item.color,'width':item.percent<=0.1?'1px':item.percent*100+'%'}"></span>
+</div>
+
+<div   class="line-progress line-progress-right">
+ <div *ngFor="let item of lineData;let i=index;" [ngStyle]="{'transform':'translateY('+(1+i)*10+'px)'}">{{item.val}}ms</div> 
+</div>
+

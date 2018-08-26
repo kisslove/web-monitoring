@@ -1,0 +1,41 @@
+<nz-spin [nzSpinning]="isSpinning" *ngIf="validUser">
+    <div style="margin-top:50px;min-height: 500px;padding:24px;">
+        <p style="text-align:right">
+            <button nz-button nzType="primary" (click)="addSys()">新建应用站点</button>
+        </p>
+
+        <div nz-row [nzGutter]="24">
+            <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="12" *ngFor="let item of sysItems">
+                <nz-card nzType="inner" [nzTitle]="emplateTitle" [nzExtra]="extraTemplate">
+                    <h4>&nbsp;</h4>
+                    <h4>&nbsp;</h4>
+                    <h4>&nbsp;</h4>
+                    <h4>&nbsp;</h4>
+                </nz-card>
+                <ng-template #emplateTitle>
+                    <a (click)="gotoSys(item)">{{item.appName}}</a>
+                </ng-template>
+                <ng-template #extraTemplate>
+                    <i class="anticon anticon-setting" (click)="gotoSysSetting(item)"></i>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+
+</nz-spin>
+
+
+<nz-modal [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_add" nzTitle="新建应用站点" (nzOnCancel)="cancel()" (nzOnOk)="save()">
+    <nz-form-item>
+        <nz-form-label [nzSm]="4" [nzXs]="24">站点名称</nz-form-label>
+        <nz-form-control [nzSm]="18" [nzXs]="24">
+            <input nz-input [(ngModel)]="appName" name="title">
+        </nz-form-control>
+    </nz-form-item>
+    <!-- <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24">业务系统ID</nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <input nz-input [(ngModel)]="systemId" name="systemId">
+      </nz-form-control> 
+    </nz-form-item> -->
+</nz-modal>

@@ -1,0 +1,13 @@
+.total_pv_uv{
+    position: absolute;
+    right: 32px;
+    color: gray;
+    z-index: 1;
+    p{
+        margin-bottom: 4px;
+        span{
+            color: #52c41a;
+            padding-left: 4px;
+        }
+    }
+}

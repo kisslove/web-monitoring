@@ -1,0 +1,101 @@
+<div nz-row style="padding-left:24px;">
+    <div style="overflow:auto;padding:24px 8px;border-right: 1px solid #e6ebef;" #mydetailsContent nz-col nzSpan="7">
+        <nz-tabset>
+            <nz-tab nzTitle="错误率排行">
+                <nz-input-group nzSearch [nzSuffix]="suffixIconButton" style="margin-bottom: 8px;">
+                    <input type="text" nz-input placeholder="请输入要查询的关键字">
+                  </nz-input-group>
+                  <ng-template #suffixIconButton>
+                    <button nz-button nzType="primary" nzSearch>
+                      <i class="anticon anticon-search"></i>
+                    </button>
+                  </ng-template>
+                  <div class="custom-default-list selected">
+                    <span class="left">dashboard/process/lifeCycleInfo/9705</span>
+                    <span class="right">
+                      <span>100%</span>
+                      <i class="anticon anticon-right"></i>
+                    </span>
+                  </div>
+                  <div class="custom-default-list">
+                    <span class="left">baidu.com</span>
+                    <span class="right">
+                      <span>50%</span>
+                      <i class="anticon anticon-right"></i>
+                    </span>
+                  </div>
+            </nz-tab>
+            <nz-tab nzTitle="错误聚类排行">
+                <nz-input-group nzSearch [nzSuffix]="suffixIconButton" style="margin-bottom: 8px;">
+                    <input type="text" nz-input placeholder="请输入要查询的关键字">
+                  </nz-input-group>
+                  <ng-template #suffixIconButton>
+                    <button nz-button nzType="primary" nzSearch>
+                      <i class="anticon anticon-search"></i>
+                    </button>
+                  </ng-template>
+                  <div class="custom-default-list selected">
+                    <span class="left">www.baidu.com</span>
+                    <span class="right">
+                      <span>250</span>
+                      <i class="anticon anticon-right"></i>
+                    </span>
+                  </div>
+                  <div class="custom-default-list">
+                    <span class="left">baidu.com</span>
+                    <span class="right">
+                      <span>20</span>
+                      <i class="anticon anticon-right"></i>
+                    </span>
+                  </div>
+            </nz-tab>
+          </nz-tabset>
+  
+    </div>
+    <div style="overflow:auto;padding:24px 16px;" #mydetailsContent nz-col nzSpan="17">
+      <div nz-row>
+        <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
+          <nz-card nzType="inner" nzTitle="JS错误率" [nzExtra]="extradlTemplate">
+            <!-- <app-custom-highchart></app-custom-highchart> -->
+          </nz-card>
+          <ng-template #extradlTemplate>
+            <app-time-choice-panel (selectOver)="selectOver($event,30)"></app-time-choice-panel>
+          </ng-template>
+        </div>
+      </div>
+      <div nz-row>
+        <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
+          <nz-card nzType="inner" nzTitle="地理分布" [nzExtra]="extradlTemplate">
+            <!-- <app-custom-highchart></app-custom-highchart> -->
+          </nz-card>
+          <ng-template #extradlTemplate>
+            <app-time-choice-panel (selectOver)="selectOver($event,30)"></app-time-choice-panel>
+          </ng-template>
+        </div>
+      </div>
+      <div nz-row>
+        <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
+          <nz-card nzType="inner" nzTitle="终端分布" [nzExtra]="extradlTemplate">
+              <nz-tabset>
+                  <nz-tab nzTitle="浏览器">
+                    Content of Tab Pane 1
+                  </nz-tab>
+                  <nz-tab nzTitle="操作系统">
+                    Content of Tab Pane 2
+                  </nz-tab>
+                  <nz-tab nzTitle="设备">
+                      Content of Tab Pane 2
+                    </nz-tab>
+                    <nz-tab nzTitle="分辨率">
+                        Content of Tab Pane 2
+                      </nz-tab>
+                </nz-tabset>
+            <!-- <app-custom-highchart></app-custom-highchart> -->
+          </nz-card>
+          <ng-template #extradlTemplate>
+            <app-time-choice-panel (selectOver)="selectOver($event,30)"></app-time-choice-panel>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>

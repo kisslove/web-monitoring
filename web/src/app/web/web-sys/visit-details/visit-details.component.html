@@ -1,0 +1,110 @@
+<div nz-row style="padding:24px;" [@routeAnimation]>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="5">
+      <nz-form-item nzFlex>
+        <label style="line-height: 39px;">日志类型:</label>
+        <nz-form-control>
+            <nz-select style="width: 130px;" (ngModelChange)="searchModelType($event)"  [ngModel]="searchModel.type">
+                <nz-option nzValue="js" nzLabel="JS错误日志"></nz-option>
+                <nz-option nzValue="api" nzLabel="API日志"></nz-option>
+                <nz-option nzValue="perf" nzLabel="页面性能日志"></nz-option>
+                <nz-option nzValue="pv" nzLabel="PV日志"></nz-option>
+              </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="10">
+      <nz-form-item nzFlex>
+        <label style="line-height: 39px;">时间选择:</label>
+        <nz-form-control>
+            <nz-range-picker
+            [nzShowTime]="{ nzFormat: 'HH:mm' }"
+            nzFormat="yyyy-MM-dd HH:mm"
+            (nzOnOk)="onOk($event)"
+            [ngModel]="[searchModel.sTime,searchModel.eTime]"
+          ></nz-range-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="12">
+      <nz-form-item nzFlex>
+        <label style="line-height: 39px;padding-left: 14px;">关键字:</label>
+        <nz-form-control style="width: 88%;">
+          <input  nz-input [(ngModel)]="searchModel.keywords" placeholder="请输入要查询的关键字" >
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="2">
+        <nz-form-item nzFlex style="padding-top:4px;">
+          <button nz-button (click)="searchData(true)" nzType="primary">搜索</button>
+        </nz-form-item>
+      </div>
+  </div>
+  
+  <nz-table 
+  #nzTable 
+  [nzData]="dataSet" 
+  [nzScroll]="tableScrollSetting"
+  [nzFrontPagination]="false"
+  [nzLoading]="loading"
+  [nzTotal]="total"
+  [(nzPageIndex)]="searchModel.pageIndex"
+  [(nzPageSize)]="searchModel.pageSize"
+  (nzPageIndexChange)="searchData()"
+  (nzPageSizeChange)="searchData(true)"
+  >
+    <thead>
+      <tr>
+        <th nzWidth="160px" >时间</th>
+        <th nzWidth="120px" >日志类型</th>
+        <th nzWidth="200px">页面地址</th>
+        <th nzWidth="100px">浏览器</th>
+        <th nzWidth="100px">设备</th>
+        <th nzWidth="200px">UA</th>
+        <th nzWidth="100px">地域</th>
+        <th *ngIf="searchModel.type=='api'" nzWidth="200px">API</th>
+        <th *ngIf="searchModel.type=='api'" nzWidth="200px">Msg</th>
+        <th *ngIf="searchModel.type=='api'" nzWidth="80px">Code</th>
+        <th *ngIf="searchModel.type=='api'" nzWidth="120px">IsSuccess</th>
+        <th *ngIf="searchModel.type=='api'" nzWidth="120px">Time</th>
+
+        <th *ngIf="searchModel.type=='js'" nzWidth="200px">Error</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of nzTable.data">
+        <td>{{data.createTime.substr(6,13)|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+        <td>{{data.type}}</td>
+        <td>{{data.page}}</td>
+        <td>{{data.bs}}</td>
+        <td>{{data.os}}</td>
+        <td>{{data.ua}}</td>
+        <td>{{data.mostSpecificSubdivision_nameCN}}</td>
+
+        <td *ngIf="searchModel.type=='api'">{{data.api}}</td>
+        <td *ngIf="searchModel.type=='api'">
+            <nz-popover [nzTitle]="" [nzPlacement]="'left'">
+                <span  nz-popover>{{data.msg?.substr(0,100)}}</span>
+                <ng-template #nzTemplate>
+                  <div>{{data.msg}}</div>
+                </ng-template>
+              </nz-popover></td>
+        <td *ngIf="searchModel.type=='api'">{{data.code}}</td>
+        <td *ngIf="searchModel.type=='api'">{{data.success}}</td>
+        <td *ngIf="searchModel.type=='api'">{{data.time}}ms</td>
+
+        <td *ngIf="searchModel.type=='js'">
+            <nz-popover [nzTitle]="" [nzPlacement]="'left'">
+                <span  nz-popover>{{data.error?.substr(0,100)}}</span>
+                <ng-template #nzTemplate>
+                  <div>{{data.error}}</div>
+                </ng-template>
+              </nz-popover>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

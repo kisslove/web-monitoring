@@ -1,0 +1,113 @@
+/* You can add global styles to this file, and also import other style files */
+
+::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #7777777a;
+    outline: 1px solid #333;
+}
+
+:focus {
+    outline: none;
+}
+
+.ant-select-selection,
+.ant-input,
+.ant-popover-inner,
+.ant-btn,
+input,
+.ant-modal-content,
+.ant-radio-button-wrapper:first-child,
+.ant-radio-button-wrapper:last-child {
+    border-radius: 0 !important;
+}
+
+.ant-radio-button-wrapper {
+    margin: 0 4px !important;
+}
+
+.custom-select {
+    .ant-select-selection {
+        color: #000;
+        font-size: 14px;
+        border: none !important;
+        .ant-select-arrow {
+            color: #000;
+            font-weight: 900;
+        }
+    }
+    &.ant-select-open .ant-select-selection {
+        border: none !important;
+        box-shadow: none !important;
+    }
+}
+
+.ant-card-head-title {
+    font-size: 12px !important;
+}
+
+.my-list-card {
+    .ant-card-body {
+        padding: 0 !important;
+    }
+}
+
+.ant-card-head {
+    min-height: 40px !important;
+    height: 40px !important;
+    line-height: 20px !important;
+}
+
+.ant-card {
+    min-height: 200px !important;
+}
+
+.custom-default-list {
+    background-color: #f6fafe;
+    cursor: pointer;
+    height: 40px;
+    margin: 4px 0;
+    padding: 8px;
+    .left{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        height: 20px;
+    }
+    .right {
+        float: right;
+        
+    } 
+    &.selected {
+        background-color: #40a9ff;
+        color: #fff;
+        cursor: default;
+    }
+    &:hover:not(.selected) {
+        background-color: #E6F9FC;
+    }
+}
+
+.my-ellipsis{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+    height: 20px;
+}
+
+.ant-table-thead > tr > th, .ant-table-tbody > tr > td{
+    padding: 8px !important;
+}
+
+.ant-tabs-nav .ant-tabs-tab{
+    margin: 0 0 0 0 !important;
+}
+
+.ant-list-item-content{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-all;
+}
