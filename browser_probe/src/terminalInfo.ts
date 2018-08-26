@@ -1,45 +1,44 @@
 //终端：操作系统，浏览器信息，设备，分辨率
-
-export let terminalInfo = {
+declare var window:any;
+export var terminalInfo = {
     /**
     * 操作系统
     */
-    os:(function detectOS() {
+    os: (function detectOS() {
         var sUserAgent = navigator.userAgent;
-    
-        var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
+
+        var isWin = (navigator.platform == "Win64") || (navigator.platform == "Win32") || (navigator.platform == "Windows");
         var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
-        if (isMac) return "Mac";
+        if (isMac) return "mac";
         var isUnix = (navigator.platform == "X11") && !isWin && !isMac;
-        if (isUnix) return "Unix";
+        if (isUnix) return "unix";
         var isLinux = (String(navigator.platform).indexOf("Linux") > -1);
-    
-        var bIsAndroid = sUserAgent.toLowerCase().match(/android/i) == "android";
         if (isLinux) {
-            if (bIsAndroid) return "Android";
-            else return "Linux";
+            var bIsAndroid = sUserAgent.toLowerCase().match(/android/i).toString() == "android";
+            if (bIsAndroid) return "android";
+            else return "linux";
         }
-    
+
         var isiOS = !!sUserAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
         if (isiOS) {
-            return "IOS";
+            return "ios";
         }
         if (isWin) {
             var isWin2K = sUserAgent.indexOf("Windows NT 5.0") > -1 || sUserAgent.indexOf("Windows 2000") > -1;
-            if (isWin2K) return "Win2000";
+            if (isWin2K) return "win2000";
             var isWinXP = sUserAgent.indexOf("Windows NT 5.1") > -1 ||
                 sUserAgent.indexOf("Windows XP") > -1;
-            if (isWinXP) return "WinXP";
+            if (isWinXP) return "winXP";
             var isWin2003 = sUserAgent.indexOf("Windows NT 5.2") > -1 || sUserAgent.indexOf("Windows 2003") > -1;
-            if (isWin2003) return "Win2003";
+            if (isWin2003) return "win2003";
             var isWinVista = sUserAgent.indexOf("Windows NT 6.0") > -1 || sUserAgent.indexOf("Windows Vista") > -1;
             if (isWinVista) return "WinVista";
             var isWin7 = sUserAgent.indexOf("Windows NT 6.1") > -1 || sUserAgent.indexOf("Windows 7") > -1;
-            if (isWin7) return "Win7";
+            if (isWin7) return "win7";
             var isWin7 = sUserAgent.indexOf("Windows NT 10.0") > -1 || sUserAgent.indexOf("Windows 10") > -1;
-            if (isWin7) return "Win10";
+            if (isWin7) return "win10";
         }
-        return "other";
+        return "Others";
     })(),
     /**
      * 浏览器信息
@@ -48,20 +47,45 @@ export let terminalInfo = {
         var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
         var isOpera = userAgent.indexOf("Opera") > -1;
         if (isOpera) {
-            return "Opera"
+            return "opera"
         }; //判断是否Opera浏览器
+
         if (userAgent.indexOf("Firefox") > -1) {
-            return "FF";
+            return "firefox";
         } //判断是否Firefox浏览器
-        if (userAgent.indexOf("Chrome") > -1) {
-            return "Chrome";
+
+        if (!!userAgent.toLowerCase().match(/mqqbrowser|qzone|qqbrowser/i)) {
+            return "qq";
+        }
+
+        if (userAgent.toLowerCase().indexOf('se 2.x')>-1) {
+            return "sougo";
+        }
+
+        if (userAgent.indexOf("Edge") > -1) {
+            return "edge";
+        } //判断是否Edge浏览器
+
+        if (userAgent.indexOf("Chrome") && window.chrome) {
+            return "chrome";
         }
         if (userAgent.indexOf("Safari") > -1) {
-            return "Safari";
+            return "safari";
         } //判断是否Safari浏览器
-        if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
-            return "IE";
+
+        if (userAgent.indexOf("Trident") > -1 || userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+            let reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+            reIE.test(userAgent);
+            let fIEVersion = parseFloat(RegExp["$1"]);
+            if (fIEVersion == 7) { return "ie7"; }
+            else if (fIEVersion == 8) { return "ie8"; }
+            else if (fIEVersion == 9) { return "ie9"; }
+            else if (fIEVersion == 10) { return "ie10"; }
+            else if (fIEVersion == 11) { return "ie11"; }
+            else
+                return "ie";
         }; //判断是否IE浏览器
+        return "Others";
     })(),
     /**
      * 浏览器分辨率
@@ -69,7 +93,10 @@ export let terminalInfo = {
     pageWh: (function detectPageWh() {
         var wjb51 = screen.width;
         var hjb51 = screen.height;
-        return wjb51 + 'X' + hjb51;
+        return wjb51 + 'x' + hjb51;
+    })(),
+    ua: (function () {
+        return navigator.userAgent;
     })()
 };
 
