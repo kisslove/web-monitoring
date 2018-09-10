@@ -123,8 +123,8 @@ export class SysIndexComponent implements OnInit {
       totalUv:data.totalUv
     };
     _.each(data.pvAndUvVmList, (val) => {
-      tempData.pv.push([parseInt(val.createTime.toString().substr(6,13)), val.pv]);
-      tempData.uv.push([parseInt(val.createTime.toString().substr(6,13)), val.uv]);
+      tempData.pv.push([new Date(val.createTime).getTime(), val.pv]);
+      tempData.uv.push([new Date(val.createTime).getTime(), val.uv]);
     });
     // tempData.pv.sort();
     // tempData.uv.sort();

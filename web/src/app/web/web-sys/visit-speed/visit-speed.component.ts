@@ -183,10 +183,10 @@ export class VisitSpeedComponent implements OnInit {
       load: []
     };
     _.each(data, (val) => {
-      tempData.fpt.push([parseInt(val.createTime.toString().substr(6, 13)), parseInt(val.fpt)]);
-      tempData.tti.push([parseInt(val.createTime.toString().substr(6, 13)), parseInt(val.tti)]);
-      tempData.ready.push([parseInt(val.createTime.toString().substr(6, 13)), parseInt(val.ready)]);
-      tempData.load.push([parseInt(val.createTime.toString().substr(6, 13)), parseInt(val.load)]);
+      tempData.fpt.push([new Date(val.createTime).getTime(), parseInt(val.fpt)]);
+      tempData.tti.push([new Date(val.createTime).getTime(), parseInt(val.tti)]);
+      tempData.ready.push([new Date(val.createTime).getTime(), parseInt(val.ready)]);
+      tempData.load.push([new Date(val.createTime).getTime(), parseInt(val.load)]);
     });
     this.key_perf_config = {
       type: 10,
@@ -252,12 +252,12 @@ export class VisitSpeedComponent implements OnInit {
       res: []
     };
     _.each(data, (val) => {
-      tempData.dns.push([parseInt(val.createTime.substr(6, 13)), parseInt(val.dns)]);
-      tempData.tcp.push([parseInt(val.createTime.toString().substr(6, 13)), parseInt(val.tcp)]);
-      tempData.ttfb.push([parseInt(val.createTime.toString().substr(6, 13)), parseInt(val.ttfb)]);
-      tempData.trans.push([parseInt(val.createTime.toString().substr(6, 13)), parseInt(val.trans)]);
-      tempData.dom.push([parseInt(val.createTime.toString().substr(6, 13)), parseInt(val.dom)]);
-      tempData.res.push([parseInt(val.createTime.toString().substr(6, 13)), parseInt(val.res)]);
+      tempData.dns.push([new Date(val.createTime).getTime(), parseInt(val.dns)]);
+      tempData.tcp.push([new Date(val.createTime).getTime(), parseInt(val.tcp)]);
+      tempData.ttfb.push([new Date(val.createTime).getTime(), parseInt(val.ttfb)]);
+      tempData.trans.push([new Date(val.createTime).getTime(), parseInt(val.trans)]);
+      tempData.dom.push([new Date(val.createTime).getTime(), parseInt(val.dom)]);
+      tempData.res.push([new Date(val.createTime).getTime(), parseInt(val.res)]);
     });
     this.area_perf_config = {
       type: 10,

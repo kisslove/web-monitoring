@@ -1,154 +1,154 @@
 <div nz-row style="padding-left:24px;">
-  <div style="overflow:auto;padding:24px 8px;border-right: 1px solid #e6ebef;" #mydetailsContent nz-col nzSpan="7">
-    <h4>页面访问量排行</h4>
-    <nz-input-group nzSearch [nzSuffix]="suffixIconButton" style="margin-bottom: 8px;">
-      <input type="text" [(ngModel)]="keywords" nz-input placeholder="请输入要查询的关键字">
-    </nz-input-group>
-    <ng-template #suffixIconButton>
-      <button nz-button nzType="primary" (click)="search()" nzSearch>
+    <div style="overflow:auto;padding:24px 8px;border-right: 1px solid #e6ebef;" #mydetailsContent nz-col nzSpan="7">
+        <h4>页面访问量排行</h4>
+        <nz-input-group nzSearch [nzSuffix]="suffixIconButton" style="margin-bottom: 8px;">
+            <input type="text" [(ngModel)]="keywords" nz-input placeholder="请输入要查询的关键字">
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+            <button nz-button nzType="primary" (click)="search()" nzSearch>
         <i class="anticon anticon-search"></i>
       </button>
-    </ng-template>
-    <nz-spin [nzSpinning]="isSpinning.spin1">
-      <div (click)="selectPageListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of pageListData?.pageStatis">
-        <span class="left" title="{{item.page}}" style="width:200px;">{{item.page}}</span>
-        <span class="right">
+        </ng-template>
+        <nz-spin [nzSpinning]="isSpinning.spin1">
+            <div (click)="selectPageListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of pageListData?.pageStatis">
+                <span class="left" title="{{item.page}}" style="width:200px;">{{item.page}}</span>
+                <span class="right">
           <span>{{item.count}} ( {{item.percent}}%)</span>
-          <i class="anticon anticon-right"></i>
-        </span>
-      </div>
-    </nz-spin>
+                <i class="anticon anticon-right"></i>
+                </span>
+            </div>
+        </nz-spin>
 
-  </div>
-  <div style="overflow:auto;padding:24px 16px;" #mydetailsContent nz-col nzSpan="17">
-    <div nz-row>
-      <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
-
-        <nz-card nzType="inner" nzTitle="PV/UV" [nzExtra]="extralPvUVTemplate">
-          <nz-spin *ngIf="pageListData?.pageStatis.length>0" [nzSpinning]="isSpinning.spin2">
-            <app-custom-highchart [config]="pv_uv_config"></app-custom-highchart>
-          </nz-spin>
-        </nz-card>
-
-        <ng-template #extralPvUVTemplate>
-          <app-time-choice-panel (selectOver)="selectOver($event,10)"></app-time-choice-panel>
-        </ng-template>
-      </div>
     </div>
-    <div nz-row>
-      <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
+    <div style="overflow:auto;padding:24px 16px;" #mydetailsContent nz-col nzSpan="17">
+        <div nz-row>
+            <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
 
-        <nz-card nzType="inner" [nzTitle]="jsCardTemplate" [nzExtra]="extralJsCardTemplate">
-          <nz-spin *ngIf="pageListData?.pageStatis.length>0" [nzSpinning]="isSpinning.spin3">
-            <app-custom-highchart [config]="js_config"></app-custom-highchart>
-          </nz-spin>
-        </nz-card>
+                <nz-card nzType="inner" nzTitle="PV/UV" [nzExtra]="extralPvUVTemplate">
+                    <nz-spin *ngIf="pageListData?.pageStatis.length>0" [nzSpinning]="isSpinning.spin2">
+                        <app-custom-highchart [config]="pv_uv_config"></app-custom-highchart>
+                    </nz-spin>
+                </nz-card>
 
-
-        <ng-template #jsCardTemplate>
-          JS错误率
-          <nz-tooltip [nzTitle]="'发生错误的次数/访问量'" [nzPlacement]="'top'">
-            <i nz-tooltip class="anticon anticon-question-circle"></i>
-          </nz-tooltip>
-        </ng-template>
-        <ng-template #extralJsCardTemplate>
-          <app-time-choice-panel (selectOver)="selectOver($event,20)"></app-time-choice-panel>
-        </ng-template>
-      </div>
-    </div> 
-    <div nz-row>
-      <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
-
-        <nz-card nzType="inner" nzTitle="JS错误聚类" [nzExtra]="extralJsGroupTemplate">
-          <nz-spin *ngIf="pageListData?.pageStatis.length>0" [nzSpinning]="isSpinning.spin4">
-            <nz-table #jsGroupTable [nzShowPagination]="'false'" [nzData]="JsGroupData">
-              <thead>
-                <tr>
-                  <th>Msg</th>
-                  <th>错误次数</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let data of jsGroupTable.data">
-                  <td>
-                    <span style="word-break: break-word;;max-width:450px;max-height:60px;" class="my-ellipsis">{{data.msg}}</span>
-                  </td>
-                  <td>{{data.count}}</td>
-                  <td>
-                    <nz-popover [nzTitle]="''" [nzPlacement]="'left'">
-                      <a nz-popover>详细</a>
-                      <ng-template #nzTemplate>
-                        <div>
-                          <p>{{data.msg}}</p>
-                        </div>
-                      </ng-template>
-                    </nz-popover>
-                  </td>
-                </tr>
-              </tbody>
-            </nz-table>
-          </nz-spin>
-        </nz-card>
-
-        <ng-template #extralJsGroupTemplate>
-          <app-time-choice-panel (selectOver)="selectOver($event,30)"></app-time-choice-panel>
-        </ng-template>
-      </div>
-    </div>
-    <div nz-row>
-      <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
-
-        <nz-card nzType="inner" nzTitle="API详情" [nzExtra]="extralApiTemplate">
-          <nz-spin *ngIf="pageListData?.pageStatis.length>0" [nzSpinning]="isSpinning.spin5">
-            <nz-table #basicTable [nzShowPagination]="'false'" [nzData]="apiData">
-              <thead>
-                <tr>
-                  <th nzShowExpand></th>
-                  <th>API名称</th>
-                  <th>请求次数</th>
-                  <th>平均耗时</th>
-                  <th>API成功率</th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-template ngFor let-data [ngForOf]="basicTable.data">
-                  <tr>
-                    <td nzShowExpand [(nzExpand)]="data.expand"></td>
-                    <td>
-                      <span style="width:300px;height:20px;" title="{{data.apiName}}" class="my-ellipsis">{{data.apiName}}</span>
-                    </td>
-                    <td>{{data.requestCount}}</td>
-                    <td>{{data.avgTime}}ms</td>
-                    <td>{{(data.successRate*100).toFixed(2)}}%</td>
-                  </tr>
-                  <tr [nzExpand]="data.expand">
-                    <td></td>
-                    <td colspan="7">
-                      <nz-table #innerTable [nzPageSize]="20" [nzData]="data.codeDetailsList" nzSize="middle">
-                        <thead>
-                          <tr>
-                            <th>IsSuccess</th>
-                            <th>Code</th>
-                            <th>请求时间</th>
-                            <th>操作</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let data2 of innerTable.data">
-                            <td>{{data2.isSuccess}}</td>
-                            <td>{{data2.code}}</td>
-                            <td>{{data2.createTime.substr(6,13)|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-                            <td>
-                              <a (click)="gotoDetails(data)">明细</a>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </nz-table>
-                    </td>
-                  </tr>
+                <ng-template #extralPvUVTemplate>
+                    <app-time-choice-panel (selectOver)="selectOver($event,10)"></app-time-choice-panel>
                 </ng-template>
-                <!-- <tr *ngFor="let data of basicTable.data">
+            </div>
+        </div>
+        <div nz-row>
+            <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
+
+                <nz-card nzType="inner" [nzTitle]="jsCardTemplate" [nzExtra]="extralJsCardTemplate">
+                    <nz-spin *ngIf="pageListData?.pageStatis.length>0" [nzSpinning]="isSpinning.spin3">
+                        <app-custom-highchart [config]="js_config"></app-custom-highchart>
+                    </nz-spin>
+                </nz-card>
+
+
+                <ng-template #jsCardTemplate>
+                    JS错误率
+                    <nz-tooltip [nzTitle]="'发生错误的次数/访问量'" [nzPlacement]="'top'">
+                        <i nz-tooltip class="anticon anticon-question-circle"></i>
+                    </nz-tooltip>
+                </ng-template>
+                <ng-template #extralJsCardTemplate>
+                    <app-time-choice-panel (selectOver)="selectOver($event,20)"></app-time-choice-panel>
+                </ng-template>
+            </div>
+        </div>
+        <div nz-row>
+            <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
+
+                <nz-card nzType="inner" nzTitle="JS错误聚类" [nzExtra]="extralJsGroupTemplate">
+                    <nz-spin *ngIf="pageListData?.pageStatis.length>0" [nzSpinning]="isSpinning.spin4">
+                        <nz-table #jsGroupTable [nzShowPagination]="'false'" [nzData]="JsGroupData">
+                            <thead>
+                                <tr>
+                                    <th>Msg</th>
+                                    <th>错误次数</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of jsGroupTable.data">
+                                    <td>
+                                        <span style="word-break: break-word;;max-width:450px;max-height:60px;" class="my-ellipsis">{{data.msg}}</span>
+                                    </td>
+                                    <td>{{data.count}}</td>
+                                    <td>
+                                        <nz-popover [nzTitle]="''" [nzPlacement]="'left'">
+                                            <a nz-popover>详细</a>
+                                            <ng-template #nzTemplate>
+                                                <div>
+                                                    <p>{{data.msg}}</p>
+                                                </div>
+                                            </ng-template>
+                                        </nz-popover>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </nz-table>
+                    </nz-spin>
+                </nz-card>
+
+                <ng-template #extralJsGroupTemplate>
+                    <app-time-choice-panel (selectOver)="selectOver($event,30)"></app-time-choice-panel>
+                </ng-template>
+            </div>
+        </div>
+        <div nz-row>
+            <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
+
+                <nz-card nzType="inner" nzTitle="API详情" [nzExtra]="extralApiTemplate">
+                    <nz-spin *ngIf="pageListData?.pageStatis.length>0" [nzSpinning]="isSpinning.spin5">
+                        <nz-table #basicTable [nzShowPagination]="'false'" [nzData]="apiData">
+                            <thead>
+                                <tr>
+                                    <th nzShowExpand></th>
+                                    <th>API名称</th>
+                                    <th>请求次数</th>
+                                    <th>平均耗时</th>
+                                    <th>API成功率</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-template ngFor let-data [ngForOf]="basicTable.data">
+                                    <tr>
+                                        <td nzShowExpand [(nzExpand)]="data.expand"></td>
+                                        <td>
+                                            <span style="width:300px;height:20px;" title="{{data.apiName}}" class="my-ellipsis">{{data.apiName}}</span>
+                                        </td>
+                                        <td>{{data.requestCount}}</td>
+                                        <td>{{data.avgTime}}ms</td>
+                                        <td>{{(data.successRate*100).toFixed(2)}}%</td>
+                                    </tr>
+                                    <tr [nzExpand]="data.expand">
+                                        <td></td>
+                                        <td colspan="7">
+                                            <nz-table #innerTable [nzPageSize]="20" [nzData]="data.codeDetailsList" nzSize="middle">
+                                                <thead>
+                                                    <tr>
+                                                        <th>IsSuccess</th>
+                                                        <th>Code</th>
+                                                        <th>请求时间</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let data2 of innerTable.data">
+                                                        <td>{{data2.isSuccess}}</td>
+                                                        <td>{{data2.code}}</td>
+                                                        <td>{{data2.createTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                                                        <td>
+                                                            <a (click)="gotoDetails(data)">明细</a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </nz-table>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                                <!-- <tr *ngFor="let data of basicTable.data">
                   <td>
                     <span style="width:300px;height:20px;" title="{{data.apiName}}" class="my-ellipsis">{{data.apiName}}</span>
                   </td>
@@ -159,74 +159,74 @@
                     <a>展开</a>
                   </td>
                 </tr> -->
-              </tbody>
-            </nz-table>
-          </nz-spin>
-        </nz-card>
+                            </tbody>
+                        </nz-table>
+                    </nz-spin>
+                </nz-card>
 
-        <ng-template #extralApiTemplate>
-          <app-time-choice-panel (selectOver)="selectOver($event,40)"></app-time-choice-panel>
-        </ng-template>
-      </div>
-    </div>
-    <div nz-row>
-      <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
-
-        <nz-card nzType="inner" nzTitle="地理分布" [nzExtra]="extradlTemplate">
-          <nz-spin *ngIf="pageListData?.pageStatis.length>0" [nzSpinning]="isSpinning.spin6">
-            <div nz-col [nzSpan]="17">
-              <app-custom-highchart [config]="dl_config"></app-custom-highchart>
+                <ng-template #extralApiTemplate>
+                    <app-time-choice-panel (selectOver)="selectOver($event,40)"></app-time-choice-panel>
+                </ng-template>
             </div>
-            <div nz-col [nzSpan]="7">
-              <nz-table #basicTable2 [nzData]="mapData" [nzPageSize]="7">
-                <thead>
-                  <tr>
-                    <th>地域</th>
-                    <th>访问量</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let data of basicTable2.data">
-                    <td>{{data.name}}</td>
-                    <td>{{data.pv}}</td>
-                  </tr>
-                </tbody>
-              </nz-table>
+        </div>
+        <div nz-row>
+            <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
+
+                <nz-card nzType="inner" nzTitle="地理分布" [nzExtra]="extradlTemplate">
+                    <nz-spin *ngIf="pageListData?.pageStatis.length>0" [nzSpinning]="isSpinning.spin6">
+                        <div nz-col [nzSpan]="17">
+                            <app-custom-highchart [config]="dl_config"></app-custom-highchart>
+                        </div>
+                        <div nz-col [nzSpan]="7">
+                            <nz-table #basicTable2 [nzData]="mapData" [nzPageSize]="7">
+                                <thead>
+                                    <tr>
+                                        <th>地域</th>
+                                        <th>访问量</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let data of basicTable2.data">
+                                        <td>{{data.name}}</td>
+                                        <td>{{data.pv}}</td>
+                                    </tr>
+                                </tbody>
+                            </nz-table>
+                        </div>
+                    </nz-spin>
+                </nz-card>
+
+                <ng-template #extradlTemplate>
+                    <app-time-choice-panel (selectOver)="selectOver($event,50)"></app-time-choice-panel>
+                </ng-template>
             </div>
-          </nz-spin>
-        </nz-card>
+        </div>
+        <div nz-row>
+            <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
 
-        <ng-template #extradlTemplate>
-          <app-time-choice-panel (selectOver)="selectOver($event,50)"></app-time-choice-panel>
-        </ng-template>
-      </div>
+                <nz-card nzType="inner" nzTitle="终端" [nzExtra]="extraSysTemplate">
+                    <nz-tabset>
+                        <nz-tab nzTitle="浏览器">
+                            <nz-spin *ngIf="pageListData?.pageStatis.length>0" [nzSpinning]="isSpinning.spin7">
+                                <app-custom-highchart [config]="bs_config"></app-custom-highchart>
+                            </nz-spin>
+                        </nz-tab>
+                        <nz-tab nzTitle="操作系统">
+                            <nz-spin *ngIf="pageListData?.pageStatis.length>0" [nzSpinning]="isSpinning.spin8">
+                                <app-custom-highchart [config]="os_config"></app-custom-highchart>
+                            </nz-spin>
+                        </nz-tab>
+                        <nz-tab nzTitle="分辨率">
+                            <nz-spin *ngIf="pageListData?.pageStatis.length>0" [nzSpinning]="isSpinning.spin9">
+                                <app-custom-highchart [config]="wh_config"></app-custom-highchart>
+                            </nz-spin>
+                        </nz-tab>
+                    </nz-tabset>
+                </nz-card>
+                <ng-template #extraSysTemplate>
+                    <app-time-choice-panel (selectOver)="selectOver($event,60)"></app-time-choice-panel>
+                </ng-template>
+            </div>
+        </div>
     </div>
-    <div nz-row>
-      <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
-
-        <nz-card nzType="inner" nzTitle="终端" [nzExtra]="extraSysTemplate">
-          <nz-tabset>
-            <nz-tab nzTitle="浏览器">
-              <nz-spin *ngIf="pageListData?.pageStatis.length>0" [nzSpinning]="isSpinning.spin7">
-                <app-custom-highchart [config]="bs_config"></app-custom-highchart>
-              </nz-spin>
-            </nz-tab>
-            <nz-tab nzTitle="操作系统">
-              <nz-spin *ngIf="pageListData?.pageStatis.length>0" [nzSpinning]="isSpinning.spin8">
-                <app-custom-highchart [config]="os_config"></app-custom-highchart>
-              </nz-spin>
-            </nz-tab>
-            <nz-tab nzTitle="分辨率">
-              <nz-spin *ngIf="pageListData?.pageStatis.length>0" [nzSpinning]="isSpinning.spin9">
-                <app-custom-highchart [config]="wh_config"></app-custom-highchart>
-              </nz-spin>
-            </nz-tab>
-          </nz-tabset>
-        </nz-card>
-        <ng-template #extraSysTemplate>
-          <app-time-choice-panel (selectOver)="selectOver($event,60)"></app-time-choice-panel>
-        </ng-template>
-      </div>
-    </div>
-  </div>
 </div>

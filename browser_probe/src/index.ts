@@ -19,7 +19,7 @@ import { uploadUserData } from './sendData';
 import { itemContains } from './util';
 declare var window: any;
 // import { performanceTime } from './performance';
-let apiWhiteList = ["/Monitor/","//ip.taobao.com/service/getIpInfo.php", '/sockjs-node/', "/signalr/abort",];
+let apiWhiteList = ["/GetIp","//ip.taobao.com/service/getIpInfo.php", '/sockjs-node/', "/signalr/abort",];
 //监听perf
 function formatTime(time) {
     return time > 0 && time < 100000 ? time : 0;

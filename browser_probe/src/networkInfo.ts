@@ -42,7 +42,6 @@ export function getNetworkInfoAsync(cb) {
     else {
         let url = window.__ml.config.imgUrl.split('/Up')[0] + '/GetIp';
         $.get(url).then(function (data) {
-            data=JSON.parse(data);
             if(data.code==1){
                 cb({
                     city_nameCN: '未知',
@@ -55,6 +54,17 @@ export function getNetworkInfoAsync(cb) {
                     isp: '未知',
                     organizationCN: '未知'
                 });
+                window.__ml.ipInfo={
+                    city_nameCN: '未知',
+                    country_nameCN: '未知',
+                    latitude: 0,
+                    longitude: 0,
+                    mostSpecificSubdivision_nameCN: '未知',
+                    //网络信息
+                    onlineip: '0.0.0.2',
+                    isp: '未知',
+                    organizationCN: '未知'
+                };
                 return;
             }
             data=data.data;
@@ -96,6 +106,17 @@ export function getNetworkInfoAsync(cb) {
                 isp: '未知',
                 organizationCN: '未知'
             });
+            window.__ml.ipInfo={
+                city_nameCN: '未知',
+                country_nameCN: '未知',
+                latitude: 0,
+                longitude: 0,
+                mostSpecificSubdivision_nameCN: '未知',
+                //网络信息
+                onlineip: '0.0.0.1',
+                isp: '未知',
+                organizationCN: '未知'
+            };
         });
     }
 }

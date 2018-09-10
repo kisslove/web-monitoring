@@ -1,9 +1,9 @@
-var SiteDataInfo = require('../models/siteDataInfo');
+var SiteModel = require('../models/siteModel');
 var util = require('../utils/util');
 var mongoose = require('mongoose');
 /* system listing. */
 exports.list = function(req, res, next) {
-    SiteDataInfo.find({}, function(err, r) {
+    SiteModel.find({}, function(err, r) {
         if (!err) {
             res.json(util.resJson({
                 IsSuccess: true,
@@ -21,7 +21,7 @@ exports.list = function(req, res, next) {
 exports.create = function(req, res, next) {
     var ObjectId = mongoose.Types.ObjectId;
     var id1 = new ObjectId;
-    var temp = new SiteDataInfo({
+    var temp = new SiteModel({
         appName: req.body.appName,
         disableHook: true,
         disableJS: false,

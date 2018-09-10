@@ -230,8 +230,8 @@ export class ApiRequestComponent implements OnInit {
       succRate: []
     };
     _.each(data, (val) => {
-      tempData.times.push([parseInt(val.createTime.toString().substr(6, 13)), val.times]);
-      tempData.succRate.push([parseInt(val.createTime.toString().substr(6, 13)), parseFloat((val.succRate * 100).toFixed(2))]);
+      tempData.times.push([new Date(val.createTime).getTime(), val.times]);
+      tempData.succRate.push([new Date(val.createTime).getTime(), parseFloat((val.succRate * 100).toFixed(2))]);
     });
     this.first_config = {
       type: 40,
@@ -296,8 +296,8 @@ export class ApiRequestComponent implements OnInit {
       avgTime: []
     };
     _.each(data, (val) => {
-      tempData.count.push([parseInt(val.createTime.toString().substr(6, 13)), val.count]);
-      tempData.avgTime.push([parseInt(val.createTime.toString().substr(6, 13)), parseFloat((val.avgTime / 1000).toFixed(3))]);
+      tempData.count.push([new Date(val.createTime).getTime(), val.count]);
+      tempData.avgTime.push([new Date(val.createTime).getTime(), parseFloat((val.avgTime / 1000).toFixed(3))]);
     });
     this.first_config = {
       type: 40,
@@ -362,8 +362,8 @@ export class ApiRequestComponent implements OnInit {
       avgTime: []
     };
     _.each(data, (val) => {
-      tempData.count.push([parseInt(val.createTime.toString().substr(6, 13)), val.count]);
-      tempData.avgTime.push([parseInt(val.createTime.toString().substr(6, 13)), parseFloat((val.avgTime / 1000).toFixed(3))]);
+      tempData.count.push([new Date(val.createTime).getTime(), val.count]);
+      tempData.avgTime.push([new Date(val.createTime).getTime(), parseFloat((val.avgTime / 1000).toFixed(3))]);
     });
     this.first_config = {
       type: 40,

@@ -75,12 +75,14 @@ export class WebSysComponent {
       value:'visitDetails',
       isActive:false,
       icon:'anticon anticon-file'
-    },{
-      label:'后端日志',
-      value:'backendLog',
-      isActive:false,
-      icon:'anticon anticon-profile'
-    },{ 
+    }
+    // ,{
+    //   label:'后端日志',
+    //   value:'backendLog',
+    //   isActive:false,
+    //   icon:'anticon anticon-profile'
+    // }
+    ,{ 
       label:'应用设置',
       value:'setting',
       isActive:false,

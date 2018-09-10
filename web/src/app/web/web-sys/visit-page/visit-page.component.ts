@@ -182,8 +182,8 @@ export class VisitPageComponent implements OnInit {
       uv: []
     };
     _.each(data.pvAndUvVmList, (val) => {
-      tempData.pv.push([parseInt(val.createTime.toString().substr(6, 13)), val.pv]);
-      tempData.uv.push([parseInt(val.createTime.toString().substr(6, 13)), val.uv]);
+      tempData.pv.push([new Date(val.createTime).getTime(), val.pv]);
+      tempData.uv.push([new Date(val.createTime).getTime(), val.uv]);
     });
     tempData.pv.sort();
     tempData.uv.sort();
@@ -229,8 +229,8 @@ export class VisitPageComponent implements OnInit {
       jsErr: []
     };
     _.each(data.errorStatis, (val) => {
-      tempData.pv.push([parseInt(val.createTime.toString().substr(6, 13)), val.pv]);
-      tempData.jsErr.push([parseInt(val.createTime.toString().substr(6, 13)), parseFloat((val.errorRate*100).toFixed(2))]);
+      tempData.pv.push([new Date(val.createTime).getTime(), val.pv]);
+      tempData.jsErr.push([new Date(val.createTime).getTime(), parseFloat((val.errorRate*100).toFixed(2))]);
     });
     this.js_config = {
       type: 40,

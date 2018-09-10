@@ -6,6 +6,6 @@
 export const environment = {
   production: false,
   apiUrl:'http://localhost:9000/',
-  uploadDataUrl:'http://localhost:9000/',
+  uploadDataUrl:'http://localhost:9000/Up',
   jsHackUrl:'http://localhost:9002/bundle.js'
 };

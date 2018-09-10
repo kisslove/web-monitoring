@@ -22,7 +22,11 @@ export class CustomHighchartComponent implements OnInit {
     this.containerId = 'highchart_' + Math.random();
   }
   ngOnInit() {
-
+    Highcharts.setOptions({
+      global: {
+        timezoneOffset: -8 * 60
+      }
+    });
   }
 
   ngOnChanges(changes) {
@@ -116,6 +120,8 @@ export class CustomHighchartComponent implements OnInit {
         tickWidth: 0,
         type: 'datetime',
         dateTimeLabelFormats: {
+          // millisecond: '%H:%M',
+          // second: '%H:%M',
           minute: '%H:%M',
           hour: '%H:%M',
           day: '%m-%d',
