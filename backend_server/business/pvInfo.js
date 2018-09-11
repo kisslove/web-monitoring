@@ -7,9 +7,9 @@ exports.list = async(req) => {
         List: [],
         TotalCount: 0
     };
-    resJson.TotalCount = await PvModel.find({}).count();
+    resJson.TotalCount = await PvModel.find({}).countDocuments();
     if (resJson.TotalCount) {
-        resJson.List = await PvModel.find({}).skip((req.body.pageIndex - 1) * req.body.pageSize).limit(req.body.pageSize);
+        resJson.List = await PvModel.find({}).sort({"createTime":-1}).skip((req.body.pageIndex - 1) * req.body.pageSize).limit(req.body.pageSize);
     }
     return resJson;
 };

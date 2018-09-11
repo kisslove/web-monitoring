@@ -1,0 +1,33 @@
+#home-section {
+  margin-top: 50px;
+  position: relative;
+
+  #deccription {
+    position: absolute;
+    top: 35%;
+    text-align: center;
+    left: 0;
+    right: 0;
+    .title {
+      color: #fff;
+      font-size: 80px;
+    }
+    .opt {
+        button{
+            width: 200px;
+            height: 40px;
+            line-height: 40px;
+            color: #fff;
+            border: solid 1px #fff;
+            border-radius: 18px;
+            background: rgba(217, 217, 217, 0);
+            &:hover{
+                background: #fff !important;
+                color: #333;
+                cursor: pointer;
+                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            }
+        }
+    }
+  }
+}

@@ -12,6 +12,9 @@ router.post('/SiteList', site.list);
 router.get('/SiteList', site.list);
 router.post('/RegisterSite', site.create);
 
+//应用设置
+router.post('/SiteSet', site.update);
+
 //应用总览
 // pv/uv
 router.post('/PvAndUvStatis', function(req, res, next) {

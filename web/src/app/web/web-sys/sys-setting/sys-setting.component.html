@@ -6,17 +6,17 @@
     站点ID:
     <label>{{currentSite.appKey}}</label>
   </div>
-  <div class="setting-gutter">
+  <!-- <div class="setting-gutter">
     业务系统ID:
     <input style="display: inline-block;width: 300px;" nz-input (input)="settingChangeInput($event)" [(ngModel)]="currentSite.systemId">
-  </div>
+  </div> -->
   <div class="setting-gutter">
-    关闭API自动上报:
+    手动上报API数据:
     <label nz-checkbox (ngModelChange)="settingChange1($event)" [ngModel]="currentSite.disableHook">勾选此项后，需手动调用 __ml.api() 方法上报API成功率。</label>
   </div>
   <div class="setting-gutter">
-    需要手动上传JS错误:
-    <label nz-checkbox (ngModelChange)="settingChange2($event)" [ngModel]="currentSite.disableJS">前端使用Angular2+框架，需手动上传JS错误，调用__ml.error()方法上报。</label>
+    手动上传JS错误:
+    <label nz-checkbox (ngModelChange)="settingChange2($event)" [ngModel]="currentSite.disableJS">需手动上传JS错误，调用__ml.error()方法上报。</label>
   </div>
   <nz-divider></nz-divider>
   <h3>复制/粘贴BI探针</h3>

@@ -5,9 +5,9 @@ exports.list = async(req) => {
         List: [],
         TotalCount: 0
     };
-    resJson.TotalCount = await PerfModel.find({}).count();
+    resJson.TotalCount = await PerfModel.find({}).countDocuments();
     if (resJson.TotalCount) {
-        resJson.List = await PerfModel.find({}).skip((req.body.pageIndex - 1) * req.body.pageSize).limit(req.body.pageSize);
+        resJson.List = await PerfModel.find({}).sort({"createTime":-1}).skip((req.body.pageIndex - 1) * req.body.pageSize).limit(req.body.pageSize);
     }
     return resJson;
 };

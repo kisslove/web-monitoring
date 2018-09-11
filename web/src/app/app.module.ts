@@ -13,10 +13,11 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 declare var window:any
 const routes: Routes = [
-  { path: '', pathMatch:'full',redirectTo:'dashboard' },
+  { path: '', pathMatch:'full',redirectTo:'home' },
+  { path: 'home', loadChildren:'app/homepage/homepage.module#HomepageModule' },
   { path: 'dashboard', loadChildren:'app/dashboard/dashboard.module#DashboardModule' },
   { path: 'sys/:appKey', loadChildren:'app/web/web.module#WebModule' }
-];
+]; 
 export class MyErrorHandler implements ErrorHandler {
   handleError(error) {
     console.error(error);

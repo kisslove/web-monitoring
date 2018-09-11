@@ -1,3 +1,4 @@
+import { PublicModule } from './../public/public.module';
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -14,6 +15,7 @@ const routes: Routes = [
     RouterModule,
     FormsModule,
     NgZorroAntdModule,
+    PublicModule,
     RouterModule.forChild(routes)
   ],
   declarations: [SysListComponent]

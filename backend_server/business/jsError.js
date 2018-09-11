@@ -7,9 +7,9 @@ exports.list = async(req) => {
         List: [],
         TotalCount: 0
     };
-    resJson.TotalCount = await JsModel.find({}).count();
+    resJson.TotalCount = await JsModel.find({}).countDocuments();
     if (resJson.TotalCount) {
-        resJson.List = await JsModel.find({}).skip((req.body.pageIndex - 1) * req.body.pageSize).limit(req.body.pageSize);
+        resJson.List = await JsModel.find({}).sort({"createTime":-1}).skip((req.body.pageIndex - 1) * req.body.pageSize).limit(req.body.pageSize);
     }
     return resJson;
 };
