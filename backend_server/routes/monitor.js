@@ -454,9 +454,6 @@ router.post('/ElapsedTimeTerminal', function(req, res, next) {
     });
 });
 
-
-
-
 // 访问明细
 router.post('/List', function(req, res, next) {
     switch (req.body.type) {
@@ -520,5 +517,22 @@ router.post('/List', function(req, res, next) {
             break;
     }
 });
+
+// 地理-GeoListStatis
+router.post('/GeoListStatis', function(req, res, next) {
+    pvInfo.geoListStatis(req).then((r) => {
+        res.json(util.resJson({
+            IsSuccess: true,
+            Data: r
+        }));
+    }, (err) => {
+        console.error(err);
+        res.json(util.resJson({
+            IsSuccess: false,
+            Data: null
+        }));
+    });
+});
+
 
 module.exports = router;

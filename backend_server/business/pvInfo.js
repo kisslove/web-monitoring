@@ -761,3 +761,81 @@ exports.terminalStatis = async(req) => {
 
     return r;
 };
+
+
+/**
+ * 地理-列表（按访问量）
+ * @param {*} req 
+ */
+exports.geoListStatis = async(req) => {
+    let body = req.body;
+    let appKey = new Mongoose.Types.ObjectId(body.appKey);
+    body.eTime = new Date(body.eTime);
+    body.sTime = new Date(body.sTime);
+    switch (body.TimeQuantum) {
+        case 0: //最近30分钟
+            body.eTime = new Date();
+            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
+            break;
+        case 1: //最近60分钟
+            body.eTime = new Date();
+            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
+            break;
+        case 2: //最近4小时
+            body.eTime = new Date();
+            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
+            break;
+        case 3: //最近12小时
+            body.eTime = new Date();
+            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
+            break;
+        case 4: //最近24小时
+            body.eTime = new Date();
+            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
+            break;
+        case 5: //最近3天
+            body.eTime = new Date();
+            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
+            break;
+        case 6: //最近7天
+            body.eTime = new Date();
+            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
+            break;
+        default:
+            break;
+    };
+    r = await PvModel.aggregate([{
+            "$match": {
+                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+                "appKey": appKey
+            }
+        },
+        {
+            "$group": {
+                "_id": '$mostSpecificSubdivision_nameCN',
+                "pageList": { '$push': '$page' }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                'geo': "$_id",
+                "count": { "$size": '$pageList' }
+            }
+        },
+        {
+            "$sort": {
+                'count': -1
+            }
+        }
+    ]);
+    let tempTotal=0;
+    _.each(r,(el)=>{
+        tempTotal+=el.count;
+    });
+    _.each(r,(el)=>{
+        el.percent=new Number(el.count/tempTotal*100).toFixed(2);
+    });
+
+    return r;
+};

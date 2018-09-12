@@ -1,20 +1,15 @@
 <div nz-row style="padding-left:24px;">
     <div style="overflow:auto;padding:24px 8px;border-right: 1px solid #e6ebef;" #mydetailsContent nz-col nzSpan="7">
       <h4>按访问量排行</h4>
-      <div class="custom-default-list selected">
-        <span class="left">北京</span>
-        <span class="right">
-          <span>250(50.3%)</span>
-          <i class="anticon anticon-right"></i>
-        </span>
-      </div>
-      <div class="custom-default-list">
-        <span class="left">上海</span>
-        <span class="right">
-          <span>250(49.7%)</span>
-          <i class="anticon anticon-right"></i>
-        </span>
-      </div>
+      <nz-spin [nzSpinning]="isSpinning.spin1">
+        <div (click)="selectGeoListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of geoListData">
+          <span title="{{item.geo}}" class="left" style="width:200px;">{{item.geo}}</span>
+          <span class="right">
+            <span>{{item.count}} ({{item.percent}}%)</span>
+            <i class="anticon anticon-right"></i>
+          </span>
+        </div>
+      </nz-spin>
    
     </div>
     <div style="overflow:auto;padding:24px 16px;" #mydetailsContent nz-col nzSpan="17">
@@ -46,7 +41,7 @@
           <ng-template #extradlTemplate>
             <app-time-choice-panel (selectOver)="selectOver($event,30)"></app-time-choice-panel>
           </ng-template>
-        </div>
+        </div> 
       </div>
     </div>
   </div>
