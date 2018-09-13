@@ -1,106 +1,85 @@
 <div nz-row style="padding-left:24px;">
     <div style="overflow:auto;padding:24px 8px;border-right: 1px solid #e6ebef;" #mydetailsContent nz-col nzSpan="7">
-        <nz-tabset>
-            <nz-tab nzTitle="浏览器">
-                <h4>按访问量排行</h4>
-                <div class="custom-default-list selected">
-                  <span class="left">北京</span>
-                  <span class="right">
-                    <span>250(50.3%)</span>
-                    <i class="anticon anticon-right"></i>
-                  </span>
-                </div>
-                <div class="custom-default-list">
-                  <span class="left">上海</span>
-                  <span class="right">
-                    <span>250(49.7%)</span>
-                    <i class="anticon anticon-right"></i>
-                  </span>
-                </div>
-            </nz-tab>
-            <nz-tab nzTitle="操作系统">
-                <h4>按访问量排行</h4>
-                <div class="custom-default-list selected">
-                  <span class="left">北京</span>
-                  <span class="right">
-                    <span>250(50.3%)</span>
-                    <i class="anticon anticon-right"></i>
-                  </span>
-                </div>
-                <div class="custom-default-list">
-                  <span class="left">上海</span>
-                  <span class="right">
-                    <span>250(49.7%)</span>
-                    <i class="anticon anticon-right"></i>
-                  </span>
-                </div>
-            </nz-tab>
-            <nz-tab nzTitle="设备">
-                <h4>按访问量排行</h4>
-                <div class="custom-default-list selected">
-                  <span class="left">北京</span>
-                  <span class="right">
-                    <span>250(50.3%)</span>
-                    <i class="anticon anticon-right"></i>
-                  </span>
-                </div>
-                <div class="custom-default-list">
-                  <span class="left">上海</span>
-                  <span class="right">
-                    <span>250(49.7%)</span>
-                    <i class="anticon anticon-right"></i>
-                  </span>
-                </div>
-            </nz-tab>
-            <nz-tab nzTitle="分辨率">
-                <h4>按访问量排行</h4>
-                <div class="custom-default-list selected">
-                  <span class="left">北京</span>
-                  <span class="right">
-                    <span>250(50.3%)</span>
-                    <i class="anticon anticon-right"></i>
-                  </span>
-                </div>
-                <div class="custom-default-list">
-                  <span class="left">上海</span>
-                  <span class="right">
-                    <span>250(49.7%)</span>
-                    <i class="anticon anticon-right"></i>
-                  </span>
-                </div>
-            </nz-tab>
-          </nz-tabset>
+      <nz-tabset [nzSelectedIndex]="currentSelectedTab" (nzSelectedIndexChange)="nzSelectedIndexChange($event)">
+        <nz-tab nzTitle="浏览器">
+          <nz-spin [nzSpinning]="isSpinning.spin1">
+            <div (click)="selectTerminalListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of terminalListData">
+              <span title="{{item.terminal}}" class="left" style="width:200px;">{{item.terminal}}</span>
+              <span class="right">
+                <span>{{item.count}}({{(item.percent)}}%)</span>
+                <i class="anticon anticon-right"></i>
+              </span>
+            </div>
+          </nz-spin>
+        </nz-tab>
+        <nz-tab nzTitle="操作系统">
+          <nz-spin [nzSpinning]="isSpinning.spin1">
+            <div (click)="selectTerminalListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of terminalListData">
+              <span title="{{item.terminal}}" class="left" style="width:200px;">{{item.terminal}}</span>
+              <span class="right">
+                  <span>{{item.count}}({{(item.percent)}}%)</span>
+                <i class="anticon anticon-right"></i>
+              </span>
+            </div>
+          </nz-spin>
+        </nz-tab>
+        <nz-tab nzTitle="分辨率">
+          <nz-spin [nzSpinning]="isSpinning.spin1">
+            <div (click)="selectTerminalListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of terminalListData">
+              <span title="{{item.terminal}}" class="left" style="width:200px;">{{item.terminal}}</span>
+              <span class="right">
+                  <span>{{item.count}}({{(item.percent)}}%)</span>
+                <i class="anticon anticon-right"></i>
+              </span>
+            </div>
+          </nz-spin>
+        </nz-tab>
+      </nz-tabset>
     </div>
     <div style="overflow:auto;padding:24px 16px;" #mydetailsContent nz-col nzSpan="17">
       <div nz-row>
         <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
-          <nz-card nzType="inner" nzTitle="访问速度" [nzExtra]="extradlTemplate">
-            <!-- <app-custom-highchart></app-custom-highchart> -->
+          <nz-card nzType="inner" nzTitle="访问速度" [nzExtra]="extra_key_perf_Template">
+            <nz-spin *ngIf="terminalListData.length>0" [nzSpinning]="isSpinning.spin2">
+              <app-custom-highchart [config]="key_perf_config"></app-custom-highchart>
+            </nz-spin>
           </nz-card>
-          <ng-template #extradlTemplate>
-            <app-time-choice-panel (selectOver)="selectOver($event,30)"></app-time-choice-panel>
+          <ng-template #extra_key_perf_Template >
+            <app-time-choice-panel (selectOver)="selectOver($event,10)"></app-time-choice-panel>
           </ng-template>
         </div>
       </div>
       <div nz-row>
         <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
-          <nz-card nzType="inner" nzTitle="JS错误率" [nzExtra]="extradlTemplate">
-            <!-- <app-custom-highchart></app-custom-highchart> -->
+  
+          <nz-card nzType="inner" [nzTitle]="jsCardTemplate" [nzExtra]="extralJsCardTemplate">
+            <nz-spin *ngIf="terminalListData.length>0" [nzSpinning]="isSpinning.spin3">
+              <app-custom-highchart [config]="js_config"></app-custom-highchart>
+            </nz-spin>
           </nz-card>
-          <ng-template #extradlTemplate>
-            <app-time-choice-panel (selectOver)="selectOver($event,30)"></app-time-choice-panel>
+          <ng-template #jsCardTemplate>
+            JS错误率 
+            <nz-tooltip [nzTitle]="'发生错误的次数/访问量'" [nzPlacement]="'top'">
+              <i nz-tooltip class="anticon anticon-question-circle"></i>
+            </nz-tooltip>
+          </ng-template>
+          <ng-template #extralJsCardTemplate>
+            <app-time-choice-panel (selectOver)="selectOver($event,20)"></app-time-choice-panel>
           </ng-template>
         </div>
       </div>
       <div nz-row>
         <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
-          <nz-card nzType="inner" nzTitle="API请求成功率" [nzExtra]="extradlTemplate">
-            <!-- <app-custom-highchart></app-custom-highchart> -->
+  
+          <nz-card nzType="inner" [nzTitle]="'成功率'" [nzExtra]="extralApiCardTemplate">
+            <nz-spin *ngIf="terminalListData.length>0" [nzSpinning]="isSpinning.spin4">
+              <app-custom-highchart  [config]="api_config"></app-custom-highchart>
+            </nz-spin>
           </nz-card>
-          <ng-template #extradlTemplate>
+          <ng-template #extralApiCardTemplate>
             <app-time-choice-panel (selectOver)="selectOver($event,30)"></app-time-choice-panel>
           </ng-template>
         </div>
       </div>
-    </div>
+    </div>>
   </div>

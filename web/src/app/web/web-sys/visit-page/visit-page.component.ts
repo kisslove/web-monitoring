@@ -57,6 +57,7 @@ export class VisitPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    
     this.appKey = this.route.parent.snapshot.paramMap.get("appKey");
     this.unsubscribe.sub0 = observableFromEvent(window, "resize").pipe(
       debounceTime(100))
@@ -212,7 +213,8 @@ export class VisitPageComponent implements OnInit {
       sTime: type == '7' ? time[0] : '',
       eTime: type == '7' ? time[1] : '',
       appKey: this.appKey,
-      keywords: this.currentSelectedPage
+      keywords: this.currentSelectedPage,
+      errorRateType:1
     }).subscribe((d: any) => {
       if (d.IsSuccess) {
         this.renderJsChart(type, d.Data);
@@ -479,6 +481,7 @@ export class VisitPageComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    this.broadcaster.broadcast('showGlobalTimer',true);
     this._resizePageHeight();
   }
   ngOnDestroy(): void {

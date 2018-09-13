@@ -72,7 +72,7 @@
               <tbody>
                 <tr *ngFor="let data of jsGroupTable.data">
                   <td>
-                    <span style="word-break: break-word;;max-width:450px;max-height:60px;" class="my-ellipsis">{{data.msg}}</span>
+                    <span >{{data.msg.substring(0,80)}}</span>
                   </td>
                   <td>{{data.count}}</td>
                   <td>

@@ -71,6 +71,10 @@ export class SysIndexComponent implements OnInit {
 
   }
 
+  ngAfterViewInit(): void {
+    this.broadcaster.broadcast('showGlobalTimer',true);
+  }
+
   selectOver(data, type) {
     switch (type) {
       case 10:

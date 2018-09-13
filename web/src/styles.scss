@@ -78,7 +78,8 @@ input,
         height: 20px;
     }
     .right {
-        float: right;
+        position: absolute;
+        right: 0;
         
     } 
     &.selected {
