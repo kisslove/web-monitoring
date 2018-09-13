@@ -649,6 +649,7 @@ export class ApiRequestComponent implements OnInit {
 
 
   ngAfterViewInit() {
+    this.broadcaster.broadcast('showGlobalTimer',true);
     this._resizePageHeight();
   }
 

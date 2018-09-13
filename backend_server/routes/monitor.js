@@ -534,5 +534,53 @@ router.post('/GeoListStatis', function(req, res, next) {
     });
 });
 
+// visitSpeedStatic 关键性能指标(地理、终端)
+router.post('/VisitSpeedStatic', function(req, res, next) {
+    perfInfo.visitSpeedStatic(req).then((r) => {
+        res.json(util.resJson({
+            IsSuccess: true,
+            Data: r
+        }));
+    }, (err) => {
+        console.error(err);
+        res.json(util.resJson({
+            IsSuccess: false,
+            Data: null
+        }));
+    });
+});
+
+
+// apiSuccRateStatic api成功率(地理、终端)
+router.post('/ApiSuccRateStatic', function(req, res, next) {
+    apiInfo.apiSuccRateStatic(req).then((r) => {
+        res.json(util.resJson({
+            IsSuccess: true,
+            Data: r
+        }));
+    }, (err) => {
+        console.error(err);
+        res.json(util.resJson({
+            IsSuccess: false,
+            Data: null
+        }));
+    });
+});
+
+// TerminalListStatis 终端(bs/os/pageWh)
+router.post('/TerminalListStatis', function(req, res, next) {
+    pvInfo.terminalListStatis(req).then((r) => {
+        res.json(util.resJson({
+            IsSuccess: true,
+            Data: r
+        }));
+    }, (err) => {
+        console.error(err);
+        res.json(util.resJson({
+            IsSuccess: false,
+            Data: null
+        }));
+    });
+});
 
 module.exports = router;

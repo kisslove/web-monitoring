@@ -59,6 +59,9 @@ export class CustomHighchartComponent implements OnInit {
           case 40://曲线图和柱状图
             this.renderColumnAndSplineChart()
             break;
+          case 50://柱状图
+            this.renderColumnChart()
+            break;
           default:
             break;
         }
@@ -353,6 +356,50 @@ export class CustomHighchartComponent implements OnInit {
           marker: {
             enabled: false
           }
+        }
+      }
+    }, this.highConfig.ext));
+  }
+
+  private renderColumnChart() {
+    Highcharts.chart(this.containerId, _.extend({}, {
+      credits: {
+        enabled: false
+      },
+      chart: {
+        type: 'column',
+        height: 280
+      },
+      title: {
+        text: null
+      },
+      legend: {
+        align: 'center',
+        verticalAlign: 'bottom',
+        // layout: 'vertical',
+      },
+      xAxis: {
+        // minTickInterval:xAxisMinTickInterval,        
+        tickWidth: 0,
+        type: 'datetime',
+        dateTimeLabelFormats: {
+          minute: '%H:%M',
+          hour: '%H:%M',
+          day: '%m-%d',
+          week: '%m-%d',
+          month: '%Y-%m',
+          year: '%Y'
+        }
+      },
+      tooltip: {
+        shared: true,
+        dateTimeLabelFormats: {
+          minute: '%H:%M',
+          hour: '%m-%d %H:%M',
+          day: '%m-%d %H:%M',
+          week: '%m-%d %H:%M',
+          month: '%Y-%m',
+          year: '%Y'
         }
       }
     }, this.highConfig.ext));

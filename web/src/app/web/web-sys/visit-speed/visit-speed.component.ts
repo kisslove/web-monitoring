@@ -56,6 +56,7 @@ export class VisitSpeedComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+   
     this.appKey = this.route.parent.snapshot.paramMap.get("appKey");
     this.unsubscribe.sub0 = observableFromEvent(window, "resize").pipe(
       debounceTime(100))
@@ -470,6 +471,7 @@ export class VisitSpeedComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    this.broadcaster.broadcast('showGlobalTimer',true);
     this._resizePageHeight();
   }
   ngOnDestroy(): void {

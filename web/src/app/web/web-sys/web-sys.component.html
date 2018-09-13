@@ -6,8 +6,8 @@
     text-align: center;
     background: #D9DEE4;
     width: 200px;" >
-    o(*￣︶￣*)o
-  </nz-layout>
+    <span title="系统列表" style="cursor: pointer;" [routerLink]="[ '/dashboard']"> o(*￣︶￣*)o</span>
+  </nz-layout >
   <nz-layout class="sys-header">
     <div style="margin: auto 5px;position:relative;">
       <nz-divider style="    width: 3px;background: #1890ff;margin-right: 0;" nzType="vertical"></nz-divider>  
@@ -16,7 +16,7 @@
           </nz-select>
           <div style="position: absolute;right: 0;top: 0;">
               <button nz-button nzType="default"><i class="anticon anticon-question"></i>帮助文档</button>
-              <span style="padding: 8px;border: solid 1px #d9d9d9;margin: 0 8px;display: inline-block;line-height: 1;">
+              <span *ngIf="showGlobalTimer" style="padding: 8px;border: solid 1px #d9d9d9;margin: 0 8px;display: inline-block;line-height: 1;">
                   <app-time-choice-panel (selectOver)="selectOver($event)" [time]="4"></app-time-choice-panel>
               </span>
             </div>
@@ -27,7 +27,7 @@
   <nz-layout>
     <nz-sider>
       <ul nz-menu [nzTheme]="'light'"  [nzMode]="'inline'">
-        <li *ngFor="let item of leftNavItems" [ngClass]="{'ant-menu-item-selected':item.isActive}" style="margin: 0;" nz-menu-item [routerLink]="[ item.value ]">
+        <li *ngFor="let item of leftNavItems"  routerLinkActive="ant-menu-item-selected"  style="margin: 0;" nz-menu-item [routerLink]="[ item.value ]">
           <span>
             <i class="{{item.icon}}"></i>
             <span class="nav-text">{{item.label}}</span>

@@ -1,3 +1,4 @@
+import { Broadcaster } from './../../../monitor.common.service';
 
 import {fromEvent as observableFromEvent,  Observable } from 'rxjs';
 
@@ -31,7 +32,8 @@ export class SysSettingComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private msg: NzMessageService
+    private msg: NzMessageService,
+    private broadcaster:Broadcaster
   ) {
 
   }
@@ -115,6 +117,10 @@ export class SysSettingComponent implements OnInit {
       document.body.insertBefore(dom, document.body.firstChild);
     })(window, document, '${this.setting.jsHackUrl}', "__ml");
   </script>`
+  }
+
+  ngAfterContentInit(): void {
+    this.broadcaster.broadcast('showGlobalTimer',false);
   }
 
 }

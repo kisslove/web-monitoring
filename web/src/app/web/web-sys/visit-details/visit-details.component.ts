@@ -1,3 +1,4 @@
+import { Broadcaster } from './../../../monitor.common.service';
 import { slideInDownAnimation } from './../../../animations';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -28,9 +29,11 @@ export class VisitDetailsComponent implements OnInit {
   constructor(
     private http:HttpClient,
     private msg:NzMessageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private broadcaster:Broadcaster
   ) { }
   ngOnInit() {
+    
     this.appKey = this.route.parent.snapshot.paramMap.get("appKey");
     this.searchModel.sTime=new Date(new Date().setDate(new Date().getDate()-1));
     this.searchModel.eTime=new Date();
@@ -68,6 +71,10 @@ export class VisitDetailsComponent implements OnInit {
         this.msg.error("数据加载失败");
       }
     })
+  }
+
+  ngAfterContentInit(): void {
+    this.broadcaster.broadcast('showGlobalTimer',false);
   }
 
   onOk(data){

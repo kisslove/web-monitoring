@@ -1,14 +1,11 @@
-
-
-
-import {fromEvent as observableFromEvent,  Observable } from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
+import { fromEvent as observableFromEvent, Observable } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Broadcaster } from './../../../monitor.common.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChildren, ElementRef, Renderer2 } from '@angular/core';
-
 import * as HC_map from 'highcharts/highmaps';
+import * as Highcharts from 'highcharts';
 import * as _ from 'lodash';
 import { HighchartConfig } from '../../../model/entity';
 declare var window: any
@@ -24,8 +21,8 @@ export class VisitGeoComponent implements OnInit {
     sub1: null
   }
   key_perf_config: HighchartConfig
-  area_perf_config: HighchartConfig
-  dl_config: HighchartConfig
+  js_config: HighchartConfig
+  api_config: HighchartConfig
   isSpinning = {
     spin1: true,
     spin2: true,
@@ -43,6 +40,7 @@ export class VisitGeoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    
     this.appKey = this.route.parent.snapshot.paramMap.get("appKey");
     this.unsubscribe.sub0 = observableFromEvent(window, "resize").pipe(
       debounceTime(100))
@@ -61,10 +59,20 @@ export class VisitGeoComponent implements OnInit {
 
   }
 
-  selectOver(data) {
-    this.loadKeyPerfData(data.time, data.type);
-    this.loadAreaPerfData(data.time, data.type);
-    this.loadPageLoadData(data.time, data.type);
+  selectOver(data, type) {
+    switch (type) {
+      case 10:
+        this.loadVisitSpeedData(data.time, data.type);
+        break;
+      case 20:
+        this.loadJsData(data.time, data.type);
+        break;
+      case 30:
+        this.loadApiSuccRateData(data.time, data.type);
+        break;
+      default:
+        break;
+    }
   }
 
   //获取地理列表
@@ -81,39 +89,43 @@ export class VisitGeoComponent implements OnInit {
           d.Data[0]['select'] = true;
           this.geoListData = d.Data;
           this.selectGeoListItem(d.Data[0]);
-        }else{
-          this.geoListData=[];
+        } else {
+          this.geoListData = [];
         }
-        
+
       }
       this.isSpinning.spin1 = false;
     });
   }
 
   selectGeoListItem(data) {
+    _.each(this.geoListData, (val) => {
+      val.select = false;
+    });
     data.select = true;
-    this.currentSelectedGeo = data.page;
+    this.currentSelectedGeo = data.geo;
     if (window.globalTime) {
       this.loadVisitSpeedData(window.globalTime.time, window.globalTime.type);
-      this.loadAreaPerfData(window.globalTime.time, window.globalTime.type);
-      this.loadPageLoadData(window.globalTime.time, window.globalTime.type);
+      this.loadJsData(window.globalTime.time, window.globalTime.type);
+      this.loadApiSuccRateData(window.globalTime.time, window.globalTime.type);
     } else {
       this.loadVisitSpeedData(null, 4);
-      this.loadAreaPerfData(null, 4);
-      this.loadPageLoadData(null, 4);
+      this.loadJsData(null, 4);
+      this.loadApiSuccRateData(null, 4);
     }
   }
 
 
-  //加载访问速度数据
+  //加载关键性能数据
   loadVisitSpeedData(time, type) {
     this.isSpinning.spin2 = true;
-    this.http.post("Monitor/geoVisitSpeed", {
+    this.http.post("Monitor/VisitSpeedStatic", {
       TimeQuantum: type == '7' ? '' : type,
       sTime: type == '7' ? time[0] : '',
       eTime: type == '7' ? time[1] : '',
       appKey: this.appKey,
-      geoName:this.currentSelectedGeo
+      keywords: this.currentSelectedGeo,
+      kerfType: 2
     }).subscribe((d: any) => {
       if (d.IsSuccess) {
         this.renderVisitSpeedChart(type, d.Data);
@@ -122,35 +134,34 @@ export class VisitGeoComponent implements OnInit {
     })
   }
 
-  //渲染关键性能对比图
+  //渲染关键性能柱状图
   renderVisitSpeedChart(type, data) {
     let tempData = {
       fpt: [],
-      tti: [],
+      // tti: [],
       ready: [],
       load: []
     };
     _.each(data, (val) => {
       tempData.fpt.push([new Date(val.createTime).getTime(), parseInt(val.fpt)]);
-      tempData.tti.push([new Date(val.createTime).getTime(), parseInt(val.tti)]);
+      // tempData.tti.push([new Date(val.createTime).getTime(), parseInt(val.tti)]);
       tempData.ready.push([new Date(val.createTime).getTime(), parseInt(val.ready)]);
       tempData.load.push([new Date(val.createTime).getTime(), parseInt(val.load)]);
     });
     this.key_perf_config = {
-      type: 10,
+      type: 50,
       extProps: {
         minTickIntervalType: type
       },
       ext: {
-        series: [{
-          name: '首次渲染时间',
-          data: tempData.fpt,
-          tooltip: {
-            valueSuffix: 'ms'
+        yAxis: {
+          title: {
+            text: '耗时(ms)'
           }
-        }, {
-          name: '首次可交互时间',
-          data: tempData.tti,
+        },
+        series: [{
+          name: '首次渲染',
+          data: tempData.fpt,
           tooltip: {
             valueSuffix: 'ms'
           }
@@ -161,7 +172,7 @@ export class VisitGeoComponent implements OnInit {
             valueSuffix: 'ms'
           }
         }, {
-          name: '页面完全加载完成',
+          name: '页面完全加载',
           data: tempData.load,
           tooltip: {
             valueSuffix: 'ms'
@@ -172,143 +183,173 @@ export class VisitGeoComponent implements OnInit {
   }
 
 
-  //加载区间段耗时数据
-  loadAreaPerfData(time, type) {
+  //加载JS错误率数据
+  loadJsData(time, type) {
     this.isSpinning.spin3 = true;
-    this.http.post("Monitor/ElapsedTime", {
+    this.http.post("Monitor/JsErrorRate", {
       TimeQuantum: type == '7' ? '' : type,
       sTime: type == '7' ? time[0] : '',
       eTime: type == '7' ? time[1] : '',
       appKey: this.appKey,
-      geoName:this.currentSelectedGeo
+      keywords: this.currentSelectedGeo,
+      errorRateType: 2
     }).subscribe((d: any) => {
       if (d.IsSuccess) {
-        this.renderAreaPerfChart(type, d.Data);
+        this.renderJsChart(type, d.Data);
       }
       this.isSpinning.spin3 = false;
     })
   }
 
-  //渲染区间段耗时对比图
-  renderAreaPerfChart(type, data) {
+  //渲染js/pv对比图
+  renderJsChart(type, data) {
+
     let tempData = {
-      dns: [],
-      tcp: [],
-      ttfb: [],
-      trans: [],
-      dom: [],
-      res: []
+      pv: [],
+      jsErr: []
     };
-    _.each(data, (val) => {
-      tempData.dns.push([new Date(val.createTime).getTime(), parseInt(val.dns)]);
-      tempData.tcp.push([new Date(val.createTime).getTime(), parseInt(val.tcp)]);
-      tempData.ttfb.push([new Date(val.createTime).getTime(), parseInt(val.ttfb)]);
-      tempData.trans.push([new Date(val.createTime).getTime(), parseInt(val.trans)]);
-      tempData.dom.push([new Date(val.createTime).getTime(), parseInt(val.dom)]);
-      tempData.res.push([new Date(val.createTime).getTime(), parseInt(val.res)]);
+    _.each(data.errorStatis, (val) => {
+      tempData.pv.push([new Date(val.createTime).getTime(), val.pv]);
+      tempData.jsErr.push([new Date(val.createTime).getTime(), parseFloat((val.errorRate * 100).toFixed(2))]);
     });
-    this.area_perf_config = {
-      type: 10,
-      extProps: {
-        minTickIntervalType: type
-      },
+    this.js_config = {
+      type: 40,
       ext: {
         series: [{
-          name: 'DNS查询',
-          data: tempData.dns,
+          name: 'PV',
+          type: 'column',
+          yAxis: 1,
+          data: tempData.pv
+        }, {
+          name: '错误率',
+          type: 'spline',
+          data: tempData.jsErr,
           tooltip: {
-            valueSuffix: 'ms'
+            valueSuffix: '%'
           }
-        },{
-          name: 'TCP连接',
-          data: tempData.tcp,
-          tooltip: {
-            valueSuffix: 'ms'
+        }],
+        yAxis: [{ // Primary yAxis
+          labels: {
+            format: '{value}%',
+            style: {
+              color: Highcharts.getOptions().colors[1]
+            }
+          },
+          min: 0,
+          title: {
+            text: '错误率',
+            style: {
+              color: Highcharts.getOptions().colors[1]
+            }
           }
-        },{
-          name: '网络请求',
-          data: tempData.ttfb,
-          tooltip: {
-            valueSuffix: 'ms'
+        }, { // Secondary yAxis
+          title: {
+            text: 'PV',
+            style: {
+              color: Highcharts.getOptions().colors[0]
+            }
+          },
+          labels: {
+            format: '{value}',
+            style: {
+              color: Highcharts.getOptions().colors[0]
+            }
+          },
+          opposite: true
+        }]
+      }
+    };
+  }
+
+
+  //加载API成功率数据
+  loadApiSuccRateData(time, type) {
+    this.isSpinning.spin4 = true;
+    this.http.post("Monitor/ApiSuccRateStatic", {
+      TimeQuantum: type == '7' ? '' : type,
+      sTime: type == '7' ? time[0] : '',
+      eTime: type == '7' ? time[1] : '',
+      appKey: this.appKey,
+      keywords: this.currentSelectedGeo,
+      apiSuccRateType: 2
+    }).subscribe((d: any) => {
+      if (d.IsSuccess) {
+        this.renderApiSuccRateChart(d.Data);
+      }
+      this.isSpinning.spin4 = false;
+    })
+  }
+
+  // 渲染API 成功率
+  renderApiSuccRateChart(data) {
+    let tempData = {
+      times: [],
+      succRate: []
+    };
+    _.each(data, (val) => {
+      tempData.times.push([new Date(val.createTime).getTime(), val.times]);
+      tempData.succRate.push([new Date(val.createTime).getTime(), parseFloat((val.succRate * 100).toFixed(2))]);
+    });
+    this.api_config = {
+      type: 40,
+      ext: {
+        chart: {
+          zoomType: 'xy'
+        },
+        yAxis: [{ // Primary yAxis
+          labels: {
+            format: '{value}%',
+            style: {
+              color: Highcharts.getOptions().colors[1]
+            }
+          },
+          min: 0,
+          max: 100,
+          title: {
+            text: "成功率",
+            style: {
+              color: Highcharts.getOptions().colors[1]
+            }
           }
-        },{
-          name: '数据传输',
-          data: tempData.trans,
+        }, { // Secondary yAxis
+          title: {
+            text: '调用次数',
+            style: {
+              color: Highcharts.getOptions().colors[0]
+            }
+          },
+          labels: {
+            format: '{value}',
+            style: {
+              color: Highcharts.getOptions().colors[0]
+            }
+          },
+          opposite: true
+        }],
+        series: [{
+          name: '调用次数',
+          type: 'column',
+          yAxis: 1,
+          data: tempData.times,
           tooltip: {
-            valueSuffix: 'ms'
+            valueSuffix: ''
           }
-        },{
-          name: 'DOM解析',
-          data: tempData.dom,
+        }, {
+          name: '成功率',
+          type: 'spline',
+          data: tempData.succRate,
           tooltip: {
-            valueSuffix: 'ms'
-          }
-        },{
-          name: '资源加载',
-          data: tempData.res,
-          tooltip: {
-            valueSuffix: 'ms'
+            valueSuffix: '%'
           }
         }]
       }
     };
   }
 
-  //加载页面加载瀑布数据
-  loadPageLoadData(time, type) {
-    this.isSpinning.spin4 = true;
-    this.http.post("Monitor/ElapsedTime", {
-      TimeQuantum: type == '7' ? '' : type,
-      sTime: type == '7' ? time[0] : '',
-      eTime: type == '7' ? time[1] : '',
-      appKey: this.appKey,
-      geoName:this.currentSelectedGeo
-    }).subscribe((d: any) => {
-      if (d.IsSuccess) {
-       let temp=[
-          {
-            name: 'DNS查询',
-            val: 0
-          }, {
-            name: 'TCP连接',
-            val: 0
-          }, {
-            name: 'SSL 建连',
-            val: 0
-          }, {
-            name: '请求响应',
-            val: 0
-          }, {
-            name: '内容传输',
-            val: 0
-          }, {
-            name: 'DOM解析',
-            val: 0
-          }, {
-            name: '资源加载',
-            val: 0
-          }];
-          _.each(d.Data, (val)=>{
-            temp[0].val+=val.dns;
-            temp[1].val+=val.tcp;
-            temp[2].val+=val.ssl;
-            temp[3].val+=val.ttfb;
-            temp[4].val+=val.trans;
-            temp[5].val+=val.dom;
-            temp[6].val+=val.res;
-          });
-          _.each(temp, (val,index)=>{
-            temp[index].val=parseInt((temp[index].val/d.Data.length).toString());
-          });
-
-          // this.page_load_data=temp;
-      }
-      this.isSpinning.spin4 = false;
-    })
-  }
 
 
   ngAfterViewInit() {
+    this.broadcaster.broadcast('showGlobalTimer',true);
     this._resizePageHeight();
   }
   ngOnDestroy(): void {

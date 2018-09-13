@@ -1,20 +1,37 @@
 var Mongoose = require('mongoose');
 var PerfModel = require('../models/perfModel');
-exports.list = async(req) => {
+exports.list = async (req) => {
     let resJson = {
         List: [],
         TotalCount: 0
     };
-    resJson.TotalCount = await PerfModel.find({}).countDocuments();
+    let tempCon = {
+        $or: [{
+            "page": {
+                '$regex': new RegExp(`${req.body.keywords}.*`, "gi")
+            }
+        }, {
+            "ua": {
+                '$regex': new RegExp(`${req.body.keywords}.*`, "gi")
+            }
+        }, {
+            "mostSpecificSubdivision_nameCN": {
+                '$regex': new RegExp(`${req.body.keywords}.*`, "gi")
+            }
+        }]
+    };
+    resJson.TotalCount = await PerfModel.find(tempCon).countDocuments();
     if (resJson.TotalCount) {
-        resJson.List = await PerfModel.find({}).sort({"createTime":-1}).skip((req.body.pageIndex - 1) * req.body.pageSize).limit(req.body.pageSize);
+        resJson.List = await PerfModel.find(tempCon).sort({
+            "createTime": -1
+        }).skip((req.body.pageIndex - 1) * req.body.pageSize).limit(req.body.pageSize);
     }
     return resJson;
 };
 
 exports.create = (data) => {
     var temp = new PerfModel(data);
-    temp.save(function(err, r) {
+    temp.save(function (err, r) {
         if (err) {
             console.error(err);
         }
@@ -25,7 +42,7 @@ exports.create = (data) => {
  * 访问速度-list
  * @param {*} req 
  */
-exports.pageSpeedStatis = async(req) => {
+exports.pageSpeedStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body.eTime = new Date(body.eTime);
@@ -65,14 +82,20 @@ exports.pageSpeedStatis = async(req) => {
     let r = [];
     r = await PerfModel.aggregate([{
             "$match": {
-                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
-                "appKey": appKey
+                "createTime": {
+                    '$gte': body.sTime,
+                    '$lt': body.eTime
+                },
+                "appKey": appKey,
+                "page": {'$regex':new RegExp(`${body.keywords}.*`,"gi")}
             }
         },
         {
             "$group": {
                 "_id": "$page",
-                "avgLoad": { '$avg': '$load' }
+                "avgLoad": {
+                    '$avg': '$load'
+                }
             }
         },
         {
@@ -95,7 +118,7 @@ exports.pageSpeedStatis = async(req) => {
  * 访问速度-关键性能指标
  * @param {*} req 
  */
-exports.keyPerf = async(req) => {
+exports.keyPerf = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     let timeDivider = 1000 * 60 * 60 * 24; /*聚合时间段,默认按天*/
@@ -161,13 +184,19 @@ exports.keyPerf = async(req) => {
     };
     let matchCon = body.pageName ? {
         "$match": {
-            "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
             "appKey": appKey,
             "page": body.pageName
         }
     } : {
         "$match": {
-            "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
             "appKey": appKey
         }
     };
@@ -175,20 +204,30 @@ exports.keyPerf = async(req) => {
         {
             "$group": {
                 "_id": {
-                    "$subtract": [
-                        { "$subtract": ["$createTime", new Date(0)] },
+                    "$subtract": [{
+                            "$subtract": ["$createTime", new Date(0)]
+                        },
                         {
-                            "$mod": [
-                                { "$subtract": ["$createTime", new Date(0)] },
+                            "$mod": [{
+                                    "$subtract": ["$createTime", new Date(0)]
+                                },
                                 timeDivider /*聚合时间段*/
                             ]
                         }
                     ]
                 },
-                "fpt": { '$avg': '$fpt' },
-                "load": { '$avg': '$load' },
-                "ready": { '$avg': '$ready' },
-                "tti": { '$avg': '$tti' }
+                "fpt": {
+                    '$avg': '$fpt'
+                },
+                "load": {
+                    '$avg': '$load'
+                },
+                "ready": {
+                    '$avg': '$ready'
+                },
+                "tti": {
+                    '$avg': '$tti'
+                }
             }
         },
         {
@@ -198,7 +237,9 @@ exports.keyPerf = async(req) => {
                 "load": 1,
                 "ready": 1,
                 "tti": 1,
-                'createTime': { '$add': [new Date(0), '$_id'] }
+                'createTime': {
+                    '$add': [new Date(0), '$_id']
+                }
             }
         },
         {
@@ -214,7 +255,7 @@ exports.keyPerf = async(req) => {
  * 访问速度-区间段耗时
  * @param {*} req 
  */
-exports.elapsedTime = async(req) => {
+exports.elapsedTime = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     let timeDivider = 1000 * 60 * 60 * 24; /*聚合时间段,默认按天*/
@@ -280,13 +321,19 @@ exports.elapsedTime = async(req) => {
     };
     let matchCon = body.pageName ? {
         "$match": {
-            "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
             "appKey": appKey,
             "page": body.pageName
         }
     } : {
         "$match": {
-            "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
             "appKey": appKey
         }
     };
@@ -294,23 +341,39 @@ exports.elapsedTime = async(req) => {
         {
             "$group": {
                 "_id": {
-                    "$subtract": [
-                        { "$subtract": ["$createTime", new Date(0)] },
+                    "$subtract": [{
+                            "$subtract": ["$createTime", new Date(0)]
+                        },
                         {
-                            "$mod": [
-                                { "$subtract": ["$createTime", new Date(0)] },
+                            "$mod": [{
+                                    "$subtract": ["$createTime", new Date(0)]
+                                },
                                 timeDivider /*聚合时间段*/
                             ]
                         }
                     ]
                 },
-                "dns": { '$avg': '$dns' },
-                "dom": { '$avg': '$dom' },
-                "res": { '$avg': '$res' },
-                "ssl": { '$avg': '$ssl' },
-                "tcp": { '$avg': '$tcp' },
-                "trans": { '$avg': '$trans' },
-                "ttfb": { '$avg': '$ttfb' }
+                "dns": {
+                    '$avg': '$dns'
+                },
+                "dom": {
+                    '$avg': '$dom'
+                },
+                "res": {
+                    '$avg': '$res'
+                },
+                "ssl": {
+                    '$avg': '$ssl'
+                },
+                "tcp": {
+                    '$avg': '$tcp'
+                },
+                "trans": {
+                    '$avg': '$trans'
+                },
+                "ttfb": {
+                    '$avg': '$ttfb'
+                }
             }
         },
         {
@@ -323,7 +386,9 @@ exports.elapsedTime = async(req) => {
                 "tcp": 1,
                 "trans": 1,
                 "ttfb": 1,
-                'createTime': { '$add': [new Date(0), '$_id'] }
+                'createTime': {
+                    '$add': [new Date(0), '$_id']
+                }
             }
         },
         {
@@ -339,7 +404,7 @@ exports.elapsedTime = async(req) => {
  * 访问速度-地理分布
  * @param {*} req 
  */
-exports.perfGeo = async(req) => {
+exports.perfGeo = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body.eTime = new Date(body.eTime);
@@ -378,7 +443,10 @@ exports.perfGeo = async(req) => {
     };
     let r = await PerfModel.aggregate([{
             "$match": {
-                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+                "createTime": {
+                    '$gte': body.sTime,
+                    '$lt': body.eTime
+                },
                 "appKey": appKey,
                 "page": body.pageName
             }
@@ -386,7 +454,9 @@ exports.perfGeo = async(req) => {
         {
             "$group": {
                 "_id": "$mostSpecificSubdivision_nameCN",
-                "fpt": { '$avg': '$fpt' },
+                "fpt": {
+                    '$avg': '$fpt'
+                },
             }
         },
         {
@@ -409,7 +479,7 @@ exports.perfGeo = async(req) => {
  * 访问速度-访问终端
  * @param {*} req 
  */
-exports.terminalSpeed = async(req) => {
+exports.terminalSpeed = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body.eTime = new Date(body.eTime);
@@ -459,7 +529,10 @@ exports.terminalSpeed = async(req) => {
 
     let r = await PerfModel.aggregate([{
             "$match": {
-                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+                "createTime": {
+                    '$gte': body.sTime,
+                    '$lt': body.eTime
+                },
                 "appKey": appKey,
                 "page": body.pageName
             }
@@ -467,7 +540,9 @@ exports.terminalSpeed = async(req) => {
         {
             "$group": {
                 "_id": groupConTerminal,
-                "speed": { '$avg': '$fpt' },
+                "speed": {
+                    '$avg': '$fpt'
+                },
             }
         },
         {
@@ -487,3 +562,175 @@ exports.terminalSpeed = async(req) => {
 };
 
 
+/**
+ * 访问速度-关键性能指标(地理/终端)
+ * @param {*} req 
+ */
+exports.visitSpeedStatic = async (req) => {
+    let body = req.body;
+    let appKey = new Mongoose.Types.ObjectId(body.appKey);
+    let timeDivider = 1000 * 60 * 60 * 24; /*聚合时间段,默认按天*/
+    if (body.TimeQuantum == "") {
+        let temp = new Date(body.eTime) - new Date(body.sTime);
+        if (temp <= 1000 * 60 * 30) {
+            body.TimeQuantum = 0;
+        } else if (temp <= 1000 * 60 * 60) {
+            body.TimeQuantum = 1;
+        } else if (temp <= 1000 * 60 * 60 * 4) {
+            body.TimeQuantum = 2;
+        } else if (temp <= 1000 * 60 * 60 * 12) {
+            body.TimeQuantum = 3;
+        } else if (temp <= 1000 * 60 * 60 * 24) {
+            body.TimeQuantum = 4;
+        } else if (temp <= 1000 * 60 * 60 * 24 * 3) {
+            body.TimeQuantum = 5;
+        } else if (temp <= 1000 * 60 * 60 * 24 * 7) {
+            body.TimeQuantum = 6;
+        } else {
+            timeDivider = 1000 * 60 * 60 * 24;
+        }
+    }
+
+    switch (body.TimeQuantum) {
+        case 0: //最近30分钟
+            body.eTime = new Date();
+            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
+            timeDivider = 1000 * 60 * 5;
+            break;
+        case 1: //最近60分钟
+            body.eTime = new Date();
+            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
+            timeDivider = 1000 * 60 * 10;
+            break;
+        case 2: //最近4小时
+            body.eTime = new Date();
+            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
+            timeDivider = 1000 * 60 * 30;
+            break;
+        case 3: //最近12小时
+            body.eTime = new Date();
+            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
+            timeDivider = 1000 * 60 * 60;
+            break;
+        case 4: //最近24小时
+            body.eTime = new Date();
+            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
+            timeDivider = 1000 * 60 * 60;
+            break;
+        case 5: //最近3天
+            body.eTime = new Date();
+            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
+            timeDivider = 1000 * 60 * 60 * 12;
+            break;
+        case 6: //最近7天
+            body.eTime = new Date();
+            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
+            timeDivider = 1000 * 60 * 60 * 12;
+            break;
+        default:
+            break;
+    };
+
+    let kerfType = body.kerfType;
+    let matchCond;
+
+    if (kerfType == 2) { //地理位置
+        matchCond = {
+            "$match": {
+                "createTime": {
+                    '$gte': body.sTime,
+                    '$lt': body.eTime
+                },
+                "appKey": appKey,
+                "mostSpecificSubdivision_nameCN": body.keywords
+            }
+        };
+    }
+
+    if (kerfType == 31) { //终端-bs
+        matchCond = {
+            "$match": {
+                "createTime": {
+                    '$gte': body.sTime,
+                    '$lt': body.eTime
+                },
+                "appKey": appKey,
+                "bs": body.keywords
+            }
+        };
+    }
+    if (kerfType == 32) { //终端-os
+        matchCond = {
+            "$match": {
+                "createTime": {
+                    '$gte': body.sTime,
+                    '$lt': body.eTime
+                },
+                "appKey": appKey,
+                "os": body.keywords
+            }
+        };
+    }
+    if (kerfType == 33) { //终端-pageWh
+        matchCond = {
+            "$match": {
+                "createTime": {
+                    '$gte': body.sTime,
+                    '$lt': body.eTime
+                },
+                "appKey": appKey,
+                "pageWh": body.keywords
+            }
+        };
+    }
+
+    let r = await PerfModel.aggregate([matchCond,
+        {
+            "$group": {
+                "_id": {
+                    "$subtract": [{
+                            "$subtract": ["$createTime", new Date(0)]
+                        },
+                        {
+                            "$mod": [{
+                                    "$subtract": ["$createTime", new Date(0)]
+                                },
+                                timeDivider /*聚合时间段*/
+                            ]
+                        }
+                    ]
+                },
+                "fpt": {
+                    '$avg': '$fpt'
+                },
+                "tti": {
+                    '$avg': '$tti'
+                },
+                "ready": {
+                    '$avg': '$ready'
+                },
+                "load": {
+                    '$avg': '$load'
+                }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                "fpt": 1,
+                "tti": 1,
+                "ready": 1,
+                "load": 1,
+                'createTime': {
+                    '$add': [new Date(0), '$_id']
+                }
+            }
+        },
+        {
+            "$sort": {
+                'createTime': 1
+            }
+        }
+    ]);
+    return r;
+};

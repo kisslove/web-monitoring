@@ -23,7 +23,12 @@ export class WebSysComponent {
   @ViewChild('leftNav') leftNav: ElementRef
   leftNavItems:Array<UrlNav>=[];
   sysItems:Array<any>=[];
-  currentSelectedSys
+  currentSelectedSys;
+  showGlobalTimer=true;
+  unsubscribe={
+    sub0:null,
+    sub1:null
+  };
   constructor(
     private render: Renderer2,
     private http:HttpClient,
@@ -92,20 +97,26 @@ export class WebSysComponent {
   ngOnInit(): void {
     this.currentSelectedSys= this.route.snapshot.paramMap.get('appKey');
     this.getSites();
-    for (let i in this.leftNavItems) {
-      if (this.leftNavItems[i].value != '' && location.href.indexOf(this.leftNavItems[i].value) !== -1) {
-        this.leftNavItems[i].isActive = true;
-        break;
-      }
-    }
-    observableFromEvent(window, "resize").pipe(
+    this.unsubscribe.sub0=observableFromEvent(window, "resize").pipe(
     debounceTime(100))
     .subscribe((event) => {
       this._resizePageHeight();
     });
+    
   }
   ngAfterViewInit() {
+    this.unsubscribe.sub1=this.broadcaster.on("showGlobalTimer").subscribe((r:boolean)=>{
+      let temp=setTimeout(()=>{
+        this.showGlobalTimer=r;
+        clearTimeout(temp);
+      });
+    });
     this._resizePageHeight();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe.sub0.unsubscribe();
+    this.unsubscribe.sub1.unsubscribe();
   }
 
   selectedSysChange(e){
