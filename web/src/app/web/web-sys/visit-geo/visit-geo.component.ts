@@ -62,7 +62,7 @@ export class VisitGeoComponent implements OnInit {
   }
 
   selectOver(data) {
-    this.loadKeyPerfData(data.time, data.type);
+    this.loadVisitSpeedData(data.time, data.type);
     this.loadAreaPerfData(data.time, data.type);
     this.loadPageLoadData(data.time, data.type);
   }
