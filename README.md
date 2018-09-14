@@ -40,21 +40,21 @@
 >  阿里云前端监控
 
 
-## 页面打开速度
+### 页面打开速度
 
 网络耗时数据可以借助前面提到 Navigation Timing 接口获取，与之类似的还有Resource Timing,可以获取页面所有静态资源的加载耗时。通过此接口可以轻松获取 DNS、TCP、首字节、html 传输等耗时，Navigation Timing 的接口示意图如下所示：
 
 ![file-list](https://github.com/kisslove/web-front-end-monitoring/blob/master/Demo/timing.png)
 
 
-## API请求
+### API请求
 
 默认情况下，使用XMLHTTP拦截用户请求，在请求成功/失败后，统计时间，上报请求。用户可使用__ml.api()手动上报。
 
-## JS错误
+### JS错误
 
 默认情况下，使用window.onError去监听用户错误脚本。有些场景下，用户使用的前端框架会捕获js错误，并不会触发onError.这种情况需用户手动调用__ml.error()上报。
 
-## 功能截图
+### 功能介绍
 
 ![file-list](https://www.zybuluo.com/static/img/file-list.png)
