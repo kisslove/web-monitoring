@@ -6,7 +6,6 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var monitorRouter = require('./routes/monitor');
 var upDataRouter = require('./routes/upData');
-var getIpRouter = require('./routes/getIp');
 
 var mongoose = require('mongoose');
 mongoose.connect("mongodb://localhost:27017/monitor2", {
@@ -43,7 +42,7 @@ app.all('*', function(req, res, next) {
 app.use('/', indexRouter);
 app.use('/Monitor/', monitorRouter);
 app.use('/Up', upDataRouter);
-app.use('/GetIp', getIpRouter);
+// app.use('/GetIp', getIpRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

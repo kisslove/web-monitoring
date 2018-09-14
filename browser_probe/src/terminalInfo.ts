@@ -54,6 +54,22 @@ export var terminalInfo = {
             return "firefox";
         } //判断是否Firefox浏览器
 
+        if (!!userAgent.toLowerCase().match(/ubrowser/i)) {
+            return "UC";
+        }
+        
+        if (!!userAgent.toLowerCase().match(/bidubrowser/i)) {
+            return "百度";
+        }
+
+        if (!!userAgent.toLowerCase().match(/metasr/i)) {
+            return "搜狗";
+        }
+
+        if (!!userAgent.toLowerCase().match(/metasr/i)) {
+            return "搜狗";
+        }
+
         if (!!userAgent.toLowerCase().match(/mqqbrowser|qzone|qqbrowser/i)) {
             return "qq";
         }
@@ -67,6 +83,19 @@ export var terminalInfo = {
         } //判断是否Edge浏览器
 
         if (userAgent.indexOf("Chrome") && window.chrome) {
+            let is360 = _mime("type", "application/vnd.chromium.remoting-viewer");
+            function _mime(option, value) {
+                var mimeTypes = navigator.mimeTypes;
+                for (var mt in mimeTypes) {
+                    if (mimeTypes[mt][option] == value) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            if(is360){
+                return '360';
+            }
             return "chrome";
         }
         if (userAgent.indexOf("Safari") > -1) {

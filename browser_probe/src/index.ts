@@ -18,13 +18,11 @@
 import { uploadUserData } from './sendData';
 import { itemContains } from './util';
 declare var window: any;
-// import { performanceTime } from './performance';
-let apiWhiteList = ["/GetIp","//ip.taobao.com/service/getIpInfo.php", '/sockjs-node/', "/signalr/abort",];
-//监听perf
-function formatTime(time) {
-    return time > 0 && time < 100000 ? time : 0;
-}
 
+//不上传数组内API请求
+let apiWhiteList = ['/sockjs-node/', "/signalr/abort",];
+
+//请求结束
 function onLoadEnd() {
     if (itemContains(apiWhiteList, this.responseURL || this.__zone_symbol__xhrURL) != -1) {
         return;
@@ -38,6 +36,8 @@ function onLoadEnd() {
         msg: this.status == 200 ? "成功" : this.statusText
     });
 }
+
+// 请求错误
 function onError(xhr, textStatus, errorThrown) {
     if (itemContains(apiWhiteList, this.responseURL || this.__zone_symbol__xhrURL) != -1) {
         return;
@@ -52,6 +52,7 @@ function onError(xhr, textStatus, errorThrown) {
     });
 }
 
+// 请求开始
 function onLoadStart() {
     if (itemContains(apiWhiteList, this.responseURL || this.__zone_symbol__xhrURL) != -1) {
         return;
@@ -59,12 +60,13 @@ function onLoadStart() {
     window.__ml.apiStartTime = Date.now();
 }
 
-function jsError($event,a,b,c) {
-    console.log($event,a,b,c);
-    // uploadUserData(3, event);
+//格式化时间
+function formatTime(time) {
+    return time > 0 && time < 100000 ? time : 0;
 }
-if (window.__ml) {
 
+if (window.__ml) {
+    //监听perf
     let performanceTime = function () {
         var timing = performance.timing;
         var loadTime = timing.loadEventEnd - timing.navigationStart;//过早获取时,loadEventEnd有时会是0
@@ -170,17 +172,15 @@ if (window.__ml) {
         })(XMLHttpRequest.prototype);
     }
 
-
-
+    // 监听js错误 （注：Angular2+不会触发）
     if (!window.__ml.config.disableJS) {
-        // 监听js错误 （注：Angular2+不会触发）
         /** 
-    * @param {String} errorMessage  错误信息 
-    * @param {String} scriptURI   出错的文件 
-    * @param {Long}  lineNumber   出错代码的行号 
-    * @param {Long}  columnNumber  出错代码的列号 
-    * @param {Object} errorObj    错误的详细信息，Anything 
-    */
+        * @param {String} errorMessage  错误信息 
+        * @param {String} scriptURI   出错的文件 
+        * @param {Long}  lineNumber   出错代码的行号 
+        * @param {Long}  columnNumber  出错代码的列号 
+        * @param {Object} errorObj    错误的详细信息，Anything 
+        */
         window.onerror = function (errorMessage, scriptURI, lineNumber, columnNumber, errorObj) {
             uploadUserData(3, {
                 errorMessage: errorMessage,

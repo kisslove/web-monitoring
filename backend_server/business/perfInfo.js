@@ -1,5 +1,6 @@
 var Mongoose = require('mongoose');
 var PerfModel = require('../models/perfModel');
+var util=require('../utils/util');
 exports.list = async (req) => {
     let resJson = {
         List: [],
@@ -45,40 +46,7 @@ exports.create = (data) => {
 exports.pageSpeedStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body.eTime = new Date(body.eTime);
-    body.sTime = new Date(body.sTime);
-    switch (body.TimeQuantum) {
-        case 0: //最近30分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
-            break;
-        case 1: //最近60分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
-            break;
-        case 2: //最近4小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
-            break;
-        case 3: //最近12小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
-            break;
-        case 4: //最近24小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
-            break;
-        case 5: //最近3天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
-            break;
-        case 6: //最近7天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
-            break;
-        default:
-            break;
-    };
+    body=util.computeSTimeAndEtime(body);
     let r = [];
     r = await PerfModel.aggregate([{
             "$match": {
@@ -121,67 +89,7 @@ exports.pageSpeedStatis = async (req) => {
 exports.keyPerf = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    let timeDivider = 1000 * 60 * 60 * 24; /*聚合时间段,默认按天*/
-    if (body.TimeQuantum == "") {
-        let temp = new Date(body.eTime) - new Date(body.sTime);
-        if (temp <= 1000 * 60 * 30) {
-            body.TimeQuantum = 0;
-        } else if (temp <= 1000 * 60 * 60) {
-            body.TimeQuantum = 1;
-        } else if (temp <= 1000 * 60 * 60 * 4) {
-            body.TimeQuantum = 2;
-        } else if (temp <= 1000 * 60 * 60 * 12) {
-            body.TimeQuantum = 3;
-        } else if (temp <= 1000 * 60 * 60 * 24) {
-            body.TimeQuantum = 4;
-        } else if (temp <= 1000 * 60 * 60 * 24 * 3) {
-            body.TimeQuantum = 5;
-        } else if (temp <= 1000 * 60 * 60 * 24 * 7) {
-            body.TimeQuantum = 6;
-        } else {
-            timeDivider = 1000 * 60 * 60 * 24;
-        }
-    }
-
-    switch (body.TimeQuantum) {
-        case 0: //最近30分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
-            timeDivider = 1000 * 60 * 5;
-            break;
-        case 1: //最近60分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
-            timeDivider = 1000 * 60 * 10;
-            break;
-        case 2: //最近4小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
-            timeDivider = 1000 * 60 * 30;
-            break;
-        case 3: //最近12小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
-            timeDivider = 1000 * 60 * 60;
-            break;
-        case 4: //最近24小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
-            timeDivider = 1000 * 60 * 60;
-            break;
-        case 5: //最近3天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
-            timeDivider = 1000 * 60 * 60 * 12;
-            break;
-        case 6: //最近7天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
-            timeDivider = 1000 * 60 * 60 * 12;
-            break;
-        default:
-            break;
-    };
+    body=util.computeSTimeAndEtimeAndTimeDivider(body);
     let matchCon = body.pageName ? {
         "$match": {
             "createTime": {
@@ -211,7 +119,7 @@ exports.keyPerf = async (req) => {
                             "$mod": [{
                                     "$subtract": ["$createTime", new Date(0)]
                                 },
-                                timeDivider /*聚合时间段*/
+                                body.timeDivider /*聚合时间段*/
                             ]
                         }
                     ]
@@ -258,67 +166,7 @@ exports.keyPerf = async (req) => {
 exports.elapsedTime = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    let timeDivider = 1000 * 60 * 60 * 24; /*聚合时间段,默认按天*/
-    if (body.TimeQuantum == "") {
-        let temp = new Date(body.eTime) - new Date(body.sTime);
-        if (temp <= 1000 * 60 * 30) {
-            body.TimeQuantum = 0;
-        } else if (temp <= 1000 * 60 * 60) {
-            body.TimeQuantum = 1;
-        } else if (temp <= 1000 * 60 * 60 * 4) {
-            body.TimeQuantum = 2;
-        } else if (temp <= 1000 * 60 * 60 * 12) {
-            body.TimeQuantum = 3;
-        } else if (temp <= 1000 * 60 * 60 * 24) {
-            body.TimeQuantum = 4;
-        } else if (temp <= 1000 * 60 * 60 * 24 * 3) {
-            body.TimeQuantum = 5;
-        } else if (temp <= 1000 * 60 * 60 * 24 * 7) {
-            body.TimeQuantum = 6;
-        } else {
-            timeDivider = 1000 * 60 * 60 * 24;
-        }
-    }
-
-    switch (body.TimeQuantum) {
-        case 0: //最近30分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
-            timeDivider = 1000 * 60 * 5;
-            break;
-        case 1: //最近60分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
-            timeDivider = 1000 * 60 * 10;
-            break;
-        case 2: //最近4小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
-            timeDivider = 1000 * 60 * 30;
-            break;
-        case 3: //最近12小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
-            timeDivider = 1000 * 60 * 60;
-            break;
-        case 4: //最近24小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
-            timeDivider = 1000 * 60 * 60;
-            break;
-        case 5: //最近3天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
-            timeDivider = 1000 * 60 * 60 * 12;
-            break;
-        case 6: //最近7天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
-            timeDivider = 1000 * 60 * 60 * 12;
-            break;
-        default:
-            break;
-    };
+    body=util.computeSTimeAndEtimeAndTimeDivider(body);
     let matchCon = body.pageName ? {
         "$match": {
             "createTime": {
@@ -348,7 +196,7 @@ exports.elapsedTime = async (req) => {
                             "$mod": [{
                                     "$subtract": ["$createTime", new Date(0)]
                                 },
-                                timeDivider /*聚合时间段*/
+                                body.timeDivider /*聚合时间段*/
                             ]
                         }
                     ]
@@ -407,40 +255,7 @@ exports.elapsedTime = async (req) => {
 exports.perfGeo = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body.eTime = new Date(body.eTime);
-    body.sTime = new Date(body.sTime);
-    switch (body.TimeQuantum) {
-        case 0: //最近30分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
-            break;
-        case 1: //最近60分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
-            break;
-        case 2: //最近4小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
-            break;
-        case 3: //最近12小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
-            break;
-        case 4: //最近24小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
-            break;
-        case 5: //最近3天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
-            break;
-        case 6: //最近7天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
-            break;
-        default:
-            break;
-    };
+    body=util.computeSTimeAndEtime(body);
     let r = await PerfModel.aggregate([{
             "$match": {
                 "createTime": {
@@ -482,40 +297,7 @@ exports.perfGeo = async (req) => {
 exports.terminalSpeed = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body.eTime = new Date(body.eTime);
-    body.sTime = new Date(body.sTime);
-    switch (body.TimeQuantum) {
-        case 0: //最近30分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
-            break;
-        case 1: //最近60分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
-            break;
-        case 2: //最近4小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
-            break;
-        case 3: //最近12小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
-            break;
-        case 4: //最近24小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
-            break;
-        case 5: //最近3天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
-            break;
-        case 6: //最近7天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
-            break;
-        default:
-            break;
-    };
+    body=util.computeSTimeAndEtime(body);
     let terminal = body.terminal;
     if (terminal == 0) {
         groupConTerminal = "$bs";
@@ -569,67 +351,7 @@ exports.terminalSpeed = async (req) => {
 exports.visitSpeedStatic = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    let timeDivider = 1000 * 60 * 60 * 24; /*聚合时间段,默认按天*/
-    if (body.TimeQuantum == "") {
-        let temp = new Date(body.eTime) - new Date(body.sTime);
-        if (temp <= 1000 * 60 * 30) {
-            body.TimeQuantum = 0;
-        } else if (temp <= 1000 * 60 * 60) {
-            body.TimeQuantum = 1;
-        } else if (temp <= 1000 * 60 * 60 * 4) {
-            body.TimeQuantum = 2;
-        } else if (temp <= 1000 * 60 * 60 * 12) {
-            body.TimeQuantum = 3;
-        } else if (temp <= 1000 * 60 * 60 * 24) {
-            body.TimeQuantum = 4;
-        } else if (temp <= 1000 * 60 * 60 * 24 * 3) {
-            body.TimeQuantum = 5;
-        } else if (temp <= 1000 * 60 * 60 * 24 * 7) {
-            body.TimeQuantum = 6;
-        } else {
-            timeDivider = 1000 * 60 * 60 * 24;
-        }
-    }
-
-    switch (body.TimeQuantum) {
-        case 0: //最近30分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
-            timeDivider = 1000 * 60 * 5;
-            break;
-        case 1: //最近60分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
-            timeDivider = 1000 * 60 * 10;
-            break;
-        case 2: //最近4小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
-            timeDivider = 1000 * 60 * 30;
-            break;
-        case 3: //最近12小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
-            timeDivider = 1000 * 60 * 60;
-            break;
-        case 4: //最近24小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
-            timeDivider = 1000 * 60 * 60;
-            break;
-        case 5: //最近3天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
-            timeDivider = 1000 * 60 * 60 * 12;
-            break;
-        case 6: //最近7天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
-            timeDivider = 1000 * 60 * 60 * 12;
-            break;
-        default:
-            break;
-    };
+    body=util.computeSTimeAndEtimeAndTimeDivider(body);
 
     let kerfType = body.kerfType;
     let matchCond;
@@ -695,7 +417,7 @@ exports.visitSpeedStatic = async (req) => {
                             "$mod": [{
                                     "$subtract": ["$createTime", new Date(0)]
                                 },
-                                timeDivider /*聚合时间段*/
+                                body.timeDivider /*聚合时间段*/
                             ]
                         }
                     ]

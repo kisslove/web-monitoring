@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var PvModel = require('../models/pvModel');
 var Mongoose = require('mongoose');
+var util=require('../utils/util');
 //访问明细
 exports.list = async (req) => {
     let resJson = {
@@ -53,67 +54,7 @@ exports.pvAndUvStatis = async (req) => {
         totalPv: 0,
         totalUv: 0
     };
-    let timeDivider = 1000 * 60 * 60 * 24; /*聚合时间段,默认按天*/
-    if (body.TimeQuantum == "") {
-        let temp = new Date(body.eTime) - new Date(body.sTime);
-        if (temp <= 1000 * 60 * 30) {
-            body.TimeQuantum = 0;
-        } else if (temp <= 1000 * 60 * 60) {
-            body.TimeQuantum = 1;
-        } else if (temp <= 1000 * 60 * 60 * 4) {
-            body.TimeQuantum = 2;
-        } else if (temp <= 1000 * 60 * 60 * 12) {
-            body.TimeQuantum = 3;
-        } else if (temp <= 1000 * 60 * 60 * 24) {
-            body.TimeQuantum = 4;
-        } else if (temp <= 1000 * 60 * 60 * 24 * 3) {
-            body.TimeQuantum = 5;
-        } else if (temp <= 1000 * 60 * 60 * 24 * 7) {
-            body.TimeQuantum = 6;
-        } else {
-            timeDivider = 1000 * 60 * 60 * 24;
-        }
-    }
-
-    switch (body.TimeQuantum) {
-        case 0: //最近30分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
-            timeDivider = 1000 * 60 * 5;
-            break;
-        case 1: //最近60分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
-            timeDivider = 1000 * 60 * 10;
-            break;
-        case 2: //最近4小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
-            timeDivider = 1000 * 60 * 30;
-            break;
-        case 3: //最近12小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
-            timeDivider = 1000 * 60 * 60;
-            break;
-        case 4: //最近24小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
-            timeDivider = 1000 * 60 * 60;
-            break;
-        case 5: //最近3天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
-            timeDivider = 1000 * 60 * 60 * 12;
-            break;
-        case 6: //最近7天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
-            timeDivider = 1000 * 60 * 60 * 12;
-            break;
-        default:
-            break;
-    };
+    body=util.computeSTimeAndEtimeAndTimeDivider(body);
     let matchCon = body.keywords ? {
         "$match": {
             "createTime": {
@@ -143,7 +84,7 @@ exports.pvAndUvStatis = async (req) => {
                             "$mod": [{
                                     "$subtract": ["$createTime", new Date(0)]
                                 },
-                                timeDivider /*聚合时间段*/
+                                body.timeDivider /*聚合时间段*/
                             ]
                         }
                     ]
@@ -219,40 +160,7 @@ exports.pageTopStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     // count,page
-    body.eTime = new Date(body.eTime);
-    body.sTime = new Date(body.sTime);
-    switch (body.TimeQuantum) {
-        case 0: //最近30分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
-            break;
-        case 1: //最近60分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
-            break;
-        case 2: //最近4小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
-            break;
-        case 3: //最近12小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
-            break;
-        case 4: //最近24小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
-            break;
-        case 5: //最近3天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
-            break;
-        case 6: //最近7天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
-            break;
-        default:
-            break;
-    };
+    body=util.computeSTimeAndEtime(body);
     let r = [];
     r = await PvModel.aggregate([{
             "$match": {
@@ -296,40 +204,7 @@ exports.pageTopStatis = async (req) => {
 exports.geoStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body.eTime = new Date(body.eTime);
-    body.sTime = new Date(body.sTime);
-    switch (body.TimeQuantum) {
-        case 0: //最近30分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
-            break;
-        case 1: //最近60分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
-            break;
-        case 2: //最近4小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
-            break;
-        case 3: //最近12小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
-            break;
-        case 4: //最近24小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
-            break;
-        case 5: //最近3天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
-            break;
-        case 6: //最近7天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
-            break;
-        default:
-            break;
-    };
+    body=util.computeSTimeAndEtime(body);
     let r = [];
     r = await PvModel.aggregate([{
             "$match": {
@@ -382,40 +257,7 @@ exports.geoStatis = async (req) => {
 exports.browserStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body.eTime = new Date(body.eTime);
-    body.sTime = new Date(body.sTime);
-    switch (body.TimeQuantum) {
-        case 0: //最近30分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
-            break;
-        case 1: //最近60分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
-            break;
-        case 2: //最近4小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
-            break;
-        case 3: //最近12小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
-            break;
-        case 4: //最近24小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
-            break;
-        case 5: //最近3天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
-            break;
-        case 6: //最近7天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
-            break;
-        default:
-            break;
-    };
+    body=util.computeSTimeAndEtime(body);
     let r = [];
     r = await PvModel.aggregate([{
             "$match": {
@@ -459,40 +301,7 @@ exports.browserStatis = async (req) => {
 exports.osStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body.eTime = new Date(body.eTime);
-    body.sTime = new Date(body.sTime);
-    switch (body.TimeQuantum) {
-        case 0: //最近30分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
-            break;
-        case 1: //最近60分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
-            break;
-        case 2: //最近4小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
-            break;
-        case 3: //最近12小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
-            break;
-        case 4: //最近24小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
-            break;
-        case 5: //最近3天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
-            break;
-        case 6: //最近7天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
-            break;
-        default:
-            break;
-    };
+    body=util.computeSTimeAndEtime(body);
     let r = [];
     r = await PvModel.aggregate([{
             "$match": {
@@ -536,40 +345,7 @@ exports.osStatis = async (req) => {
 exports.pageWhStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body.eTime = new Date(body.eTime);
-    body.sTime = new Date(body.sTime);
-    switch (body.TimeQuantum) {
-        case 0: //最近30分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
-            break;
-        case 1: //最近60分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
-            break;
-        case 2: //最近4小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
-            break;
-        case 3: //最近12小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
-            break;
-        case 4: //最近24小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
-            break;
-        case 5: //最近3天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
-            break;
-        case 6: //最近7天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
-            break;
-        default:
-            break;
-    };
+    body=util.computeSTimeAndEtime(body);
     let r = [];
     r = await PvModel.aggregate([{
             "$match": {
@@ -613,40 +389,7 @@ exports.pageWhStatis = async (req) => {
 exports.pageRankStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body.eTime = new Date(body.eTime);
-    body.sTime = new Date(body.sTime);
-    switch (body.TimeQuantum) {
-        case 0: //最近30分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
-            break;
-        case 1: //最近60分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
-            break;
-        case 2: //最近4小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
-            break;
-        case 3: //最近12小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
-            break;
-        case 4: //最近24小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
-            break;
-        case 5: //最近3天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
-            break;
-        case 6: //最近7天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
-            break;
-        default:
-            break;
-    };
+    body=util.computeSTimeAndEtime(body);
     let r = {
         pageStatis: [],
         totalCount: 0
@@ -701,40 +444,7 @@ exports.pageRankStatis = async (req) => {
 exports.addressMap = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body.eTime = new Date(body.eTime);
-    body.sTime = new Date(body.sTime);
-    switch (body.TimeQuantum) {
-        case 0: //最近30分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
-            break;
-        case 1: //最近60分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
-            break;
-        case 2: //最近4小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
-            break;
-        case 3: //最近12小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
-            break;
-        case 4: //最近24小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
-            break;
-        case 5: //最近3天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
-            break;
-        case 6: //最近7天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
-            break;
-        default:
-            break;
-    };
+    body=util.computeSTimeAndEtime(body);
 
     r = await PvModel.aggregate([{
             "$match": {
@@ -780,40 +490,7 @@ exports.addressMap = async (req) => {
 exports.terminalStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body.eTime = new Date(body.eTime);
-    body.sTime = new Date(body.sTime);
-    switch (body.TimeQuantum) {
-        case 0: //最近30分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
-            break;
-        case 1: //最近60分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
-            break;
-        case 2: //最近4小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
-            break;
-        case 3: //最近12小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
-            break;
-        case 4: //最近24小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
-            break;
-        case 5: //最近3天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
-            break;
-        case 6: //最近7天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
-            break;
-        default:
-            break;
-    };
+    body=util.computeSTimeAndEtime(body);
     let terminal = body.terminal;
     let groupName;
     if (terminal == 0) {
@@ -870,40 +547,7 @@ exports.terminalStatis = async (req) => {
 exports.geoListStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body.eTime = new Date(body.eTime);
-    body.sTime = new Date(body.sTime);
-    switch (body.TimeQuantum) {
-        case 0: //最近30分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
-            break;
-        case 1: //最近60分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
-            break;
-        case 2: //最近4小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
-            break;
-        case 3: //最近12小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
-            break;
-        case 4: //最近24小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
-            break;
-        case 5: //最近3天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
-            break;
-        case 6: //最近7天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
-            break;
-        default:
-            break;
-    };
+    body=util.computeSTimeAndEtime(body);
     r = await PvModel.aggregate([{
             "$match": {
                 "createTime": {
@@ -954,40 +598,7 @@ exports.geoListStatis = async (req) => {
 exports.terminalListStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body.eTime = new Date(body.eTime);
-    body.sTime = new Date(body.sTime);
-    switch (body.TimeQuantum) {
-        case 0: //最近30分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 30));
-            break;
-        case 1: //最近60分钟
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60));
-            break;
-        case 2: //最近4小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 4));
-            break;
-        case 3: //最近12小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 12));
-            break;
-        case 4: //最近24小时
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setMinutes(new Date().getMinutes() - 60 * 24));
-            break;
-        case 5: //最近3天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 3));
-            break;
-        case 6: //最近7天
-            body.eTime = new Date();
-            body.sTime = new Date(new Date().setDate(new Date().getDate() - 7));
-            break;
-        default:
-            break;
-    };
+    body=util.computeSTimeAndEtime(body);
     let ternimalType = body.ternimalType;
     let groupName;
     if (ternimalType == 0) {
