@@ -57,4 +57,3 @@
 
 ### 功能介绍
 
-![file-list](https://www.zybuluo.com/static/img/file-list.png)
