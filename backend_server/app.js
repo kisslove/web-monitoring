@@ -6,6 +6,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var monitorRouter = require('./routes/monitor');
 var upDataRouter = require('./routes/upData');
+var userRouter = require('./routes/user');
 
 var mongoose = require('mongoose');
 mongoose.connect("mongodb://localhost:27017/monitor2", {
@@ -32,7 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
-    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    res.header("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
     res.header("X-Powered-By", ' 3.2.1')
     if (req.method == "OPTIONS") res.sendStatus(200); /*让options请求快速返回*/
     else next();
@@ -42,7 +43,7 @@ app.all('*', function(req, res, next) {
 app.use('/', indexRouter);
 app.use('/Monitor/', monitorRouter);
 app.use('/Up', upDataRouter);
-// app.use('/GetIp', getIpRouter);
+app.use('/User', userRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -68,7 +68,7 @@ export class SysListComponent implements OnInit {
 
   save() {
     if (!this.appName) {
-      this.msg.info("站点名称和业务系统ID必填");
+      this.msg.info("站点名称必填");
       return;
     }
     this.http.post("Monitor/RegisterSite", {
