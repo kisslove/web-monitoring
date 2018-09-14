@@ -35,7 +35,7 @@ let provinceData = [
     "台湾省"
 ];
 
-exports.computeSTimeAndEtime = function (body) {
+exports.computeSTimeAndEtime = function(body) {
     body.eTime = new Date(body.eTime);
     body.sTime = new Date(body.sTime);
     switch (body.TimeQuantum) {
@@ -73,7 +73,7 @@ exports.computeSTimeAndEtime = function (body) {
     return body;
 };
 
-exports.computeSTimeAndEtimeAndTimeDivider = function (body) {
+exports.computeSTimeAndEtimeAndTimeDivider = function(body) {
     if (body.TimeQuantum == "") {
         let temp = new Date(body.eTime) - new Date(body.sTime);
         if (temp <= 1000 * 60 * 30) {
@@ -91,7 +91,7 @@ exports.computeSTimeAndEtimeAndTimeDivider = function (body) {
         } else if (temp <= 1000 * 60 * 60 * 24 * 7) {
             body.TimeQuantum = 6;
         } else {
-            body.timeDivider = 1000 * 60 * 60 * 24;/*聚合时间段,默认按天*/
+            body.timeDivider = 1000 * 60 * 60 * 24; /*聚合时间段,默认按天*/
         }
     }
 
@@ -137,14 +137,14 @@ exports.computeSTimeAndEtimeAndTimeDivider = function (body) {
     return body;
 };
 
-exports.resJson = function (options) {
+exports.resJson = function(options) {
     var temp = new Object();
     temp.IsSuccess = options && options.IsSuccess || false;
     temp.Data = options && options.Data || [];
     return temp;
 };
 
-exports.getIp = function (req, res, next) {
+exports.getIp = function(req, res, next) {
     let netInfo = {
         city_nameCN: '未知',
         country_nameCN: '未知',
@@ -171,6 +171,7 @@ exports.getIp = function (req, res, next) {
         next();
         return;
     }
+    tempIp = tempIp.split(":")[tempIp.split(":").length - 1];
     http.get(`http://ip.taobao.com/service/getIpInfo.php?ip=${tempIp}`, (resp) => {
         const {
             statusCode
@@ -203,7 +204,7 @@ exports.getIp = function (req, res, next) {
                     } else if (tempData.region == "台湾") {
                         tempData.region = "台湾省";
                     } else if (tempData.region) {
-                        provinceData.forEach(function (val) {
+                        provinceData.forEach(function(val) {
                             if (val.indexOf(tempData.region) != -1) {
                                 tempData.region = val;
                             }
