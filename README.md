@@ -46,7 +46,7 @@
 
 网络耗时数据可以借助前面提到 Navigation Timing 接口获取，与之类似的还有Resource Timing,可以获取页面所有静态资源的加载耗时。通过此接口可以轻松获取 DNS、TCP、首字节、html 传输等耗时，Navigation Timing 的接口示意图如下所示：
 
-![file-list](https://www.zybuluo.com/static/img/file-list.png)
+![file-list](https://github.com/kisslove/web-front-end-monitoring/blob/master/Demo/timing.png)
 
 
 ## API请求
