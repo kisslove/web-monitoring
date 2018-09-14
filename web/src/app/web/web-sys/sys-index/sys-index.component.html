@@ -1,6 +1,6 @@
 <div style="padding:24px;" [@routeAnimation1]>
     <div nz-row [nzGutter]="24">
-        <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="12">
+        <div nz-col class="gutter-row" style="margin-bottom:24px;" nzSm="12" nzXs="24">
             <nz-spin [nzSpinning]="isSpinning.spin1">
                 <nz-card style="height: 354px;" nzType="inner" nzTitle="PV/UV" [nzExtra]="extraPVTemplate">
                     <div class="total_pv_uv">
@@ -18,7 +18,7 @@
                 <app-time-choice-panel (selectOver)="selectOver($event,10)"></app-time-choice-panel>
             </ng-template>
         </div>
-        <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="12">
+        <div nz-col class="gutter-row" style="margin-bottom:24px;" nzSm="12" nzXs="24">
             <nz-spin [nzSpinning]="isSpinning.spin2">
                 <nz-card class="my-list-card" nzType="inner" nzTitle="访问量TOP8页面" [nzExtra]="extraTOP10Template">
                     <nz-list style="height: 312px;overflow-y: auto;border: none;" [nzDataSource]="top10Data" nzBordered nzSize="small" [nzRenderItem]="item">
@@ -40,10 +40,10 @@
         <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
             <nz-spin [nzSpinning]="isSpinning.spin3">
                 <nz-card nzType="inner" nzTitle="地理分布" [nzExtra]="extradlTemplate">
-                    <div nz-col [nzSpan]="15">
+                    <div nz-col nzSm="15" nzXs="24">
                         <app-custom-highchart [config]="dl_config"></app-custom-highchart>
                     </div>
-                    <div nz-col [nzSpan]="9">
+                    <div nz-col  nzSm="9" nzXs="24">
                         <nz-table #basicTable [nzData]="mapData" [nzPageSize]="7">
                             <thead>
                                 <tr>
@@ -70,7 +70,7 @@
     </div>
 
     <div nz-row [nzGutter]="12">
-        <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="8">
+        <div nz-col class="gutter-row" style="margin-bottom:24px;" nzSm="8" nzXs="24" >
             <nz-spin [nzSpinning]="isSpinning.spin4">
                 <nz-card nzType="inner" nzTitle="浏览器PV占比" [nzExtra]="extrabsTemplate">
                     <app-custom-highchart [config]="bs_config"></app-custom-highchart>
@@ -80,7 +80,7 @@
                 <app-time-choice-panel (selectOver)="selectOver($event,40)"></app-time-choice-panel>
             </ng-template>
         </div>
-        <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="8">
+        <div nz-col class="gutter-row" style="margin-bottom:24px;" nzSm="8" nzXs="24">
             <nz-spin [nzSpinning]="isSpinning.spin5">
                 <nz-card nzType="inner" nzTitle="操作系统PV占比" [nzExtra]="extraosTemplate">
                     <app-custom-highchart [config]="os_config"></app-custom-highchart>
@@ -90,7 +90,7 @@
                 <app-time-choice-panel (selectOver)="selectOver($event,50)"></app-time-choice-panel>
             </ng-template>
         </div>
-        <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="8">
+        <div nz-col class="gutter-row" style="margin-bottom:24px;" nzSm="8" nzXs="24">
             <nz-spin [nzSpinning]="isSpinning.spin6">
                 <nz-card nzType="inner" nzTitle="分辨率PV占比" [nzExtra]="extrawhTemplate">
                     <app-custom-highchart [config]="wh_config"></app-custom-highchart>

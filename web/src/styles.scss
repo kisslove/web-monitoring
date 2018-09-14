@@ -75,6 +75,7 @@ input,
         overflow: hidden;
         text-overflow: ellipsis;
         display: inline-block;
+        word-break: break-all;
         height: 20px;
     }
     .right {
@@ -97,6 +98,7 @@ input,
     overflow: hidden;
     display: inline-block;
     height: 20px;
+    word-break: break-all;
 }
 
 .ant-table-thead > tr > th, .ant-table-tbody > tr > td{

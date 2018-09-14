@@ -3,12 +3,15 @@ var JsModel = require('../models/jsModel');
 var PvModel = require('../models/pvModel');
 var util=require('../utils/util');
 var _ = require('lodash');
+
 exports.list = async (req) => {
+    let appKey = new Mongoose.Types.ObjectId(req.body.appKey);
     let resJson = {
         List: [],
         TotalCount: 0
     };
     let tempCon = {
+        "appKey":appKey,
         $or: [{
             "page": {
                 '$regex': new RegExp(`${req.body.keywords}.*`, "gi")

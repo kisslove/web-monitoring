@@ -10,7 +10,7 @@
   </nz-layout >
   <nz-layout class="sys-header">
     <div style="margin: auto 5px;position:relative;">
-      <nz-divider style="    width: 3px;background: #1890ff;margin-right: 0;" nzType="vertical"></nz-divider>  
+      <nz-divider style="width: 3px;background: #1890ff;margin-right: 0;" nzType="vertical"></nz-divider>  
       <nz-select class="custom-select" style="min-width: 120px;" (ngModelChange)="selectedSysChange($event)" [ngModel]="currentSelectedSys">
             <nz-option *ngFor="let item of sysItems" [nzValue]="item.appKey" [nzLabel]="item.appName"></nz-option>
           </nz-select>

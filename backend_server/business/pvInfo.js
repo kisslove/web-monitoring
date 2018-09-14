@@ -4,11 +4,13 @@ var Mongoose = require('mongoose');
 var util=require('../utils/util');
 //访问明细
 exports.list = async (req) => {
+    let appKey = new Mongoose.Types.ObjectId(req.body.appKey);
     let resJson = {
         List: [],
         TotalCount: 0
     };
     let tempCon = {
+        "appKey":appKey,
         $or: [{
             "page": {
                 '$regex': new RegExp(`${req.body.keywords}.*`, "gi")
