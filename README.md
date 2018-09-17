@@ -87,5 +87,14 @@ const errorHandler = (error, vm)=>{
 Vue.config.errorHandler = errorHandler;
 Vue.prototype.$throw = (error)=> errorHandler(error,this);
 ```
+### 如何使用(easy!!!)
+第一步：在监控站点中创建一个站点,
+第二步：复制系统配置中的探针到你需要监控的站点（index.html）页面
+大功告成！
+![file-list](https://github.com/kisslove/web-front-end-monitoring/blob/master/Demo/timing.png)
+
+![file-list](https://github.com/kisslove/web-front-end-monitoring/blob/master/Demo/timing.png)
+
 ### 功能介绍
+
 
