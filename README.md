@@ -89,7 +89,7 @@ Vue.prototype.$throw = (error)=> errorHandler(error,this);
 ```
 ### 如何使用(easy!!!)  
 
-网页地址<a href="http://hubing.online" target="_blank">WEB-MONITOR</a>
+网页地址：<a href="http://hubing.online" target="_blank">WEB-MONITOR</a>
 
 第一步：在监控站点中创建一个站点。
 
