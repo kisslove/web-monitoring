@@ -19,7 +19,6 @@ var schema = new Schema({
     isp: String,
     organizationCN: String,
     error: String
-
 });
 
 module.exports = mongoose.model('JsDataInfo', schema);

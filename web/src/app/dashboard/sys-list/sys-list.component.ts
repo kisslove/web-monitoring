@@ -1,3 +1,4 @@
+import { UserService } from './../../monitor.common.service';
 import { HighchartConfig } from './../../model/entity';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -15,30 +16,18 @@ export class SysListComponent implements OnInit {
   appName = '';
   systemId = '';
   isSpinning: boolean = true;
-  validUser = false;
+  validUser = true;
   pv_uv_config: HighchartConfig;
   total_pv_uv:any={};
   constructor(
     private route: Router,
     private http: HttpClient,
-    private msg: NzMessageService
+    private msg: NzMessageService,
+    private user:UserService
   ) { }
 
   ngOnInit() {
-    if(sessionStorage.getItem("t_eew")){
-      this.validUser = true;
-      this.list();
-      return;
-    }
-    var pwd = prompt("请输入口令", "");
-    if (pwd != null && pwd != "" && pwd == '123456') {
-      sessionStorage.setItem("t_eew",Date.now().toString());
-      this.validUser = true;
-      this.list();
-    } else {
-      this.validUser = false;
-      this.msg.error("口令不正确");
-    }
+    this.list();
   }
 
   gotoSys(item) {
@@ -92,7 +81,7 @@ export class SysListComponent implements OnInit {
    //加载PV/UV数据
    loadPvUvData(data) {
     this.http.post("Monitor/PvAndUvStatis", {
-      TimeQuantum: 4,
+      TimeQuantum: 6,
       sTime:  '',
       eTime: '',
       appKey: data.appKey

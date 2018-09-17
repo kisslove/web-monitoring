@@ -25,7 +25,7 @@ function uploadUserData(type, ext) {
 
 // 发送性能数据
 function sendPerfData(ext) {
-  var temp = { page: location.host, appKey: (window as any).__ml.config.appKey };
+  var temp = { page: location.host, appKey: (window as any).__ml.config.appKey, userId: (window as any).__ml.config.userId };
   Object.assign(temp, terminalInfo, ext);
   send({
     type: 'perf',
@@ -34,18 +34,18 @@ function sendPerfData(ext) {
 }
 // 发送api请求数据
 function sendApiData(ext) {
-  var temp = { page: currentPageUrl(), appKey: (window as any).__ml.config.appKey };
+  var temp = { page: currentPageUrl(), appKey: (window as any).__ml.config.appKey, userId: (window as any).__ml.config.userId };
   Object.assign(temp, terminalInfo, ext);
-    send({
-      type: 'api',
-      paramsJson: JSON.stringify(temp)
-    });
+  send({
+    type: 'api',
+    paramsJson: JSON.stringify(temp)
+  });
 }
 
 // 发送js错误数据
 function sendJsErrData(ext) {
-  var temp = { page: currentPageUrl(), appKey: (window as any).__ml.config.appKey };
-  Object.assign(temp, terminalInfo, {error:encodeURIComponent(JSON.stringify(ext))});
+  var temp = { page: currentPageUrl(), appKey: (window as any).__ml.config.appKey, userId: (window as any).__ml.config.userId };
+  Object.assign(temp, terminalInfo, { error: encodeURIComponent(JSON.stringify(ext)) });
   send({
     type: 'js',
     paramsJson: JSON.stringify(temp)
@@ -54,12 +54,12 @@ function sendJsErrData(ext) {
 
 // 发送PV数据
 function sendPageVData() {
-  var temp = { page: currentPageUrl(), appKey: (window as any).__ml.config.appKey };
+  var temp = { page: currentPageUrl(), appKey: (window as any).__ml.config.appKey, userId: (window as any).__ml.config.userId };
   Object.assign(temp, terminalInfo);
-    send({
-      type: 'pv',
-      paramsJson: JSON.stringify(temp)
-    });
+  send({
+    type: 'pv',
+    paramsJson: JSON.stringify(temp)
+  });
 }
 
 // 发送数据

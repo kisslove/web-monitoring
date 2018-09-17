@@ -8,7 +8,8 @@ import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);
 
-import { JwtInterceptorService, Broadcaster, ConfigService } from './monitor.common.service';
+import { CookieService } from 'ngx-cookie-service';
+import { JwtInterceptorService, Broadcaster, ConfigService, UserService } from './monitor.common.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 declare var window:any
@@ -35,7 +36,7 @@ export class MyErrorHandler implements ErrorHandler {
     RouterModule.forRoot(routes),
     NgZorroAntdModule.forRoot()
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN },{ provide: ErrorHandler, useClass: MyErrorHandler },ConfigService, { provide: LocationStrategy, useClass: HashLocationStrategy }, { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true }, Broadcaster],
+  providers: [UserService,CookieService,{ provide: NZ_I18N, useValue: zh_CN },{ provide: ErrorHandler, useClass: MyErrorHandler },ConfigService, { provide: LocationStrategy, useClass: HashLocationStrategy }, { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true }, Broadcaster],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

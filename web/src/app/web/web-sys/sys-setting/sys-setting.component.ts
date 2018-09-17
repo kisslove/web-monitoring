@@ -22,7 +22,8 @@ export class SysSettingComponent implements OnInit {
     disableJS: true,
     code: '',
     backendUrl: environment.uploadDataUrl,
-    jsHackUrl: environment.jsHackUrl
+    jsHackUrl: environment.jsHackUrl,
+    userId:null
   };
   tip = {
     code1: null
@@ -110,7 +111,7 @@ export class SysSettingComponent implements OnInit {
     this.setting.code = `<script>
     !(function (c, b, d, a) {
       c[a] || (c[a] = {});
-      c[a].config = { appKey: '${this.currentSite.appKey}', imgUrl: '${this.setting.backendUrl}?',disableHook:${this.currentSite.disableHook}, disableJS:${this.currentSite.disableJS} };
+      c[a].config = { userId: '${this.currentSite.userId?this.currentSite.userId:''}',appKey: '${this.currentSite.appKey}', imgUrl: '${this.setting.backendUrl}?',disableHook:${this.currentSite.disableHook}, disableJS:${this.currentSite.disableJS} };
       var dom = document.createElement("script");
       dom.setAttribute("crossorigin", "anonymous");
       dom.setAttribute("src", d);

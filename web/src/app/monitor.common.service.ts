@@ -1,8 +1,8 @@
 
-import {throwError as observableThrowError,  Observable ,  Subject } from 'rxjs';
-
-import {filter, map, catchError} from 'rxjs/operators';
-
+import { throwError as observableThrowError, Observable, Subject } from 'rxjs';
+import * as _ from "lodash";
+import { filter, map, catchError } from 'rxjs/operators';
+import { CookieService } from 'ngx-cookie-service';
 import { Injectable, Inject } from '@angular/core';
 import { environment } from '../environments/environment';
 import {
@@ -16,6 +16,24 @@ import {
 } from '@angular/common/http';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Router, CanDeactivate } from '@angular/router';
+
+@Injectable()
+export class UserService {
+  constructor(private _cookie: CookieService) { }
+
+  getToken() {
+    return this._cookie.get('user') && JSON.parse(this._cookie.get('user'))['token'] || '';
+  }
+
+  getUserId() {
+    return this._cookie.get('user') && JSON.parse(this._cookie.get('user'))['userId'] || '';
+  }
+
+  getUserName() {
+    return this._cookie.get('user') && JSON.parse(this._cookie.get('user'))['userName'] || '';
+  }
+
+}
 
 @Injectable()
 export class ConfigService {
@@ -193,10 +211,18 @@ export class ConfigService {
  */
 @Injectable()
 export class JwtInterceptorService implements HttpInterceptor {
-  constructor(private config: ConfigService, private router: Router, private _msg: NzMessageService) { }
+  constructor(
+    private config: ConfigService,
+    private router: Router,
+    private _msg: NzMessageService,
+    private user: UserService
+  ) { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     req = req.clone({
-      url: this.config.apiUrl + req.url
+      url: this.config.apiUrl + req.url,
+      setHeaders: {
+        authorization: this.user.getToken()
+      }
     });
 
     return next.handle(req).pipe(
@@ -204,7 +230,7 @@ export class JwtInterceptorService implements HttpInterceptor {
         if (event instanceof HttpResponse) {
           if (event.status === 200) {
             if (event.body && event.body.status === 0) {
-              
+
             } else if (event.body && event.body.status === 1) {
               if (event.body.Authority === 2) {
                 this._msg.error('没有访问权限', { nzDuration: 5000 });
@@ -212,14 +238,14 @@ export class JwtInterceptorService implements HttpInterceptor {
               }
             }
           }
-           return event;
+          return event;
         }
       }),
       catchError((err) => {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 500) {
             //服务器错误
-            this._msg.error(err.error.message||err.error.Message || '服务器错误', { nzDuration: 5000 });
+            this._msg.error(err.error.message || err.error.Message || '服务器错误', { nzDuration: 5000 });
           }
           if (err.status === 0) {
             //服务器错误
@@ -231,7 +257,7 @@ export class JwtInterceptorService implements HttpInterceptor {
           this._msg.error('服务器连不上了,请稍后访问', { nzDuration: 5000 });
           return observableThrowError(err);
         }
-      }),)
+      }))
   }
 }
 
@@ -281,7 +307,7 @@ export class Broadcaster {
   on<T>(key: any): Observable<T> {
     return this._eventBus.asObservable().pipe(
       filter(event => event.key === key),
-      map(event => <T>event.data),);
+      map(event => <T>event.data));
   }
 }
 

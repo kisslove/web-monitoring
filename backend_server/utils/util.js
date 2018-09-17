@@ -1,5 +1,8 @@
 const http = require('http');
 var Mongoose = require('mongoose');
+var CryptoJS = require('crypto-js');
+var userInfo=require('../business/userInfo');
+var util=require('../utils/util');
 let provinceData = [
     "北京市",
     "天津市",
@@ -34,7 +37,8 @@ let provinceData = [
     "青海省",
     "台湾省"
 ];
-
+const _KEY = "28756942659325487412569845231586" //32位
+const _IV = "8536874512548456" //16位
 exports.computeSTimeAndEtime = function (body) {
     body.eTime = new Date(body.eTime);
     body.sTime = new Date(body.sTime);
@@ -91,7 +95,7 @@ exports.computeSTimeAndEtimeAndTimeDivider = function (body) {
         } else if (temp <= 1000 * 60 * 60 * 24 * 7) {
             body.TimeQuantum = 6;
         } else {
-            body.timeDivider = 1000 * 60 * 60 * 24;/*聚合时间段,默认按天*/
+            body.timeDivider = 1000 * 60 * 60 * 24; /*聚合时间段,默认按天*/
         }
     }
 
@@ -171,6 +175,7 @@ exports.getIp = function (req, res, next) {
         next();
         return;
     }
+    tempIp = tempIp.split(":")[tempIp.split(":").length - 1];
     http.get(`http://ip.taobao.com/service/getIpInfo.php?ip=${tempIp}`, (resp) => {
         const {
             statusCode
@@ -234,6 +239,71 @@ exports.getIp = function (req, res, next) {
         console.error(`错误: ${e.message}`);
     });;
 };
+
+/**************************************************************
+ *字符串加密
+ *   str：需要加密的字符串
+ ****************************************************************/
+exports.encrypt = (str) => {
+        var key = CryptoJS.enc.Utf8.parse(_KEY);
+        var iv = CryptoJS.enc.Utf8.parse(_IV);
+        var encrypted = '';
+        var srcs = CryptoJS.enc.Utf8.parse(str);
+        encrypted = CryptoJS.AES.encrypt(srcs, key, {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+
+        return encrypted.ciphertext.toString();
+    },
+
+    /**************************************************************
+     *字符串解密
+     *   str：需要解密的字符串
+     ****************************************************************/
+    exports.decrypt = (str) => {
+        var key = CryptoJS.enc.Utf8.parse(_KEY);
+        var iv = CryptoJS.enc.Utf8.parse(_IV);
+        var encryptedHexStr = CryptoJS.enc.Hex.parse(str);
+        var srcs = CryptoJS.enc.Base64.stringify(encryptedHexStr);
+        var decrypt = CryptoJS.AES.decrypt(srcs, key, {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        var decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
+        return decryptedStr.toString();
+    }
+
+exports.resolveToken = (req, res, next) => {
+    let tempToken = req.headers["authorization"];
+    if (tempToken) {
+        let s = this.decrypt(tempToken);
+        let userId=s.split("@")[0];
+        userInfo.validToken(userId).then((r)=>{
+            if(r.token==tempToken){
+                req.userId=userId;
+                next();
+            }else{
+                res.json(util.resJson({
+                    IsSuccess: false,
+                    Data:"Token不一致"
+                }));
+            }
+        },(err)=>{
+            res.json(util.resJson({
+                IsSuccess: false,
+                Data:"Token不一致"
+            }));
+            
+        })
+    } else {
+        next();
+    }
+};
+
+
 
 function getClientIP(req) {
     var ip = req.headers['x-forwarded-for'] ||

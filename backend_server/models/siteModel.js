@@ -8,7 +8,8 @@ var schema = new Schema({
     updateTime: { type: Date, default: Date.now },
     appKey: Schema.Types.ObjectId,
     id: Schema.Types.ObjectId,
-    state: String
+    state: String,
+    userId:String
 });
 
 module.exports = mongoose.model('SiteDataInfo', schema);

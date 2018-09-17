@@ -2,10 +2,12 @@
   <nz-header style="position: fixed;left: 0;right: 0;z-index: 100;">
     <!-- <div class="logo"></div> -->
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 50px;">
-      <li style="font-size:16px;" [routerLink]="['/home']" >
+      <li style="font-size:16px;" [routerLink]="['/home']">
         <i class="anticon anticon-line-chart" style="margin-left: 24px;color: #eee;"></i> <span style="cursor:pointer;color: #fff;margin-left: 4px;">业务站点实时监控平台</span>
-        <a title="github" target="_blank" href="https://github.com/kisslove/web-monitoring"  style="cursor: pointer;position: absolute;right: 30px;"> <img style="width: 24px;" src="../assets/images/github.png" alt="github"></a>
-       
+        <span *ngIf="userName" style="position: absolute;right: 100px;">{{userName}}<span (click)="logout()" style="text-decoration: underline;font-size: 12px;margin-left: 8px;cursor: pointer;">注销</span>
+        </span>
+        <a title="github" target="_blank" href="https://github.com/kisslove/web-monitoring" style="cursor: pointer;position: absolute;right: 30px;">
+          <img style="width: 24px;" src="../assets/images/github.png" alt="github"></a>
       </li>
     </ul>
 
@@ -14,4 +16,3 @@
 <div class="layout">
   <router-outlet></router-outlet>
 </div>
- 

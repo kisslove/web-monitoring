@@ -4,11 +4,15 @@
     <div class="title">
       WEB-MONITOR
     </div>
-    <div class="opt">
+    <div class="opt" *ngIf="isLogin">
+      <button [routerLink]="[ '/dashboard' ]">立即使用</button>
+    </div>
+    <div class="opt" *ngIf="!isLogin">
       <button [routerLink]="[ '/dashboard' ]">马上体验</button>
       &nbsp;
       <button (click)="isVisible_login=true;">独立账户</button>
     </div>
+    
   </div>
 </section>
 
@@ -24,7 +28,7 @@
   <nz-form-item>
     <nz-form-label [nzSm]="4" [nzXs]="24">密码</nz-form-label>
     <nz-form-control [nzSm]="18" [nzXs]="24">
-      <input nz-input [(ngModel)]="model.password" name="password">
+      <input nz-input type="password" [(ngModel)]="model.password" name="password">
     </nz-form-control>
   </nz-form-item>
   <nz-form-item style="margin-bottom:0;">
@@ -45,7 +49,7 @@
   <nz-form-item>
     <nz-form-label [nzSm]="4" [nzXs]="24">密码</nz-form-label>
     <nz-form-control [nzSm]="18" [nzXs]="24">
-      <input nz-input [(ngModel)]="model2.password" name="password">
+      <input nz-input type="password" [(ngModel)]="model2.password" name="password">
     </nz-form-control>
   </nz-form-item>
 </nz-modal>

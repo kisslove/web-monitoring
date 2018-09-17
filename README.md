@@ -49,11 +49,43 @@
 
 ### API请求
 
-默认情况下，使用XMLHTTP拦截用户请求，在请求成功/失败后，统计时间，上报请求。用户可使用__ml.api()手动上报。
-
+默认情况下，使用XMLHTTP拦截用户请求，在请求成功/失败后，统计时间，上报请求。
+用户可使用**__ml.api(success, time, code, msg)**手动上报。
+```javascript
+ success:上传是否成功(true/false )
+ time:耗时(ms)
+ code:返回码
+ msg:消息(string/object)
+```
 ### JS错误
 
-默认情况下，使用window.onError去监听用户错误脚本。有些场景下，用户使用的前端框架会捕获js错误，并不会触发onError.这种情况需用户手动调用__ml.error()上报。
-
+默认情况下，使用window.onError去监听用户错误脚本，自动上报。
+用户使用的有些前端框架会捕获js错误，错误信息不会抛至window.onError,这种情况需用户手动调用。
+例如在Angular2+，在你的框架全局捕获错误的地方调用**__ml.error(errorObj)**
+```javascript
+  export class MyErrorHandler implements ErrorHandler {
+      handleError(error) {
+        console.error(error);
+        window.__ml && window.__ml.error && window.__ml.error(error.stack ||     error);
+      }
+    }
+    @NgModule({
+      declarations: [],
+      imports: [],
+      providers: [{ provide: ErrorHandler, useClass: MyErrorHandler }],
+      bootstrap: []
+    })
+    export class AppModule { }
+```
+在Vue:
+```javascript
+import Vue from 'vue'
+const errorHandler = (error, vm)=>{
+ console.error(error);
+ window.__ml && window.__ml.error && window.__ml.error(error);
+}
+Vue.config.errorHandler = errorHandler;
+Vue.prototype.$throw = (error)=> errorHandler(error,this);
+```
 ### 功能介绍
 

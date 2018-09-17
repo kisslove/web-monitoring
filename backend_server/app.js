@@ -7,7 +7,7 @@ var indexRouter = require('./routes/index');
 var monitorRouter = require('./routes/monitor');
 var upDataRouter = require('./routes/upData');
 var userRouter = require('./routes/user');
-
+var util=require("./utils/util");
 var mongoose = require('mongoose');
 mongoose.connect("mongodb://localhost:27017/monitor2", {
     socketTimeoutMS: 0,
@@ -41,7 +41,7 @@ app.all('*', function(req, res, next) {
 
 
 app.use('/', indexRouter);
-app.use('/Monitor/', monitorRouter);
+app.use('/Monitor/',util.resolveToken, monitorRouter);
 app.use('/Up', upDataRouter);
 app.use('/User', userRouter);
 

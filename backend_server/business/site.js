@@ -4,7 +4,7 @@ var util = require('../utils/util');
 var mongoose = require('mongoose');
 /* system listing. */
 exports.list = function (req, res, next) {
-    SiteModel.find({}, function (err, r) {
+    SiteModel.find({userId:req.userId}, function (err, r) {
         if (!err) {
             res.json(util.resJson({
                 IsSuccess: true,
@@ -27,7 +27,8 @@ exports.create = function (req, res, next) {
         disableHook: false,
         disableJS: false,
         appKey: id1,
-        id: id1
+        id: id1,
+        userId:req.userId
     });
     temp.save(function (err, r) {
         console.log(err);
