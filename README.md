@@ -88,7 +88,9 @@ Vue.config.errorHandler = errorHandler;
 Vue.prototype.$throw = (error)=> errorHandler(error,this);
 ```
 ### 如何使用(easy!!!)  
+
 网页地址<a href="http://hubing.online" target="_blank">WEB-MONITOR</a>
+
 第一步：在监控站点中创建一个站点。
 
 ![file-list](https://github.com/kisslove/web-front-end-monitoring/blob/master/Demo/demo1.png)
