@@ -4,3 +4,4 @@
 .vscode/
 package-lock.json
 node_modules
+/browser_probe
