@@ -102,9 +102,12 @@ Vue.prototype.$throw = (error)=> errorHandler(error,this);
 ### 贡献者支持
 
 您的支持，是我们最大的前进动力。
+
 支付宝：
+
 ![file-list](https://github.com/kisslove/web-front-end-monitoring/blob/master/Demo/zhifubao.png)
 
 微信：
+
 ![file-list](https://github.com/kisslove/web-front-end-monitoring/blob/master/Demo/weixin.png)
 
