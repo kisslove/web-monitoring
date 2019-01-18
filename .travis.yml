@@ -6,4 +6,4 @@ install:
     npm install -g npm@latest
     npm --version
 script:
-    - npm run test-ci
+    - cd web&&npm run test
