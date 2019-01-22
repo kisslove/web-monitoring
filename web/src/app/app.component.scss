@@ -1,53 +1,73 @@
-.ant-layout-header{
+.ant-layout-header {
     padding: 0 !important;
 }
 
-.ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left{
+.ant-menu-inline,
+.ant-menu-vertical,
+.ant-menu-vertical-left {
     border-right: none !important;
 }
 
-.left-nav-container{
+.left-nav-container {
     position: fixed;
     left: 0;
     overflow-y: auto;
     overflow-x: hidden;
     // border-right: solid 1px #eee;
-    background:#EAEDF1;
+    background: #EAEDF1;
 }
 
-.ant-menu-dark.ant-menu-horizontal{
+.ant-menu-dark.ant-menu-horizontal {
     border-bottom-color: #373d41;
 }
 
-.ant-menu-dark, .ant-menu-dark .ant-menu-sub{
+.ant-menu-dark,
+.ant-menu-dark .ant-menu-sub {
     background: #373d41;
 }
-.ant-menu.ant-menu-root.ant-menu-light.ant-menu-inline{
-    background:#EAEDF1;
+
+.ant-menu.ant-menu-root.ant-menu-light.ant-menu-inline {
+    background: #EAEDF1;
     color: #333;
-    li.ant-menu-item{
+    li.ant-menu-item {
         margin: 0;
         font-size: 12px;
-        &:hover{
+        &:hover {
             color: #333;
             background: #F4F6F8;
         }
-        &:after{
-             border-right: 3px solid #fff; 
+        &:after {
+            border-right: 3px solid #fff;
         }
     }
-     .ant-menu-item-selected{
+    .ant-menu-item-selected {
         background-color: #fff;
         color: #333;
-        &:after{
+        &:after {
             border-right: 1px solid #fff;
             margin-right: -1px;
         }
     }
 }
 
-.ant-layout-header{
-    height: 50px; 
+.ant-layout-header {
+    height: 50px;
     line-height: 50px;
 }
 
+.thanks-for-users {
+    position: fixed;
+    left: 4px;
+    bottom: 4px;
+    width: 190px;
+    z-index: 1000;
+    padding: 4px;
+    background: #09d9ab;
+    .close-tips {
+        position: absolute;
+        right: 4px;
+        top: 4px;
+        color: #fff;
+        cursor: pointer;
+    }
+}

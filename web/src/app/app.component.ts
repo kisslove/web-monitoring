@@ -15,6 +15,14 @@ export class AppComponent {
   unsubscribe = {
     sub0: null
   };
+  showTips:boolean=true;
+  thanksList=[{
+    name:'*环',
+    notes:'请问可否开源上报js...'
+  },{
+    name:'*子',
+    notes:'膜拜大佬，前端监...'
+  }]
   constructor(
     private user: UserService,
     private router: Router,
