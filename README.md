@@ -15,7 +15,7 @@
 
 - [x] 前端：Angular5+,ant-design
 - [x] 后端：Nodejs+Express
-- [x] 数据库：MondoDB
+- [x] 数据库：MonoDB
 
 
 ------
