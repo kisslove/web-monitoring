@@ -136,6 +136,8 @@ exports.computeSTimeAndEtimeAndTimeDivider = function (body) {
             body.timeDivider = 1000 * 60 * 60 * 12;
             break;
         default:
+            body.eTime = new Date(body.eTime);
+            body.sTime = new Date(body.sTime);
             break;
     };
     return body;
