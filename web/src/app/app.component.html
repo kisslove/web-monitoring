@@ -2,19 +2,19 @@
     <nz-header style="position: fixed;left: 0;right: 0;z-index: 100;">
         <!-- <div class="logo"></div> -->
         <ul nz-menu [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 50px;">
-            <li style="font-size:16px;" [routerLink]="['/home']">
-                <i class="anticon anticon-line-chart" style="margin-left: 24px;color: #eee;"></i> <span style="cursor:pointer;color: #fff;margin-left: 4px;">前端性能监控平台</span>
+            <li style="font-size:16px;">
+                <i [routerLink]="['/home']" class="anticon anticon-line-chart" style="margin-left: 24px;color: #eee;"></i> <span [routerLink]="['/home']" style="cursor:pointer;color: #fff;margin-left: 4px;">前端性能监控平台</span>
                 <span *ngIf="userName" style="position: absolute;right: 100px;">{{userName}}<span (click)="logout()" style="text-decoration: underline;font-size: 12px;margin-left: 8px;cursor: pointer;">注销</span>
                 </span>
                 <a title="github" target="_blank" href="https://github.com/kisslove/web-monitoring" style="cursor: pointer;position: absolute;right: 30px;">
                     <img style="width: 24px;" src="../assets/images/github.png" alt="github"></a>
             </li>
         </ul>
-
     </nz-header>
 </nz-layout>
 <div class="thanks-for-users" *ngIf="showTips">
-    <p>谢谢您们的支持！<span nz-popover [nzContent]="contentTemplate" nzPlacement="rightTop" title="支持一下" style="color: green;font-weight: bolder;cursor: pointer;">打赏</span> </p><span class="close-tips" title="关闭" (click)="showTips=false;">X</span>
+    <p style="margin-bottom:4px;">谢谢您们的支持！<span nz-popover [nzContent]="contentTemplate" nzPlacement="rightTop" title="支持一下" style="color: green;font-weight: bolder;cursor: pointer;">打赏</span> </p><span class="close-tips" title="关闭" (click)="showTips=false;">X</span>
+    <p><span nz-popover [nzContent]="contentTemplate2" nzPlacement="rightTop" title="关注公众号" style="color: green;font-weight: bolder;cursor: pointer;">公众号</span></p>
     <nz-carousel [nzEffect]="'fade'" nzAutoPlay>
         <div nz-carousel-content *ngFor="let item of thanksList">
             <h3>感谢用户：{{item.name}}</h3>
@@ -31,6 +31,11 @@
     <span>支付宝：</span>
     <div>
         <img style="height:100px;width:auto;" src="../assets/images/zhifubao.png" alt="支付宝">
+    </div>
+</ng-template>
+<ng-template #contentTemplate2>
+    <div>
+        <img style="height:100px;width:auto;" src="../assets/images/weixin.png" alt="微信">
     </div>
 </ng-template>
 <div class="layout">
