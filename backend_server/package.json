@@ -12,6 +12,7 @@
         "express": "~4.16.0",
         "http-errors": "~1.6.2",
         "jade": "~1.11.0",
+        "lionsoul-ip2region": "0.0.1",
         "lodash": "^4.17.10",
         "mongoose": "^5.2.9",
         "morgan": "~1.9.0"
