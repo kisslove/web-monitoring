@@ -39,7 +39,7 @@ let provinceData = [
 ];
 const _KEY = "28756942659325487412569845231586" //32位
 const _IV = "8536874512548456" //16位
-exports.computeSTimeAndEtime = function (body) {
+exports.computeSTimeAndEtime = function(body) {
     body.eTime = new Date(body.eTime);
     body.sTime = new Date(body.sTime);
     switch (body.TimeQuantum) {
@@ -77,7 +77,7 @@ exports.computeSTimeAndEtime = function (body) {
     return body;
 };
 
-exports.computeSTimeAndEtimeAndTimeDivider = function (body) {
+exports.computeSTimeAndEtimeAndTimeDivider = function(body) {
     if (body.TimeQuantum == "") {
         let temp = new Date(body.eTime) - new Date(body.sTime);
         if (temp <= 1000 * 60 * 30) {
@@ -143,14 +143,14 @@ exports.computeSTimeAndEtimeAndTimeDivider = function (body) {
     return body;
 };
 
-exports.resJson = function (options) {
+exports.resJson = function(options) {
     var temp = new Object();
     temp.IsSuccess = options && options.IsSuccess || false;
     temp.Data = options && options.Data || [];
     return temp;
 };
 
-exports.getIp = function (req, res, next) {
+exports.getIp = function(req, res, next) {
     let netInfo = {
         city_nameCN: '未知',
         country_nameCN: '未知',
@@ -181,15 +181,14 @@ exports.getIp = function (req, res, next) {
     var tempData = searcher.btreeSearchSync(tempIp);
     if (tempData.region) {
         let temp = tempData.region.split('|');
-        req.netInfo.country_nameCN = temp[0]; //国家
-        req.netInfo.mostSpecificSubdivision_nameCN = temp[2]; //省
-        req.netInfo.city_nameCN = temp[3]; //市
-        req.netInfo.isp = temp[4]; //isp
-        req.netInfo.organizationCN = temp[4]; //isp
-        req.netInfo.onlineip = temp[tempIp]; //ip
-    }else{
-        req.netInfo = netInfo;
+        netInfo.country_nameCN = temp[0] == '0' ? '内网' : temp[0]; //国家
+        netInfo.mostSpecificSubdivision_nameCN = temp[2] == '0' ? '内网' : temp[2]; //省
+        netInfo.city_nameCN = temp[3] == '0' ? '内网' : temp[3]; //市
+        netInfo.isp = temp[4] == '0' ? '内网' : temp[4]; //isp
+        netInfo.organizationCN = temp[4] == '0' ? '内网' : temp[4]; //isp
+        netInfo.onlineip = tempIp; //ip
     }
+    req.netInfo = netInfo;
     next();
     // http.get(`http://ip.taobao.com/service/getIpInfo.php?ip=${tempIp}`, (resp) => {
     //     const {
