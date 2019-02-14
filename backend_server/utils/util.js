@@ -39,7 +39,7 @@ let provinceData = [
 ];
 const _KEY = "28756942659325487412569845231586" //32位
 const _IV = "8536874512548456" //16位
-exports.computeSTimeAndEtime = function(body) {
+exports.computeSTimeAndEtime = function (body) {
     body.eTime = new Date(body.eTime);
     body.sTime = new Date(body.sTime);
     switch (body.TimeQuantum) {
@@ -77,7 +77,7 @@ exports.computeSTimeAndEtime = function(body) {
     return body;
 };
 
-exports.computeSTimeAndEtimeAndTimeDivider = function(body) {
+exports.computeSTimeAndEtimeAndTimeDivider = function (body) {
     if (body.TimeQuantum == "") {
         let temp = new Date(body.eTime) - new Date(body.sTime);
         if (temp <= 1000 * 60 * 30) {
@@ -143,14 +143,14 @@ exports.computeSTimeAndEtimeAndTimeDivider = function(body) {
     return body;
 };
 
-exports.resJson = function(options) {
+exports.resJson = function (options) {
     var temp = new Object();
     temp.IsSuccess = options && options.IsSuccess || false;
     temp.Data = options && options.Data || [];
     return temp;
 };
 
-exports.getIp = function(req, res, next) {
+exports.getIp = function (req, res, next) {
     let netInfo = {
         city_nameCN: '未知',
         country_nameCN: '未知',
@@ -178,80 +178,37 @@ exports.getIp = function(req, res, next) {
         return;
     }
     tempIp = tempIp.split(":")[tempIp.split(":").length - 1];
-    var tempData = searcher.btreeSearchSync(tempIp);
-    if (tempData.region) {
-        let temp = tempData.region.split('|');
-        netInfo.country_nameCN = temp[0] == '0' ? '内网' : temp[0]; //国家
-        netInfo.mostSpecificSubdivision_nameCN = temp[2] == '0' ? '内网' : temp[2]; //省
-        netInfo.city_nameCN = temp[3] == '0' ? '内网' : temp[3]; //市
-        netInfo.isp = temp[4] == '0' ? '内网' : temp[4]; //isp
-        netInfo.organizationCN = temp[4] == '0' ? '内网' : temp[4]; //isp
-        netInfo.onlineip = tempIp; //ip
-    }
-    req.netInfo = netInfo;
-    next();
-    // http.get(`http://ip.taobao.com/service/getIpInfo.php?ip=${tempIp}`, (resp) => {
-    //     const {
-    //         statusCode
-    //     } = resp;
-    //     let error;
-    //     if (statusCode !== 200) {
-    //         error = new Error('请求失败。\n' + `状态码: ${statusCode}`);
-    //     }
-    //     if (error) {
-    //         console.error(error.message);
-    //         resp.resume();
-    //         req.netInfo = netInfo;
-    //         next(null);
-    //         return;
-    //     }
-    //     resp.setEncoding('utf8');
-    //     let rawData = '';
-    //     resp.on('data', (chunk) => {
-    //         rawData += chunk;
-    //     });
-    //     resp.on('end', () => {
-    //         try {
-    //             const parsedData = JSON.parse(rawData || null);
-    //             if (parsedData && parsedData.code == 0) {
-    //                 let tempData = parsedData.data;
-    //                 if (tempData.region == "澳门") {
-    //                     tempData.region = "澳门特别行政区";
-    //                 } else if (tempData.region == "香港") {
-    //                     tempData.region = "香港特别行政区";
-    //                 } else if (tempData.region == "台湾") {
-    //                     tempData.region = "台湾省";
-    //                 } else if (tempData.region) {
-    //                     provinceData.forEach(function (val) {
-    //                         if (val.indexOf(tempData.region) != -1) {
-    //                             tempData.region = val;
-    //                         }
-    //                     })
-    //                 }
-    //                 netInfo = {
-    //                     //地理位置
-    //                     city_nameCN: tempData.city,
-    //                     country_nameCN: tempData.country,
-    //                     latitude: 0,
-    //                     longitude: 0,
-    //                     mostSpecificSubdivision_nameCN: tempData.region,
-    //                     onlineip: tempData.ip,
-    //                     isp: tempData.isp,
-    //                     organizationCN: tempData.isp
-    //                 };
-    //             }
-    //             req.netInfo = netInfo;
-    //             next(null);
-    //         } catch (e) {
-    //             req.netInfo = netInfo;
-    //             next(null);
-    //         }
-    //     });
-    // }).on('error', (e) => {
-    //     req.netInfo = netInfo;
-    //     next(null);
-    //     console.error(`错误: ${e.message}`);
-    // });
+    // var tempData = searcher.btreeSearchSync(tempIp);
+    searcher.binarySearch(tempIp,function(err,tempData){
+        if(err){
+            req.netInfo = netInfo;
+            next();
+        }
+        if (tempData.region) {
+            let temp = tempData.region.split('|');
+            netInfo.country_nameCN = temp[0] == '0' ? '内网' : temp[0]; //国家
+            netInfo.mostSpecificSubdivision_nameCN = temp[2] == '0' ? '内网' : temp[2]; //省
+            netInfo.city_nameCN = temp[3] == '0' ? '内网' : temp[3]; //市
+            netInfo.isp = temp[4] == '0' ? '内网' : temp[4]; //isp
+            netInfo.organizationCN = temp[4] == '0' ? '内网' : temp[4]; //isp
+            netInfo.onlineip = tempIp; //ip
+            if (netInfo.mostSpecificSubdivision_nameCN == "澳门") {
+                netInfo.mostSpecificSubdivision_nameCN = "澳门特别行政区";
+            } else if (netInfo.mostSpecificSubdivision_nameCN == "香港") {
+                netInfo.mostSpecificSubdivision_nameCN = "香港特别行政区";
+            } else if (netInfo.mostSpecificSubdivision_nameCN == "台湾") {
+                netInfo.mostSpecificSubdivision_nameCN = "台湾省";
+            } else if (netInfo.mostSpecificSubdivision_nameCN) {
+                provinceData.forEach(function (val) {
+                    if (val.indexOf(netInfo.mostSpecificSubdivision_nameCN) != -1) {
+                        netInfo.mostSpecificSubdivision_nameCN = val;
+                    }
+                })
+            }
+        }
+        req.netInfo = netInfo;
+        next();
+    });
 };
 
 /**************************************************************
