@@ -59,10 +59,11 @@
     position: fixed;
     left: 4px;
     bottom: 4px;
-    width: 190px;
+    // width: 190px;
+    right: 0px;
     z-index: 1000;
     padding: 4px;
-    background: #09d9ab;
+    background: rgba(191, 191, 191, 0.6588235294117647);
     .close-tips {
         position: absolute;
         right: 4px;
