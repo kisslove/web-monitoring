@@ -2,7 +2,7 @@ const http = require('http');
 var CryptoJS = require('crypto-js');
 var userInfo = require('../business/userInfo');
 var util = require('../utils/util');
-const searcher = require('lionsoul-ip2region').create();
+const searcher = require('evenboy-ip2region').create();
 let provinceData = [
     "北京市",
     "天津市",
