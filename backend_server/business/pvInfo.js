@@ -5,12 +5,17 @@ var util=require('../utils/util');
 //访问明细
 exports.list = async (req) => {
     let appKey = new Mongoose.Types.ObjectId(req.body.appKey);
+    let body = util.computeSTimeAndEtime(req.body);
     let resJson = {
         List: [],
         TotalCount: 0
     };
     let tempCon = {
-        "appKey":appKey,
+        "createTime": {
+            '$gte': body.sTime,
+            '$lt': body.eTime
+        },
+        "appKey": appKey,
         $or: [{
             "page": {
                 '$regex': new RegExp(`${req.body.keywords}.*`, "gi")

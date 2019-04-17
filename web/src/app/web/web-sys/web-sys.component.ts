@@ -121,7 +121,9 @@ export class WebSysComponent {
 
   selectedSysChange(e){
     this.router.navigate(['/sys/'+e+'/index']);
-    location.reload();
+    setTimeout(()=>{
+      location.reload();
+    });
   }
 
   selectOver(e){

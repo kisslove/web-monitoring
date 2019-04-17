@@ -3,12 +3,17 @@ var PerfModel = require('../models/perfModel');
 var util=require('../utils/util');
 exports.list = async (req) => {
     let appKey = new Mongoose.Types.ObjectId(req.body.appKey);
+    let body = util.computeSTimeAndEtime(req.body);
     let resJson = {
         List: [],
         TotalCount: 0
     };
     let tempCon = {
-        "appKey":appKey,
+        "createTime": {
+            '$gte': body.sTime,
+            '$lt': body.eTime
+        },
+        "appKey": appKey,
         $or: [{
             "page": {
                 '$regex': new RegExp(`${req.body.keywords}.*`, "gi")
