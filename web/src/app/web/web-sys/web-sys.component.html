@@ -13,16 +13,21 @@
         <nz-select class="custom-select" style="min-width: 120px;" (ngModelChange)="selectedSysChange($event)" [ngModel]="currentSelectedSys">
             <nz-option *ngFor="let item of sysItems" [nzValue]="item.appKey" [nzLabel]="item.appName"></nz-option>
         </nz-select>
-        <div style="position: absolute;right: 0;top: 0;">
-            <nz-badge nzDot><button nz-button nz-popover nzPlacement="bottomLeft" [nzTitle]="null" [nzContent]="contentTemplate" nzTrigger="click" nzType="default"><i class="anticon anticon-question"></i>帮助文档</button></nz-badge>
-            <span *ngIf="showGlobalTimer" style="padding: 8px;border: solid 1px #d9d9d9;margin: 0 8px;display: inline-block;line-height: 1;">
+        <div style="position: absolute;top: 0;right: 8px;">
+            <nz-badge nzDot><button nz-button nz-popover nzPlacement="left" [nzTitle]="null" [nzContent]="contentTemplate" nzTrigger="click" nzType="default"><i class="anticon anticon-question"></i>帮助文档</button></nz-badge>
+            <span *ngIf="showGlobalTimer" style="vertical-align: middle;;padding: 8px;border: solid 1px #d9d9d9;margin: 0 8px;display: inline-block;line-height: 1;">
                   <app-time-choice-panel (selectOver)="selectOver($event)" [time]="4"></app-time-choice-panel>
               </span>
         </div>
     </div>
 </nz-layout>
 <ng-template #contentTemplate>
-    <div style="width: 220px;">
+    <div style="width: 250px;">
+        <h4 style="color:#03A9F4 !important;">关注也是情，说出您的想法！</h4>
+        <div style="width: 200px;text-align: center;margin:4px;">
+            <img style="height:150px;width:auto;" title="微信公众号" src="../assets/images/weixin-gongzhonghao.jpg" alt="微信">
+        </div>
+        <nz-divider nzText="低调的分割线"></nz-divider>
         <h4 style="color:#03A9F4 !important;">一分也是爱，期望您的支持！</h4>
         <div style="width: 100px;display:inline-block;margin:4px;">
             <span>微信：</span>
@@ -31,12 +36,6 @@
         <div style="width: 100px;display:inline-block;margin:4px;">
             <span>支付宝：</span>
             <img style="height:100px;width:auto;" src="../assets/images/zhifubao.png" alt="支付宝">
-        </div>
-        <nz-divider nzText="低调的分割线"></nz-divider>
-
-        <h4 style="color:#03A9F4 !important;">关注也是情，说出您的想法！</h4>
-        <div style="width: 200px;text-align: center;margin:4px;">
-            <img style="height:150px;width:auto;" title="微信公众号" src="../assets/images/weixin-gongzhonghao.jpg" alt="微信">
         </div>
     </div>
 </ng-template>
