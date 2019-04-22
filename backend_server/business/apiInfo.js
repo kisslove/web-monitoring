@@ -7,7 +7,7 @@ var util = require('../utils/util');
  * API请求-list
  * @param {*} req 
  */
-exports.list = async (req) => {
+exports.list = async(req) => {
     let appKey = new Mongoose.Types.ObjectId(req.body.appKey);
     let body = util.computeSTimeAndEtime(req.body);
     let resJson = {
@@ -49,14 +49,14 @@ exports.list = async (req) => {
 
 exports.create = (data) => {
     var temp = new ApiModel(data);
-    temp.save(function (err, r) {
+    temp.save(function(err, r) {
         if (err) {
             console.error(err);
         }
     });
 };
 
-exports.apiStatis = async (req) => {
+exports.apiStatis = async(req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
@@ -65,29 +65,29 @@ exports.apiStatis = async (req) => {
     let r = [];
     if (typeEnum == 0) { //成功率
         r = await ApiModel.aggregate([{
-            "$match": {
-                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
-                "appKey": appKey,
-                "api": { '$regex': new RegExp(`${body.keywords}.*`, "gi") }
+                "$match": {
+                    "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+                    "appKey": appKey,
+                    "api": { '$regex': new RegExp(`${body.keywords}.*`, "gi") }
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$api",
+                    "list": { '$push': { 'success': '$success' } }
+                }
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    'name': "$_id",
+                    'list': 1
+                }
             }
-        },
-        {
-            "$group": {
-                "_id": "$api",
-                "list": { '$push': { 'success': '$success' } }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'name': "$_id",
-                'list': 1
-            }
-        }
         ]);
         _.each(r, (d) => {
             let temp = [];
-            temp = _.filter(d.list, function (e) {
+            temp = _.filter(d.list, function(e) {
                 return e.success;
             });
             d.result = temp.length / d.list.length;
@@ -98,75 +98,75 @@ exports.apiStatis = async (req) => {
 
     if (typeEnum == 1) { //msg聚类
         r = await ApiModel.aggregate([{
-            "$match": {
-                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
-                "appKey": appKey,
-                "msg": { '$regex': new RegExp(`${body.keywords}.*`, "gi") }
+                "$match": {
+                    "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+                    "appKey": appKey,
+                    "msg": { '$regex': new RegExp(`${body.keywords}.*`, "gi") }
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$msg",
+                    "list": { '$push': '$msg' }
+                }
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    'name': "$_id",
+                    'result': { "$size": '$list' }
+                }
             }
-        },
-        {
-            "$group": {
-                "_id": "$msg",
-                "list": { '$push': '$msg' }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'name': "$_id",
-                'result': { "$size": '$list' }
-            }
-        }
         ]);
     }
 
     if (typeEnum == 2) { //成功耗时
         r = await ApiModel.aggregate([{
-            "$match": {
-                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
-                "appKey": appKey,
-                "api": { '$regex': new RegExp(`${body.keywords}.*`, "gi") },
-                "success": true
+                "$match": {
+                    "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+                    "appKey": appKey,
+                    "api": { '$regex': new RegExp(`${body.keywords}.*`, "gi") },
+                    "success": true
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$api",
+                    "result": { '$avg': '$time' }
+                }
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    'name': "$_id",
+                    'result': 1
+                }
             }
-        },
-        {
-            "$group": {
-                "_id": "$api",
-                "result": { '$avg': '$time' }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'name': "$_id",
-                'result': 1
-            }
-        }
         ]);
     }
 
     if (typeEnum == 3) { //失败耗时
         r = await ApiModel.aggregate([{
-            "$match": {
-                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
-                "appKey": appKey,
-                "api": { '$regex': new RegExp(`${body.keywords}.*`, "gi") },
-                "success": false
+                "$match": {
+                    "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+                    "appKey": appKey,
+                    "api": { '$regex': new RegExp(`${body.keywords}.*`, "gi") },
+                    "success": false
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$api",
+                    "result": { '$avg': '$time' }
+                }
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    'name': "$_id",
+                    'result': 1
+                }
             }
-        },
-        {
-            "$group": {
-                "_id": "$api",
-                "result": { '$avg': '$time' }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'name': "$_id",
-                'result': 1
-            }
-        }
         ]);
     }
     return r;
@@ -176,51 +176,51 @@ exports.apiStatis = async (req) => {
  * API请求-APi成功率
  * @param {*} req 
  */
-exports.apiSuccRate = async (req) => {
+exports.apiSuccRate = async(req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtimeAndTimeDivider(body);
 
     let r = await ApiModel.aggregate([{
-        "$match": {
-            "createTime": { '$gte': body.sTime, '$lt': body.eTime },
-            "appKey": appKey,
-            "api": body.apiName
+            "$match": {
+                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+                "appKey": appKey,
+                "api": body.apiName
+            }
+        },
+        {
+            "$group": {
+                "_id": {
+                    "$subtract": [
+                        { "$subtract": ["$createTime", new Date(0)] },
+                        {
+                            "$mod": [
+                                { "$subtract": ["$createTime", new Date(0)] },
+                                body.timeDivider /*聚合时间段*/
+                            ]
+                        }
+                    ]
+                },
+                "apiList": { '$push': { 'success': '$success' } }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                'apiList': 1,
+                'createTime': { '$add': [new Date(0), '$_id'] }
+            }
+        },
+        {
+            "$sort": {
+                'createTime': 1
+            }
         }
-    },
-    {
-        "$group": {
-            "_id": {
-                "$subtract": [
-                    { "$subtract": ["$createTime", new Date(0)] },
-                    {
-                        "$mod": [
-                            { "$subtract": ["$createTime", new Date(0)] },
-                            body.timeDivider /*聚合时间段*/
-                        ]
-                    }
-                ]
-            },
-            "apiList": { '$push': { 'success': '$success' } }
-        }
-    },
-    {
-        "$project": {
-            "_id": 0,
-            'apiList': 1,
-            'createTime': { '$add': [new Date(0), '$_id'] }
-        }
-    },
-    {
-        "$sort": {
-            'createTime': 1
-        }
-    }
     ]);
 
     r.forEach(d => {
         let temp = [];
-        temp = _.filter(d.apiList, function (e) {
+        temp = _.filter(d.apiList, function(e) {
             return e.success;
         });
         d.succCount = temp.length;
@@ -236,7 +236,7 @@ exports.apiSuccRate = async (req) => {
  * APi成功率(地理、终端)
  * @param {*} req 
  */
-exports.apiSuccRateStatic = async (req) => {
+exports.apiSuccRateStatic = async(req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtimeAndTimeDivider(body);
@@ -327,7 +327,7 @@ exports.apiSuccRateStatic = async (req) => {
 
     r.forEach(d => {
         let temp = [];
-        temp = _.filter(d.apiList, function (e) {
+        temp = _.filter(d.apiList, function(e) {
             return e.success;
         });
         d.succCount = temp.length;
@@ -343,41 +343,41 @@ exports.apiSuccRateStatic = async (req) => {
  * API请求-APi成功率(地理分布)
  * @param {*} req 
  */
-exports.succRateGeo = async (req) => {
+exports.succRateGeo = async(req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
 
     let r = await ApiModel.aggregate([{
-        "$match": {
-            "createTime": { '$gte': body.sTime, '$lt': body.eTime },
-            "appKey": appKey,
-            "api": body.apiName
+            "$match": {
+                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+                "appKey": appKey,
+                "api": body.apiName
+            }
+        },
+        {
+            "$group": {
+                "_id": "$mostSpecificSubdivision_nameCN",
+                "apiList": { '$push': { 'success': '$success' } }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                'provice': '$_id',
+                'apiList': 1,
+            }
+        },
+        {
+            "$sort": {
+                'createTime': 1
+            }
         }
-    },
-    {
-        "$group": {
-            "_id": "$mostSpecificSubdivision_nameCN",
-            "apiList": { '$push': { 'success': '$success' } }
-        }
-    },
-    {
-        "$project": {
-            "_id": 0,
-            'provice': '$_id',
-            'apiList': 1,
-        }
-    },
-    {
-        "$sort": {
-            'createTime': 1
-        }
-    }
     ]);
 
     r.forEach(d => {
         let temp = [];
-        temp = _.filter(d.apiList, function (e) {
+        temp = _.filter(d.apiList, function(e) {
             return e.success;
         });
         d.succCount = temp.length;
@@ -393,7 +393,7 @@ exports.succRateGeo = async (req) => {
  * API请求-APi成功率(终端分布)
  * @param {*} req 
  */
-exports.succTerminal = async (req) => {
+exports.succTerminal = async(req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
@@ -409,35 +409,35 @@ exports.succTerminal = async (req) => {
         groupByCon = '$pageWh';
     }
     let r = await ApiModel.aggregate([{
-        "$match": {
-            "createTime": { '$gte': body.sTime, '$lt': body.eTime },
-            "appKey": appKey,
-            "api": body.apiName
+            "$match": {
+                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+                "appKey": appKey,
+                "api": body.apiName
+            }
+        },
+        {
+            "$group": {
+                "_id": groupByCon,
+                "apiList": { '$push': { 'success': '$success' } }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                'terminal': '$_id',
+                'apiList': 1,
+            }
+        },
+        {
+            "$sort": {
+                'createTime': 1
+            }
         }
-    },
-    {
-        "$group": {
-            "_id": groupByCon,
-            "apiList": { '$push': { 'success': '$success' } }
-        }
-    },
-    {
-        "$project": {
-            "_id": 0,
-            'terminal': '$_id',
-            'apiList': 1,
-        }
-    },
-    {
-        "$sort": {
-            'createTime': 1
-        }
-    }
     ]);
 
     r.forEach(d => {
         let temp = [];
-        temp = _.filter(d.apiList, function (e) {
+        temp = _.filter(d.apiList, function(e) {
             return e.success;
         });
         d.succRate = temp.length / d.apiList.length;
@@ -452,35 +452,35 @@ exports.succTerminal = async (req) => {
  * API请求-MSG聚类(msg调用详情)
  * @param {*} req 
  */
-exports.msgCallDetails = async (req) => {
+exports.msgCallDetails = async(req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
     let r = await ApiModel.aggregate([{
-        "$match": {
-            "createTime": { '$gte': body.sTime, '$lt': body.eTime },
-            "appKey": appKey,
-            "msg": body.msg
+            "$match": {
+                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+                "appKey": appKey,
+                "msg": body.msg
+            }
+        },
+        {
+            "$group": {
+                "_id": { "api": '$api', "code": "$code" },
+                "list": { '$push': { 'success': '$success' } }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                'groupName': '$_id',
+                'list': 1,
+            }
+        },
+        {
+            "$sort": {
+                'createTime': 1
+            }
         }
-    },
-    {
-        "$group": {
-            "_id": { "api": '$api', "code": "$code" },
-            "list": { '$push': { 'success': '$success' } }
-        }
-    },
-    {
-        "$project": {
-            "_id": 0,
-            'groupName': '$_id',
-            'list': 1,
-        }
-    },
-    {
-        "$sort": {
-            'createTime': 1
-        }
-    }
     ]);
 
     r.forEach(d => {
@@ -499,35 +499,35 @@ exports.msgCallDetails = async (req) => {
  * API请求-MSG聚类(地理分布)
  * @param {*} req 
  */
-exports.msgGeo = async (req) => {
+exports.msgGeo = async(req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
     let r = await ApiModel.aggregate([{
-        "$match": {
-            "createTime": { '$gte': body.sTime, '$lt': body.eTime },
-            "appKey": appKey,
-            "msg": body.msg
+            "$match": {
+                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+                "appKey": appKey,
+                "msg": body.msg
+            }
+        },
+        {
+            "$group": {
+                "_id": "$mostSpecificSubdivision_nameCN",
+                "list": { '$push': { 'success': '$success' } }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                'provice': '$_id',
+                'list': 1,
+            }
+        },
+        {
+            "$sort": {
+                'createTime': 1
+            }
         }
-    },
-    {
-        "$group": {
-            "_id": "$mostSpecificSubdivision_nameCN",
-            "list": { '$push': { 'success': '$success' } }
-        }
-    },
-    {
-        "$project": {
-            "_id": 0,
-            'provice': '$_id',
-            'list': 1,
-        }
-    },
-    {
-        "$sort": {
-            'createTime': 1
-        }
-    }
     ]);
 
     r.forEach(d => {
@@ -542,7 +542,7 @@ exports.msgGeo = async (req) => {
  * API请求-MSG聚类(终端分布)
  * @param {*} req 
  */
-exports.msgTerminal = async (req) => {
+exports.msgTerminal = async(req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
@@ -558,30 +558,30 @@ exports.msgTerminal = async (req) => {
         groupByCon = "$pageWh";
     }
     let r = await ApiModel.aggregate([{
-        "$match": {
-            "createTime": { '$gte': body.sTime, '$lt': body.eTime },
-            "appKey": appKey,
-            "msg": body.msg
+            "$match": {
+                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+                "appKey": appKey,
+                "msg": body.msg
+            }
+        },
+        {
+            "$group": {
+                "_id": groupByCon,
+                "list": { '$push': { 'success': '$success' } }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                'terminal': '$_id',
+                'list': 1,
+            }
+        },
+        {
+            "$sort": {
+                'createTime': 1
+            }
         }
-    },
-    {
-        "$group": {
-            "_id": groupByCon,
-            "list": { '$push': { 'success': '$success' } }
-        }
-    },
-    {
-        "$project": {
-            "_id": 0,
-            'terminal': '$_id',
-            'list': 1,
-        }
-    },
-    {
-        "$sort": {
-            'createTime': 1
-        }
-    }
     ]);
 
     r.forEach(d => {
@@ -597,50 +597,50 @@ exports.msgTerminal = async (req) => {
  * API请求-APi成功或失败耗时
  * @param {*} req 
  */
-exports.succOrFailTimes = async (req) => {
+exports.succOrFailTimes = async(req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtimeAndTimeDivider(body);
     let isSucc = body.isSucc;
 
     let r = await ApiModel.aggregate([{
-        "$match": {
-            "createTime": { '$gte': body.sTime, '$lt': body.eTime },
-            "appKey": appKey,
-            "api": body.apiName,
-            'success': isSucc
+            "$match": {
+                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+                "appKey": appKey,
+                "api": body.apiName,
+                'success': isSucc
+            }
+        },
+        {
+            "$group": {
+                "_id": {
+                    "$subtract": [
+                        { "$subtract": ["$createTime", new Date(0)] },
+                        {
+                            "$mod": [
+                                { "$subtract": ["$createTime", new Date(0)] },
+                                body.timeDivider /*聚合时间段*/
+                            ]
+                        }
+                    ]
+                },
+                "apiList": { '$push': { 'api': '$api' } },
+                "avgTime": { "$avg": "$time" }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                'avgTime': 1,
+                'count': { "$size": '$apiList' },
+                'createTime': { '$add': [new Date(0), '$_id'] }
+            }
+        },
+        {
+            "$sort": {
+                'createTime': 1
+            }
         }
-    },
-    {
-        "$group": {
-            "_id": {
-                "$subtract": [
-                    { "$subtract": ["$createTime", new Date(0)] },
-                    {
-                        "$mod": [
-                            { "$subtract": ["$createTime", new Date(0)] },
-                            body.timeDivider /*聚合时间段*/
-                        ]
-                    }
-                ]
-            },
-            "apiList": { '$push': { 'api': '$api' } },
-            "avgTime": { "$avg": "$time" }
-        }
-    },
-    {
-        "$project": {
-            "_id": 0,
-            'avgTime': 1,
-            'count': { "$size": '$apiList' },
-            'createTime': { '$add': [new Date(0), '$_id'] }
-        }
-    },
-    {
-        "$sort": {
-            'createTime': 1
-        }
-    }
     ]);
     return r;
 };
@@ -650,40 +650,40 @@ exports.succOrFailTimes = async (req) => {
  * API请求-APi成功或失败耗时(地理分布)
  * @param {*} req 
  */
-exports.elapsedTimeGeo = async (req) => {
+exports.elapsedTimeGeo = async(req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
     let isSucc = body.isSucc;
 
     let r = await ApiModel.aggregate([{
-        "$match": {
-            "createTime": { '$gte': body.sTime, '$lt': body.eTime },
-            "appKey": appKey,
-            "api": body.apiName,
-            'success': isSucc
+            "$match": {
+                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+                "appKey": appKey,
+                "api": body.apiName,
+                'success': isSucc
+            }
+        },
+        {
+            "$group": {
+                "_id": "$mostSpecificSubdivision_nameCN",
+                "apiList": { '$push': { 'api': '$api' } },
+                "avgTime": { "$avg": "$time" }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                'avgTime': 1,
+                'times': { "$size": '$apiList' },
+                'provice': '$_id'
+            }
+        },
+        {
+            "$sort": {
+                'times': -1
+            }
         }
-    },
-    {
-        "$group": {
-            "_id": "$mostSpecificSubdivision_nameCN",
-            "apiList": { '$push': { 'api': '$api' } },
-            "avgTime": { "$avg": "$time" }
-        }
-    },
-    {
-        "$project": {
-            "_id": 0,
-            'avgTime': 1,
-            'times': { "$size": '$apiList' },
-            'provice': '$_id'
-        }
-    },
-    {
-        "$sort": {
-            'times': -1
-        }
-    }
     ]);
     return r;
 };
@@ -692,7 +692,7 @@ exports.elapsedTimeGeo = async (req) => {
  * API请求-APi成功或失败耗时(终端分布)
  * @param {*} req 
  */
-exports.elapsedTimeTerminal = async (req) => {
+exports.elapsedTimeTerminal = async(req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
@@ -709,31 +709,31 @@ exports.elapsedTimeTerminal = async (req) => {
         groupName = "$pageWh";
     }
     let r = await ApiModel.aggregate([{
-        "$match": {
-            "createTime": { '$gte': body.sTime, '$lt': body.eTime },
-            "appKey": appKey,
-            "api": body.apiName,
-            'success': isSucc
+            "$match": {
+                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+                "appKey": appKey,
+                "api": body.apiName,
+                'success': isSucc
+            }
+        },
+        {
+            "$group": {
+                "_id": groupName,
+                "avgTime": { "$avg": "$time" }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                'avgTime': 1,
+                'terminal': '$_id'
+            }
+        },
+        {
+            "$sort": {
+                'avgTime': -1
+            }
         }
-    },
-    {
-        "$group": {
-            "_id": groupName,
-            "avgTime": { "$avg": "$time" }
-        }
-    },
-    {
-        "$project": {
-            "_id": 0,
-            'avgTime': 1,
-            'terminal': '$_id'
-        }
-    },
-    {
-        "$sort": {
-            'avgTime': -1
-        }
-    }
     ]);
     return r;
 };
@@ -743,49 +743,49 @@ exports.elapsedTimeTerminal = async (req) => {
  * 访问页面-APi详情
  * @param {*} req 
  */
-exports.apiCase = async (req) => {
+exports.apiCase = async(req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
     let r = await ApiModel.aggregate([{
-        "$match": {
-            "createTime": { '$gte': body.sTime, '$lt': body.eTime },
-            "appKey": appKey,
-            "page": body.keywords
-        }
-    },
-    {
-        "$group": {
-            "_id": 'api',
-            "avgTime": { "$avg": "$time" },
-            "codeDetailsList": {
-                "$push": {
-                    "code": '$code',
-                    "createTime": "$createTime",
-                    "isSuccess": "$success",
-                    "time": "$time"
-                }
+            "$match": {
+                "createTime": { '$gte': body.sTime, '$lt': body.eTime },
+                "appKey": appKey,
+                "page": body.keywords
             }
+        },
+        {
+            "$group": {
+                "_id": '$api',
+                "avgTime": { "$avg": "$time" },
+                "codeDetailsList": {
+                    "$push": {
+                        "code": '$code',
+                        "createTime": "$createTime",
+                        "isSuccess": "$success",
+                        "time": "$time"
+                    }
+                }
 
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                'avgTime': 1,
+                'apiName': '$_id',
+                'codeDetailsList': 1,
+                'requestCount': { "$size": "$codeDetailsList" }
+            }
+        },
+        {
+            "$sort": {
+                'avgTime': -1
+            }
         }
-    },
-    {
-        "$project": {
-            "_id": 0,
-            'avgTime': 1,
-            'apiName': '$_id',
-            'codeDetailsList': 1,
-            'requestCount': { "$size": "$codeDetailsList" }
-        }
-    },
-    {
-        "$sort": {
-            'avgTime': -1
-        }
-    }
     ]);
     _.each(r, (el) => {
-        let temp = _.filter(el.codeDetailsList, function (d) {
+        let temp = _.filter(el.codeDetailsList, function(d) {
             return d.isSuccess;
         });
         el.successRate = temp.length / el.requestCount

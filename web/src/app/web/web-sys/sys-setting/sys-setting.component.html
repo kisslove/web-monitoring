@@ -18,6 +18,10 @@
         手动上传JS错误:
         <label nz-checkbox (ngModelChange)="settingChange2($event)" [ngModel]="currentSite.disableJS">需手动上传JS错误，调用__ml.error()方法上报。</label>
     </div>
+    <div class="setting-gutter">
+        上报资源加载情况:
+        <label nz-checkbox (ngModelChange)="settingChange3($event)" [ngModel]="currentSite.disableResource">勾选此项，开启页面请求资源上报。</label>
+    </div>
     <nz-divider></nz-divider>
     <h3>复制/粘贴BI探针</h3>
     <p>复制下方的代码，将其粘贴在页面HTML的body中。</p>

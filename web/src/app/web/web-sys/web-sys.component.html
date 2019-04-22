@@ -4,10 +4,11 @@
     line-height: 70px;
     text-align: center;
     background: #D9DEE4;
+    z-index: 10;
     width: 200px;">
     <span title="系统列表" style="cursor: pointer;" [routerLink]="[ '/dashboard']"> o(*￣︶￣*)o</span>
 </nz-layout>
-<nz-layout class="sys-header">
+<nz-layout class="sys-header" style="min-width:1000px;">
     <div style="margin: auto 5px;position:relative;">
         <nz-divider style="width: 3px;background: #1890ff;margin-right: 0;" nzType="vertical"></nz-divider>
         <nz-select class="custom-select" style="min-width: 120px;" (ngModelChange)="selectedSysChange($event)" [ngModel]="currentSelectedSys">
@@ -54,7 +55,7 @@
     </nz-layout>
 </div>
 <div #centerContent style="overflow:auto;">
-    <nz-layout style="margin-left: 200px;min-width: 600px;">
+    <nz-layout style="margin-left: 200px;min-width: 1000px;">
         <nz-content style="background:#fff;  min-height: 280px;">
             <router-outlet></router-outlet>
         </nz-content>
