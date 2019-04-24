@@ -15,11 +15,13 @@
             <nz-option *ngFor="let item of sysItems" [nzValue]="item.appKey" [nzLabel]="item.appName"></nz-option>
         </nz-select>
         <div style="position: absolute;top: 0;right: 8px;">
+            <button *ngIf="!isFullScreen" style="margin: 0 8px;" (click)="fullScreen()" nz-button nzType="default"><i nz-icon type="arrows-alt" theme="outline"></i>进入全屏</button>
+            <button *ngIf="isFullScreen" style="margin: 0 8px;" (click)="exitFullScreen()" nz-button nzType="default"><i nz-icon type="shrink" theme="outline"></i>退出全屏(Esc)</button>
             <nz-badge nzDot><button nz-button nz-popover nzPlacement="left" [nzTitle]="null" [nzContent]="contentTemplate" nzTrigger="click" nzType="default"><i class="anticon anticon-question"></i>帮助文档</button></nz-badge>
-            <span *ngIf="showGlobalTimer" style="vertical-align: middle;;padding: 8px;border: solid 1px #d9d9d9;margin: 0 8px;display: inline-block;line-height: 1;">
+            <span *ngIf="showGlobalTimer" style="padding: 8px;border: solid 1px #d9d9d9;margin: 0 8px;display: inline-block;line-height: 1;">
                   <app-time-choice-panel (selectOver)="selectOver($event)" [time]="4"></app-time-choice-panel>
-              </span>
-        </div>
+              </span> 
+        </div>  
     </div>
 </nz-layout>
 <ng-template #contentTemplate>
