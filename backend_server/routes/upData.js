@@ -15,23 +15,23 @@ router.get('', util.getIp, function(req, res, next) {
     switch (req.query.type) {
         case 'pv':
             pvInfo.create(temp);
-            res.json({ state: 'ok' });
+            res.status(200).end();
             break;
         case 'js':
             jsError.create(temp);
-            res.json({ state: 'ok' });
+            res.status(200).end();
             break;
         case 'api':
             apiInfo.create(temp);
-            res.json({ state: 'ok' });
+            res.status(200).end();
             break;
         case 'perf':
             perfInfo.create(temp);
-            res.json({ state: 'ok' });
+            res.status(200).end();
             break;
         case 'resource':
             resourceInfo.create(temp);
-            res.json({ state: 'ok' });
+            res.status(200).end();
             break;
         default:
             break;
