@@ -41,57 +41,62 @@ export class WebSysComponent {
       label: '应用总览',
       value: 'index',
       isActive: false,
-      icon: 'anticon anticon-laptop'
+      icon: 'laptop'
     }, {
       label: '访问页面',
       value: 'visitPage',
       isActive: false,
-      icon: 'anticon anticon-switcher'
+      icon: 'switcher'
     }, {
       label: '访问速度',
       value: 'visitSpeed',
       isActive: false,
-      icon: 'anticon anticon-line-chart'
+      icon: 'line-chart'
     },
     // { 
     //   label:'JS错误率',
     //   value:'jsError',
     //   isActive:false,
-    //   icon:'anticon anticon-exception'
+    //   icon:'exception'
     // }
     // ,
     {
       label: 'API请求',
       value: 'apiReq',
       isActive: false,
-      icon: 'anticon anticon-api'
+      icon: 'api'
     }, {
       label: '地理',
       value: 'visitGeo',
       isActive: false,
-      icon: 'anticon anticon-global'
+      icon: 'global'
     }, {
       label: '终端',
       value: 'visitOs',
       isActive: false,
-      icon: 'anticon anticon-ie'
+      icon: 'ie'
+    }, {
+      label: '资源加载详情',
+      value: 'resourceDetails',
+      isActive: false,
+      icon: 'radar-chart'
     }, {
       label: '访问明细',
       value: 'visitDetails',
       isActive: false,
-      icon: 'anticon anticon-file'
+      icon: 'file'
     }
       // ,{
       //   label:'后端日志',
       //   value:'backendLog',
       //   isActive:false,
-      //   icon:'anticon anticon-profile'
+      //   icon:'profile'
       // }
       , {
       label: '应用设置',
       value: 'setting',
       isActive: false,
-      icon: 'anticon anticon-setting'
+      icon: 'setting'
     }];
   }
   ngOnInit(): void {

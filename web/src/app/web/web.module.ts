@@ -17,6 +17,7 @@ import { ApiRequestComponent } from './web-sys/api-request/api-request.component
 import { VisitDetailsComponent } from './web-sys/visit-details/visit-details.component';
 import { VisitGeoComponent } from './web-sys/visit-geo/visit-geo.component';
 import { VisitOsComponent } from './web-sys/visit-os/visit-os.component';
+import { ResourceLoadDetailsComponent } from './web-sys/resource-load-details/resource-load-details.component';
 const routes: Routes = [
   {
     path: '', component: WebSysComponent, children: [
@@ -39,6 +40,8 @@ const routes: Routes = [
       { path: 'visitGeo', component: VisitGeoComponent },
       // 终端
       { path: 'visitOs', component: VisitOsComponent },
+       // 资源加载详情
+       { path: 'resourceDetails', component: ResourceLoadDetailsComponent },
       // 后端日志
       { path: 'backendLog', component: BackendLogComponent }
     ]
@@ -53,6 +56,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     PublicModule
   ],
-  declarations: [BackendLogComponent,WebSysComponent, SysIndexComponent, SysSettingComponent, VisitPageComponent, VisitSpeedComponent, JsErrorComponent, ApiRequestComponent, VisitDetailsComponent, VisitGeoComponent, VisitOsComponent]
+  declarations: [BackendLogComponent,WebSysComponent, SysIndexComponent, SysSettingComponent, VisitPageComponent, VisitSpeedComponent, JsErrorComponent, ApiRequestComponent, ResourceLoadDetailsComponent, VisitDetailsComponent, VisitGeoComponent, VisitOsComponent]
 })
 export class WebModule { }

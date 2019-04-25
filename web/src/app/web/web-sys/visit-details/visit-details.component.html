@@ -55,7 +55,6 @@
                 <th *ngIf="searchModel.type=='api'" nzWidth="80px">Code</th>
                 <th *ngIf="searchModel.type=='api'" nzWidth="120px">IsSuccess</th>
                 <th *ngIf="searchModel.type=='api'" nzWidth="120px">Time</th>
-
                 <th *ngIf="searchModel.type=='js'" nzWidth="200px">Error</th>
             </tr>
         </thead>
@@ -86,7 +85,7 @@
                     <nz-popover [nzTitle]="" [nzPlacement]="'left'">
                         <span nz-popover>{{data.error?.substr(0,100)}}</span>
                         <ng-template #nzTemplate>
-                            <div>{{data.error}}</div>
+                            <div style="width: 400px;word-break: break-all;">{{data.error}}</div>
                         </ng-template>
                     </nz-popover>
                 </td>

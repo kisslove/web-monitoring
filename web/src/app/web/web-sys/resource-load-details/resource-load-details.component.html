@@ -1,0 +1,57 @@
+<div nz-row style="padding:24px;" [@routeAnimation]>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="4">
+            <input nz-input [(ngModel)]="searchModel.keywords" placeholder="请输入要查询的关键字">
+        </div>
+        <div nz-col [nzSpan]="9">
+            <nz-range-picker [style]="{width:'100%'}" [nzShowTime]="{ nzFormat: 'HH:mm' }" nzFormat="yyyy-MM-dd HH:mm" (nzOnOk)="onOk($event)" [ngModel]="[searchModel.sTime,searchModel.eTime]"></nz-range-picker>
+        </div>
+        <div nz-col [nzSpan]="2">
+            <button nz-button (click)="searchData()" nzType="primary">搜索</button>
+        </div>
+    </div>
+    <div nz-row style="margin-bottom: 16px;margin-top: 16px;margin-left: -4px;">
+        <div nz-col [nzSpan]="24">
+            <nz-radio-group [ngModel]="searchModel.type" (ngModelChange)="searchModelType($event)" [nzButtonStyle]="'solid'">
+                <label nz-radio-button nzValue="">全部</label>
+                <label nz-radio-button nzValue="xmlhttprequest">XHR</label>
+                <label nz-radio-button nzValue="script">JS</label>
+                <label nz-radio-button nzValue="img">Img</label>
+                <label nz-radio-button nzValue="css">CSS</label>
+                <!-- <label nz-radio-button nzValue="D">Font</label>
+            <label nz-radio-button nzValue="D">Doc</label>
+            <label nz-radio-button nzValue="D">WS</label> -->
+                <label nz-radio-button nzValue="other">Other</label>
+            </nz-radio-group>
+        </div>
+    </div>
+    <nz-table #nzTable [nzData]="dataSet" [nzScroll]="tableScrollSetting" [nzFrontPagination]="false" [nzLoading]="loading" [nzShowPagination]="false">
+        <thead>
+            <tr>
+                <th nzWidth="160px">name</th>
+                <th nzWidth="160px">count</th>
+                <th nzWidth="120px">initiatorType</th>
+                <th nzWidth="200px">entryType</th>
+                <th nzWidth="100px">size</th>
+                <th nzWidth="100px">time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of nzTable.data">
+                <td>
+                    <nz-popover [nzTitle]="" [nzPlacement]="'right'">
+                        <span nz-popover>{{data.rUrl?.substr(0,100)}}</span>
+                        <ng-template #nzTemplate>
+                            <div style="width: 400px;word-break: break-all;">{{data.rUrl}}</div>
+                        </ng-template>
+                    </nz-popover>
+                </td>
+                <td>{{data.count}}</td>
+                <td>{{data.rInitiatorType}}</td>
+                <td>{{data.rEntryType}}</td>
+                <td>{{data.rSize||0}}KB</td>
+                <td>{{data.rDuration}}ms</td>
+            </tr>
+        </tbody>
+    </nz-table>
+</div>

@@ -38,10 +38,10 @@ export class HomepageComponent implements OnInit {
     setTimeout(()=>{
       this.isLogin=this.user.getToken()?true:false;
     },1000)
-    let temp: any = document.querySelector("#video-index");
-    temp.style = `width:100%;height:auto;`;
+    let temp: any = document.querySelector("#home-section");
+    temp.style = `width:100%;height:${document.body.clientHeight-50}px;`;
   }
-
+ 
   login() {
     let pwd = this.encrypt(this.model.password);
     this.http.post("User/login", {

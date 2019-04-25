@@ -7,6 +7,7 @@ var pvInfo = require('../business/pvInfo');
 var apiInfo = require('../business/apiInfo');
 var perfInfo = require('../business/perfInfo');
 var jsError = require('../business/jsError');
+var resourceInfo = require('../business/resourceInfo');
 /* dashboard */
 router.post('/SiteList', site.list);
 router.get('/SiteList', site.list);
@@ -15,7 +16,22 @@ router.post('/RegisterSite', site.create);
 //应用设置
 router.post('/SiteSet', site.update);
 
-//应用总览
+//资源加载情况
+router.post('/resourceListStatis', function(req, res, next) {
+    resourceInfo.resourceListStatis(req).then((r) => {
+        res.json(util.resJson({
+            IsSuccess: true,
+            Data: r
+        }));
+    }, (err) => {
+        console.error(err);
+        res.json(util.resJson({
+            IsSuccess: false,
+            Data: null
+        }));
+    });
+});
+
 // pv/uv
 router.post('/PvAndUvStatis', function(req, res, next) {
     pvInfo.pvAndUvStatis(req).then((r) => {

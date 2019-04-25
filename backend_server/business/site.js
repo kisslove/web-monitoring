@@ -3,8 +3,8 @@ var SiteModel = require('../models/siteModel');
 var util = require('../utils/util');
 var mongoose = require('mongoose');
 /* system listing. */
-exports.list = function (req, res, next) {
-    SiteModel.find({userId:req.userId}, function (err, r) {
+exports.list = function(req, res, next) {
+    SiteModel.find({ userId: req.userId }, function(err, r) {
         if (!err) {
             res.json(util.resJson({
                 IsSuccess: true,
@@ -19,7 +19,7 @@ exports.list = function (req, res, next) {
     })
 };
 
-exports.create = function (req, res, next) {
+exports.create = function(req, res, next) {
     var ObjectId = mongoose.Types.ObjectId;
     var id1 = new ObjectId;
     var temp = new SiteModel({
@@ -28,9 +28,9 @@ exports.create = function (req, res, next) {
         disableJS: false,
         appKey: id1,
         id: id1,
-        userId:req.userId
+        userId: req.userId
     });
-    temp.save(function (err, r) {
+    temp.save(function(err, r) {
         console.log(err);
 
         if (!err) {
@@ -49,14 +49,15 @@ exports.create = function (req, res, next) {
 };
 
 
-exports.update = function (req, res, next) {
+exports.update = function(req, res, next) {
     let id = new Mongoose.Types.ObjectId(req.body.id);
     SiteModel.findOneAndUpdate({
         id: id
     }, {
         disableHook: req.body.disableHook,
-        disableJS: req.body.disableJS
-    }, function (err, r) {
+        disableJS: req.body.disableJS,
+        disableResource: req.body.disableResource
+    }, function(err, r) {
         if (!err) {
             res.json(util.resJson({
                 IsSuccess: true,

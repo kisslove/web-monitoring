@@ -21,7 +21,8 @@ var schema = new Schema({
     rUrl: String,
     rEntryType: String,
     rInitiatorType: String,
-    rDuration: Number //单位ms
+    rDuration: Number, //单位ms
+    rSize: Number
 });
 
 module.exports = mongoose.model('ResourceDataInfo', schema);

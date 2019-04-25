@@ -4,7 +4,7 @@ var _ = require('lodash');
 var util = require('../utils/util');
 
 /**
- * API请求-list
+ * resource-list
  * @param {*} req 
  */
 exports.list = async(req) => {
@@ -54,4 +54,74 @@ exports.create = (data) => {
             console.error(err);
         }
     });
+};
+
+/**
+ * 资源加载-列表
+ * @param {*} req 
+ */
+exports.resourceListStatis = async(req) => {
+    let body = req.body;
+    let appKey = new Mongoose.Types.ObjectId(body.appKey);
+    body = util.computeSTimeAndEtime(body);
+    let match = '';
+    match = body.type ? {
+        "createTime": {
+            '$gte': body.sTime,
+            '$lt': body.eTime
+        },
+        "appKey": appKey,
+        "rUrl": {
+            '$regex': new RegExp(`${body.keywords}.*`, "gi")
+        },
+        "rInitiatorType": body.type
+    } : {
+        "createTime": {
+            '$gte': body.sTime,
+            '$lt': body.eTime
+        },
+        "appKey": appKey,
+        "rUrl": {
+            '$regex': new RegExp(`${body.keywords}.*`, "gi")
+        }
+    };
+    r = await ResourceModel.aggregate([{
+            "$match": match
+        },
+        {
+            "$group": {
+                "_id": '$rUrl',
+                "timeList": {
+                    '$push': '$rDuration'
+                },
+                "list": {
+                    '$push': { 'rEntryType': '$rEntryType', 'rInitiatorType': '$rInitiatorType', 'rSize': '$rSize' }
+                }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                'rUrl': "$_id",
+                "rDuration": {
+                    "$avg": '$timeList'
+                },
+                'list': 1
+            }
+        },
+        {
+            "$sort": {
+                'rUrl': -1
+            }
+        }
+    ]);
+    let tempTotal = 0;
+    _.each(r, (el) => {
+        el.count = el.list.length;
+        el.rDuration = parseInt(el.rDuration);
+        Object.assign(el, el.list[0]);
+        el.rSize = el.rSize ? parseFloat(el.rSize / 1024).toFixed(2) : 0;
+        delete el['list'];
+    });
+    return r;
 };

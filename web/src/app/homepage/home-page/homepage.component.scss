@@ -1,52 +1,58 @@
 #home-section {
-  margin-top: 50px;
-  position: relative;
-
-  #deccription {
-    position: absolute;
-    top: 35%;
-    text-align: center;
-    left: 0;
-    right: 0;
-
-    .title {
-      color: #fff;
-      font-size: 80px;
-    }
-
-    .opt {
-      button {
-        width: 200px;
-        height: 40px;
-        line-height: 40px;
-        color: #fff;
-        border: solid 1px #fff;
-        border-radius: 18px;
-        background: rgba(217, 217, 217, 0);
-
-        &:hover {
-          background: #fff !important;
-          color: #333;
-          cursor: pointer;
-          transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-top: 50px;
+    position: relative;
+    background: url('../../../assets/images/home.jpg') no-repeat;
+    background-position: center;
+    background-size: cover;
+    #deccription {
+        position: absolute;
+        top: 50%;
+        text-align: center;
+        left: 0;
+        right: 0;
+        width: 800px;
+        height: 500px;
+        margin: auto;
+        border-radius: 20px;
+        box-shadow: 1px 1px 40px #1890ff;
+        padding: 8px;
+        padding-top: 160px;
+        margin-top: -250px;
+        .title {
+            color: #fff;
+            font-size: 80px;
         }
-      }
+        .opt {
+            button {
+                width: 200px;
+                height: 40px;
+                line-height: 40px;
+                color: #fff;
+                border: solid 1px #fff;
+                border-radius: 18px;
+                background: rgba(217, 217, 217, 0);
+                &:hover {
+                    background: #fff !important;
+                    color: #333;
+                    cursor: pointer;
+                    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                }
+            }
+        }
     }
-  }
 }
-
 
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
-  .title {
-    font-size: 20px !important;
-  }
-  .opt {
-    button {
-      width: 100px !important;
-      height: 24px !important;
-      line-height: 24px !important;
-      border-radius: 8px !important;
+    .title {
+        font-size: 20px !important;
     }
-  }
+    .opt {
+        button {
+            width: 100px !important;
+            height: 24px !important;
+            line-height: 24px !important;
+            border-radius: 8px !important;
+        }
+    }
 }
