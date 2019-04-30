@@ -380,6 +380,9 @@ export class VisitSpeedComponent implements OnInit {
             fpt: parseInt(val.fpt)
           });
         });
+        tempData.sort(function(a,b){
+          return a.value>b.value?-1:1;
+        })
         this.mapData = _.cloneDeep(tempData);
         this.renderGeoChart(type, tempData);
       }
@@ -423,7 +426,11 @@ export class VisitSpeedComponent implements OnInit {
           val.speed=parseInt(val.speed);
         })
         this.bsData=d.Data;
+        this.bsData.sort(function(a,b){
+          return a.speed>b.speed?-1:1;
+        })
       }
+     
       this.isSpinning.spin7 = false;
     })
   }
@@ -444,6 +451,9 @@ export class VisitSpeedComponent implements OnInit {
           val.speed=parseInt(val.speed);
         })
         this.osData=d.Data;
+        this.osData.sort(function(a,b){
+          return a.speed>b.speed?-1:1;
+        })
       }
       this.isSpinning.spin8 = false;
     })
@@ -465,6 +475,9 @@ export class VisitSpeedComponent implements OnInit {
           val.speed=parseInt(val.speed);
         })
         this.whData=d.Data;
+        this.whData.sort(function(a,b){
+          return a.speed>b.speed?-1:1;
+        })
       }
       this.isSpinning.spin9 = false;
     })

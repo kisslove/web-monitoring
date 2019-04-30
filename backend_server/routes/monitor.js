@@ -17,8 +17,8 @@ router.post('/RegisterSite', site.create);
 router.post('/SiteSet', site.update);
 
 //资源加载情况
-router.post('/resourceListStatis', function(req, res, next) {
-    resourceInfo.resourceListStatis(req).then((r) => {
+router.post('/resourceList', function(req, res, next) {
+    resourceInfo.list(req).then((r) => {
         res.json(util.resJson({
             IsSuccess: true,
             Data: r

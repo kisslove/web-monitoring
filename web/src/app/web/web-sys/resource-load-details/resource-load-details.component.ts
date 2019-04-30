@@ -23,7 +23,9 @@ export class ResourceLoadDetailsComponent implements OnInit {
     type:'',
     sTime:null,
     eTime:null,
-    appKey:''
+    appKey:'',
+    pageSize:100, 
+    pageIndex:1
   };
   constructor(
     private http:HttpClient,
@@ -37,22 +39,25 @@ export class ResourceLoadDetailsComponent implements OnInit {
     this.searchModel.sTime=new Date(new Date().setDate(new Date().getDate()-1));
     this.searchModel.eTime=new Date();
     this.searchModel.appKey=this.appKey;
-    this.searchData();
+    this.searchData(true);
   }
 
   searchModelType(e){
     this.searchModel.type=e;
-    this.searchData();
+    this.searchData(true);
   }
 
-  searchData(): void {
+  searchData(reset:boolean=false): void {
+    if (reset) {
+      this.searchModel.pageIndex = 1;
+    }
     this.loading = true;
     this.searchModel.keywords=this.searchModel.keywords.trim();
-    this.http.post("Monitor/resourceListStatis",this.searchModel).subscribe((data:any) => {
+    this.http.post("Monitor/resourceList",this.searchModel).subscribe((data:any) => {
       if (data.IsSuccess) {
-        this.total=data.Data.length
         this.loading = false;
-        this.dataSet=data.Data;
+        this.total=data.Data.TotalCount;
+        this.dataSet=data.Data.List;
       } else {
         this.msg.error("数据加载失败");
       }
@@ -61,6 +66,7 @@ export class ResourceLoadDetailsComponent implements OnInit {
 
   ngAfterContentInit(): void {
     this.broadcaster.broadcast('showGlobalTimer',false);
+    (window as any).globalTime=null;
   }
 
   onOk(data){

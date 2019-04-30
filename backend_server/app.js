@@ -9,6 +9,7 @@ var upDataRouter = require('./routes/upData');
 var userRouter = require('./routes/user');
 var util=require("./utils/util");
 var mongoose = require('mongoose');
+var fs=require('fs');
 mongoose.connect("mongodb://localhost:27017/monitor2", {
     socketTimeoutMS: 0,
     keepAlive: true,
@@ -22,6 +23,9 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+//日志
+var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
+app.use(logger('short', {stream: accessLogStream}));
 app.use(logger('dev'));
 
 app.use(express.json());

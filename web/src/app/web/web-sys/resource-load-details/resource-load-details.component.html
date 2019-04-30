@@ -7,7 +7,7 @@
             <nz-range-picker [style]="{width:'100%'}" [nzShowTime]="{ nzFormat: 'HH:mm' }" nzFormat="yyyy-MM-dd HH:mm" (nzOnOk)="onOk($event)" [ngModel]="[searchModel.sTime,searchModel.eTime]"></nz-range-picker>
         </div>
         <div nz-col [nzSpan]="2">
-            <button nz-button (click)="searchData()" nzType="primary">搜索</button>
+            <button nz-button (click)="searchData(true)" nzType="primary">搜索</button>
         </div>
     </div>
     <div nz-row style="margin-bottom: 16px;margin-top: 16px;margin-left: -4px;">
@@ -16,24 +16,23 @@
                 <label nz-radio-button nzValue="">全部</label>
                 <label nz-radio-button nzValue="xmlhttprequest">XHR</label>
                 <label nz-radio-button nzValue="script">JS</label>
-                <label nz-radio-button nzValue="img">Img</label>
                 <label nz-radio-button nzValue="css">CSS</label>
-                <!-- <label nz-radio-button nzValue="D">Font</label>
-            <label nz-radio-button nzValue="D">Doc</label>
-            <label nz-radio-button nzValue="D">WS</label> -->
+                <label nz-radio-button nzValue="img">Img</label>
                 <label nz-radio-button nzValue="other">Other</label>
             </nz-radio-group>
         </div>
     </div>
-    <nz-table #nzTable [nzData]="dataSet" [nzScroll]="tableScrollSetting" [nzFrontPagination]="false" [nzLoading]="loading" [nzShowPagination]="false">
-        <thead>
+    <nz-table #nzTable [nzData]="dataSet" [nzScroll]="tableScrollSetting" [nzFrontPagination]="false" [nzLoading]="loading" [nzTotal]="total" [nzShowTotal]="totalTemplate" [(nzPageIndex)]="searchModel.pageIndex" [(nzPageSize)]="searchModel.pageSize" (nzPageIndexChange)="searchData()"
+    (nzPageSizeChange)="searchData(true)">
+        <thead> 
             <tr>
-                <th nzWidth="160px">name</th>
-                <th nzWidth="160px">count</th>
-                <th nzWidth="120px">initiatorType</th>
-                <th nzWidth="200px">entryType</th>
-                <th nzWidth="100px">size</th>
-                <th nzWidth="100px">time</th>
+                <th nzWidth="160px">Name</th>
+                <th nzWidth="160px">DateTime</th>
+                <th nzWidth="160px">IP</th>
+                <th nzWidth="120px">InitiatorType</th>
+                <th nzWidth="200px">EntryType</th>
+                <th nzWidth="100px">Size</th>
+                <th nzWidth="100px">Time</th>
             </tr>
         </thead>
         <tbody>
@@ -46,12 +45,14 @@
                         </ng-template>
                     </nz-popover>
                 </td>
-                <td>{{data.count}}</td>
+                <td>{{data.createTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                <td>{{data.onlineip}}</td>
                 <td>{{data.rInitiatorType}}</td>
                 <td>{{data.rEntryType}}</td>
-                <td>{{data.rSize||0}}KB</td>
-                <td>{{data.rDuration}}ms</td>
+                <td>{{data.rSize==0?'from cache':data.rSize+'KB'}}</td>
+                <td>{{data.rDuration.toString().substr(0,4)}}ms</td>
             </tr>
         </tbody>
     </nz-table>
+    <ng-template #totalTemplate let-total>共 {{total}} 条数据</ng-template>
 </div>

@@ -75,6 +75,7 @@ export class VisitDetailsComponent implements OnInit {
 
   ngAfterContentInit(): void {
     this.broadcaster.broadcast('showGlobalTimer',false);
+    (window as any).globalTime=null;
   }
 
   onOk(data){

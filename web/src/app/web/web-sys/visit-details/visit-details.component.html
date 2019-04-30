@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <nz-table #nzTable [nzData]="dataSet" [nzScroll]="tableScrollSetting" [nzFrontPagination]="false" [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="searchModel.pageIndex" [(nzPageSize)]="searchModel.pageSize" (nzPageIndexChange)="searchData()"
+    <nz-table #nzTable [nzShowTotal]="totalTemplate" [nzData]="dataSet" [nzScroll]="tableScrollSetting" [nzFrontPagination]="false" [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="searchModel.pageIndex" [(nzPageSize)]="searchModel.pageSize" (nzPageIndexChange)="searchData()"
         (nzPageSizeChange)="searchData(true)">
         <thead>
             <tr>
@@ -92,4 +92,5 @@
             </tr>
         </tbody>
     </nz-table>
+    <ng-template #totalTemplate let-total>共 {{total}} 条数据</ng-template>
 </div>

@@ -187,6 +187,9 @@ export class SysIndexComponent implements OnInit {
             uv:val.uv
           });
         });
+        tempData.sort(function(a,b){
+          return a.uv>b.uv?-1:1;
+        })
         this.mapData = _.cloneDeep(tempData);
         this.renderGeoChart(type,tempData);
       }

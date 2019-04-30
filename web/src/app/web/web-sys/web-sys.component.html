@@ -56,10 +56,7 @@
             <ul nz-menu [nzTheme]="'light'" [nzMode]="'inline'">
                 <li *ngFor="let item of leftNavItems" routerLinkActive="ant-menu-item-selected" style="margin: 0;" nz-menu-item [routerLink]="[ item.value ]">
                     <span>
-                        <nz-badge *ngIf="item.value=='resourceDetails'" nzDot>
-                            <i nz-icon [type]="item.icon"></i></nz-badge>
-                        <i *ngIf="item.value!='resourceDetails'" nz-icon
-                            [type]="item.icon"></i>
+                        <i nz-icon [type]="item.icon"></i>
                         <span class="nav-text">{{item.label}}</span>
                     </span>
                 </li>

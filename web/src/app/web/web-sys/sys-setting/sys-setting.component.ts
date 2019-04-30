@@ -129,6 +129,7 @@ export class SysSettingComponent implements OnInit {
 
   ngAfterContentInit(): void {
     this.broadcaster.broadcast('showGlobalTimer',false);
+    (window as any).globalTime=null;
   }
 
 }

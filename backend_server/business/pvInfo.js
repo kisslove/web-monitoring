@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var PvModel = require('../models/pvModel');
 var Mongoose = require('mongoose');
-var util=require('../utils/util');
+var util = require('../utils/util');
 //访问明细
 exports.list = async (req) => {
     let appKey = new Mongoose.Types.ObjectId(req.body.appKey);
@@ -61,7 +61,7 @@ exports.pvAndUvStatis = async (req) => {
         totalPv: 0,
         totalUv: 0
     };
-    body=util.computeSTimeAndEtimeAndTimeDivider(body);
+    body = util.computeSTimeAndEtimeAndTimeDivider(body);
     let matchCon = body.keywords ? {
         "$match": {
             "createTime": {
@@ -72,28 +72,28 @@ exports.pvAndUvStatis = async (req) => {
             "page": body.keywords
         }
     } : {
-        "$match": {
-            "createTime": {
-                '$gte': body.sTime,
-                '$lt': body.eTime
-            },
-            "appKey": appKey
-        }
-    };
+            "$match": {
+                "createTime": {
+                    '$gte': body.sTime,
+                    '$lt': body.eTime
+                },
+                "appKey": appKey
+            }
+        };
     let r = await PvModel.aggregate([matchCon,
         {
             "$group": {
                 "_id": {
                     "$subtract": [{
+                        "$subtract": ["$createTime", new Date(0)]
+                    },
+                    {
+                        "$mod": [{
                             "$subtract": ["$createTime", new Date(0)]
                         },
-                        {
-                            "$mod": [{
-                                    "$subtract": ["$createTime", new Date(0)]
-                                },
-                                body.timeDivider /*聚合时间段*/
-                            ]
-                        }
+                        body.timeDivider /*聚合时间段*/
+                        ]
+                    }
                     ]
                 },
                 "pageList": {
@@ -167,39 +167,39 @@ exports.pageTopStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     // count,page
-    body=util.computeSTimeAndEtime(body);
+    body = util.computeSTimeAndEtime(body);
     let r = [];
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey
-            }
-        },
-        {
-            "$group": {
-                "_id": "$page",
-                "pageList": {
-                    '$push': '$page'
-                },
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'page': "$_id",
-                "count": {
-                    "$size": '$pageList'
-                }
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey
+        }
+    },
+    {
+        "$group": {
+            "_id": "$page",
+            "pageList": {
+                '$push': '$page'
+            },
+        }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'page': "$_id",
+            "count": {
+                "$size": '$pageList'
             }
         }
+    },
+    {
+        "$sort": {
+            'count': -1
+        }
+    }
     ]).limit(body.top || 8);
     return r;
 };
@@ -211,43 +211,43 @@ exports.pageTopStatis = async (req) => {
 exports.geoStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body=util.computeSTimeAndEtime(body);
+    body = util.computeSTimeAndEtime(body);
     let r = [];
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey
-            }
-        },
-        {
-            "$group": {
-                "_id": "$mostSpecificSubdivision_nameCN",
-                "pageList": {
-                    '$push': '$page'
-                },
-                "ipList": {
-                    '$push': '$onlineip'
-                },
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'provice': "$_id",
-                "pv": {
-                    "$size": '$pageList'
-                },
-                "ipList": 1
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
-            }
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey
         }
+    },
+    {
+        "$group": {
+            "_id": "$mostSpecificSubdivision_nameCN",
+            "pageList": {
+                '$push': '$page'
+            },
+            "ipList": {
+                '$push': '$onlineip'
+            },
+        }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'provice': "$_id",
+            "pv": {
+                "$size": '$pageList'
+            },
+            "ipList": 1
+        }
+    },
+    {
+        "$sort": {
+            'count': -1
+        }
+    }
     ]);
     r.forEach(element => {
         element.pv = element.pv;
@@ -264,39 +264,39 @@ exports.geoStatis = async (req) => {
 exports.browserStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body=util.computeSTimeAndEtime(body);
+    body = util.computeSTimeAndEtime(body);
     let r = [];
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey
-            }
-        },
-        {
-            "$group": {
-                "_id": "$bs",
-                "pageList": {
-                    '$push': '$page'
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'bs': "$_id",
-                "count": {
-                    "$size": '$pageList'
-                },
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey
+        }
+    },
+    {
+        "$group": {
+            "_id": "$bs",
+            "pageList": {
+                '$push': '$page'
             }
         }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'bs': "$_id",
+            "count": {
+                "$size": '$pageList'
+            },
+        }
+    },
+    {
+        "$sort": {
+            'count': -1
+        }
+    }
     ]);
     return r;
 };
@@ -308,39 +308,39 @@ exports.browserStatis = async (req) => {
 exports.osStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body=util.computeSTimeAndEtime(body);
+    body = util.computeSTimeAndEtime(body);
     let r = [];
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey
-            }
-        },
-        {
-            "$group": {
-                "_id": "$os",
-                "pageList": {
-                    '$push': '$page'
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'os': "$_id",
-                "count": {
-                    "$size": '$pageList'
-                },
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey
+        }
+    },
+    {
+        "$group": {
+            "_id": "$os",
+            "pageList": {
+                '$push': '$page'
             }
         }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'os': "$_id",
+            "count": {
+                "$size": '$pageList'
+            },
+        }
+    },
+    {
+        "$sort": {
+            'count': -1
+        }
+    }
     ]);
     return r;
 };
@@ -352,39 +352,39 @@ exports.osStatis = async (req) => {
 exports.pageWhStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body=util.computeSTimeAndEtime(body);
+    body = util.computeSTimeAndEtime(body);
     let r = [];
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey
-            }
-        },
-        {
-            "$group": {
-                "_id": "$pageWh",
-                "pageList": {
-                    '$push': '$page'
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'pageWh': "$_id",
-                "count": {
-                    "$size": '$pageList'
-                }
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey
+        }
+    },
+    {
+        "$group": {
+            "_id": "$pageWh",
+            "pageList": {
+                '$push': '$page'
             }
         }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'pageWh': "$_id",
+            "count": {
+                "$size": '$pageList'
+            }
+        }
+    },
+    {
+        "$sort": {
+            'count': -1
+        }
+    }
     ]);
     return r;
 };
@@ -396,45 +396,45 @@ exports.pageWhStatis = async (req) => {
 exports.pageRankStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body=util.computeSTimeAndEtime(body);
+    body = util.computeSTimeAndEtime(body);
     let r = {
         pageStatis: [],
         totalCount: 0
     };
     r.pageStatis = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey,
-                "page": {
-                    '$regex': new RegExp(`${body.keywords}.*`, "gi")
-                }
-            }
-        },
-        {
-            "$group": {
-                "_id": "$page",
-                "pageList": {
-                    '$push': '$page'
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'page': "$_id",
-                "count": {
-                    "$size": '$pageList'
-                }
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey,
+            "page": {
+                '$regex': new RegExp(`${body.keywords}.*`, "gi")
             }
         }
+    },
+    {
+        "$group": {
+            "_id": "$page",
+            "pageList": {
+                '$push': '$page'
+            }
+        }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'page': "$_id",
+            "count": {
+                "$size": '$pageList'
+            }
+        }
+    },
+    {
+        "$sort": {
+            'count': -1
+        }
+    }
     ]);
 
     _.forEach(r.pageStatis, (d) => {
@@ -451,40 +451,40 @@ exports.pageRankStatis = async (req) => {
 exports.addressMap = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body=util.computeSTimeAndEtime(body);
+    body = util.computeSTimeAndEtime(body);
 
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey,
-                'page': body.keywords
-            }
-        },
-        {
-            "$group": {
-                "_id": "$mostSpecificSubdivision_nameCN",
-                "pageList": {
-                    '$push': '$page'
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'provice': "$_id",
-                "pv": {
-                    "$size": '$pageList'
-                }
-            }
-        },
-        {
-            "$sort": {
-                'pv': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey,
+            'page': body.keywords
+        }
+    },
+    {
+        "$group": {
+            "_id": "$mostSpecificSubdivision_nameCN",
+            "pageList": {
+                '$push': '$page'
             }
         }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'provice': "$_id",
+            "pv": {
+                "$size": '$pageList'
+            }
+        }
+    },
+    {
+        "$sort": {
+            'pv': -1
+        }
+    }
     ]);
 
     return r;
@@ -497,7 +497,7 @@ exports.addressMap = async (req) => {
 exports.terminalStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body=util.computeSTimeAndEtime(body);
+    body = util.computeSTimeAndEtime(body);
     let terminal = body.terminal;
     let groupName;
     if (terminal == 0) {
@@ -510,37 +510,37 @@ exports.terminalStatis = async (req) => {
         groupName = '$pageWh';
     }
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey,
-                'page': body.pageName
-            }
-        },
-        {
-            "$group": {
-                "_id": groupName,
-                "pageList": {
-                    '$push': '$page'
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'terminal': "$_id",
-                "pvCount": {
-                    "$size": '$pageList'
-                }
-            }
-        },
-        {
-            "$sort": {
-                'pvCount': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey,
+            'page': body.pageName
+        }
+    },
+    {
+        "$group": {
+            "_id": groupName,
+            "pageList": {
+                '$push': '$page'
             }
         }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'terminal': "$_id",
+            "pvCount": {
+                "$size": '$pageList'
+            }
+        }
+    },
+    {
+        "$sort": {
+            'pvCount': -1
+        }
+    }
     ]);
 
     return r;
@@ -554,38 +554,38 @@ exports.terminalStatis = async (req) => {
 exports.geoListStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body=util.computeSTimeAndEtime(body);
+    body = util.computeSTimeAndEtime(body);
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey
-            }
-        },
-        {
-            "$group": {
-                "_id": '$mostSpecificSubdivision_nameCN',
-                "pageList": {
-                    '$push': '$page'
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'geo': "$_id",
-                "count": {
-                    "$size": '$pageList'
-                }
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey
+        }
+    },
+    {
+        "$group": {
+            "_id": '$mostSpecificSubdivision_nameCN',
+            "pageList": {
+                '$push': '$page'
             }
         }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'geo': "$_id",
+            "count": {
+                "$size": '$pageList'
+            }
+        }
+    },
+    {
+        "$sort": {
+            'count': -1
+        }
+    }
     ]);
     let tempTotal = 0;
     _.each(r, (el) => {
@@ -605,7 +605,7 @@ exports.geoListStatis = async (req) => {
 exports.terminalListStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body=util.computeSTimeAndEtime(body);
+    body = util.computeSTimeAndEtime(body);
     let ternimalType = body.ternimalType;
     let groupName;
     if (ternimalType == 0) {
@@ -618,36 +618,36 @@ exports.terminalListStatis = async (req) => {
         groupName = "$pageWh";
     }
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey
-            }
-        },
-        {
-            "$group": {
-                "_id": groupName,
-                "pageList": {
-                    '$push': '$page'
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'terminal': "$_id",
-                "count": {
-                    "$size": '$pageList'
-                }
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey
+        }
+    },
+    {
+        "$group": {
+            "_id": groupName,
+            "pageList": {
+                '$push': '$page'
             }
         }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'terminal': "$_id",
+            "count": {
+                "$size": '$pageList'
+            }
+        }
+    },
+    {
+        "$sort": {
+            'count': -1
+        }
+    }
     ]);
     let tempTotal = 0;
     _.each(r, (el) => {
