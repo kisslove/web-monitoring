@@ -85,6 +85,11 @@ export class WebSysComponent {
       value: 'visitDetails',
       isActive: false,
       icon: 'file'
+    }, {
+      label: '用户行为追踪',
+      value: 'visitDetails',
+      isActive: false,
+      icon: 'radius-setting'
     }
       // ,{
       //   label:'后端日志',
@@ -141,15 +146,15 @@ export class WebSysComponent {
     var rfs = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullscreen;
     if (typeof rfs != "undefined" && rfs) {
       rfs.call(el);
-      this.isFullScreen=true;
+      this.isFullScreen = true;
     };
   }
 
   exitFullScreen() {
     if (document.exitFullscreen) {
       document.exitFullscreen();
-      this.isFullScreen=false;
-    } 
+      this.isFullScreen = false;
+    }
   }
 
   private _resizePageHeight() {
