@@ -55,7 +55,7 @@ export class UserPathComponent implements OnInit {
   }
 
   search() {
-    this.currentSelectedUserPath=null;
+    this.currentSelectedUserPath = null;
     if (window.globalTime) {
       this.loadUserPathList(window.globalTime.time, window.globalTime.type);
     } else {

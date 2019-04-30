@@ -635,8 +635,11 @@ exports.userPathListStatis = async(req) => {
                 delete item['onlineip'];
                 delete item['isp'];
                 delete item['organizationCN'];
+                item.createTimeShow = item.createTime;
+                item.createTimeTemp = new Date(item.createTime).getTime().toString().substr(0, 10);
                 item.createTime = new Date(item.createTime).getTime();
             });
+            el.pathList = _.uniqBy(el.pathList, "createTimeTemp");
             el.pathList.sort(function(a, b) {
                 if (a.createTime === b.createTime)
                     return 0;
