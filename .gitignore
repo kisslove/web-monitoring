@@ -6,3 +6,4 @@ package-lock.json
 node_modules
 /browser_probe
 .history
+/backend_server/access.log

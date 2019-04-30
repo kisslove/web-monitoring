@@ -16,6 +16,24 @@ router.post('/RegisterSite', site.create);
 //应用设置
 router.post('/SiteSet', site.update);
 
+
+//用户访问路径
+router.post('/userPathListStatis', function(req, res, next) {
+    pvInfo.userPathListStatis(req).then((r) => {
+        res.json(util.resJson({
+            IsSuccess: true,
+            Data: r
+        }));
+    }, (err) => {
+        console.error(err);
+        res.json(util.resJson({
+            IsSuccess: false,
+            Data: null
+        }));
+    });
+});
+
+
 //资源加载情况
 router.post('/resourceList', function(req, res, next) {
     resourceInfo.list(req).then((r) => {

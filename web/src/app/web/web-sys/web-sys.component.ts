@@ -76,6 +76,11 @@ export class WebSysComponent {
       isActive: false,
       icon: 'ie'
     }, {
+      label: '用户行为追踪',
+      value: 'userPath',
+      isActive: false,
+      icon: 'radius-setting'
+    }, {
       label: '资源加载详情',
       value: 'resourceDetails',
       isActive: false,
@@ -86,18 +91,6 @@ export class WebSysComponent {
       isActive: false,
       icon: 'file'
     }, {
-      label: '用户行为追踪',
-      value: 'visitDetails',
-      isActive: false,
-      icon: 'radius-setting'
-    }
-      // ,{
-      //   label:'后端日志',
-      //   value:'backendLog',
-      //   isActive:false,
-      //   icon:'profile'
-      // }
-      , {
       label: '应用设置',
       value: 'setting',
       isActive: false,
