@@ -58,21 +58,21 @@ export class HomepageComponent implements OnInit {
     })
   }
 
-  register() {
-    let pwd = this.encrypt(this.model2.password);
-    this.http.post("User/register", {
-      email: this.model2.email,
-      password: pwd
-    }).subscribe((r: any) => {
-      if (r.IsSuccess) {
-        this.cookie.set("user", JSON.stringify(r.Data), new Date(new Date().setMonth(new Date().getMonth() + 1)));
-        this.broadcaster.broadcast("refreshUser");
-        this.router.navigate(['dashboard']);
-      } else {
-        this.msg.error(r.Data, { nzDuration: 4000 });
-      }
-    })
-  }
+  // register() {
+  //   let pwd = this.encrypt(this.model2.password);
+  //   this.http.post("User/register", {
+  //     email: this.model2.email,
+  //     password: pwd
+  //   }).subscribe((r: any) => {
+  //     if (r.IsSuccess) {
+  //       this.cookie.set("user", JSON.stringify(r.Data), new Date(new Date().setMonth(new Date().getMonth() + 1)));
+  //       this.broadcaster.broadcast("refreshUser");
+  //       this.router.navigate(['dashboard']);
+  //     } else {
+  //       this.msg.error(r.Data, { nzDuration: 4000 });
+  //     }
+  //   })
+  // }
 
   private encrypt(str) {
     var key = CryptoJS.enc.Utf8.parse(this._KEY);
