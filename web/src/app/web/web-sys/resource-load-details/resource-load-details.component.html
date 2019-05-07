@@ -49,7 +49,7 @@
                 <td>{{data.onlineip}}</td>
                 <td>{{data.rInitiatorType}}</td>
                 <td>{{data.rEntryType}}</td>
-                <td>{{data.rSize==0?'from cache':data.rSize+'KB'}}</td>
+                <td>{{data.rSize&&(data.rSize==0?'from cache':data.rSize+'KB')}}</td>
                 <td>{{data.rDuration.toString().substr(0,4)}}ms</td>
             </tr>
         </tbody>

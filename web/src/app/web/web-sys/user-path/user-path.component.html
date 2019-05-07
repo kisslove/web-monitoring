@@ -12,7 +12,7 @@
         <nz-spin [nzSpinning]="isSpinning.spin1">
             <div (click)="selectUserPathListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of
         userPathListData">
-                <span title="{{item.geo}}" class="left" style="width:200px;">{{item.onlineip}}</span>
+                <span title="{{item.geo}}" class="left" style="width:200px;">{{item.onlineip}}({{item.mostSpecificSubdivision_nameCN}})</span>
                 <span class="right">
           <span>总路径：{{item.count}}</span>
                 <i class="anticon anticon-right"></i>

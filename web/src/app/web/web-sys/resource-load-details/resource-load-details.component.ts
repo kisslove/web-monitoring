@@ -57,6 +57,11 @@ export class ResourceLoadDetailsComponent implements OnInit {
       if (data.IsSuccess) {
         this.loading = false;
         this.total=data.Data.TotalCount;
+        data.Data.List.forEach(element => {
+          if(element.rSize){
+            element.rSize=new Number(element.rSize/1024).toFixed(2);
+          }
+        });
         this.dataSet=data.Data.List;
       } else {
         this.msg.error("数据加载失败");
