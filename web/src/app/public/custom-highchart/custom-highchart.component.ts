@@ -3,6 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import * as HC_map from 'highcharts/highmaps';
 require('../../../../extraJs/china')(HC_map);
+require('highcharts/highcharts-3d.js')(Highcharts);
 import { HighchartConfig } from '../../model/entity';
 import * as _ from 'lodash';
 (function (a) { a(Highcharts) })(function (a) { a.theme = { colors: ["#FDD089", "#FF7F79", "#A0446E", "#251535"], colorAxis: { maxColor: "#60042E", minColor: "#FDD089" }, plotOptions: { map: { nullColor: "#fefefc" } }, navigator: { series: { color: "#FF7F79", lineColor: "#A0446E" } } }; a.setOptions(a.theme) });
@@ -75,33 +76,6 @@ export class CustomHighchartComponent implements OnInit {
   }
 
   private renderCompareSplineChart() {
-    // var xAxisMinTickInterval = 0;
-    // switch (this.highConfig.extProps.minTickIntervalType) {
-    //   case 0:// 半小时,间隔5分钟
-    //     xAxisMinTickInterval = 1*60 * 1000;
-    //     break;
-    //   case 1:// 1小时,间隔10分钟
-    //     xAxisMinTickInterval = 10 * 60 * 1000;
-    //     break;
-    //   case 2:// 4小时,间隔30分钟
-    //     xAxisMinTickInterval = 30 * 60 * 1000;
-    //     break;
-    //   case 3:// 12小时,间隔1小时
-    //     xAxisMinTickInterval = 60 * 60 * 1000;
-    //     break;
-    //   case 4:  // 24小时,间隔1小时
-    //     xAxisMinTickInterval =  60 * 60 * 1000;
-    //     break;
-    //   case 5:// 3天,间隔12小时
-    //     xAxisMinTickInterval = 24 * 60 * 60 * 1000;
-    //     break;
-    //   case 4:// 7天,间隔24小时
-    //     xAxisMinTickInterval = 24 * 60 * 60 * 1000;
-    //     break;
-    //   default:
-    //     xAxisMinTickInterval = 60 * 60 * 1000;
-    //     break;
-    // } 
     Highcharts.chart(this.containerId, _.extend({}, {
       credits: {
         enabled: false
@@ -115,11 +89,9 @@ export class CustomHighchartComponent implements OnInit {
       },
       legend: {
         align: 'center',
-        verticalAlign: 'bottom',
-        // layout: 'vertical',
+        verticalAlign: 'bottom'
       },
-      xAxis: {
-        // minTickInterval:xAxisMinTickInterval,        
+      xAxis: { 
         tickWidth: 0,
         type: 'datetime',
         dateTimeLabelFormats: {
@@ -176,7 +148,12 @@ export class CustomHighchartComponent implements OnInit {
       },
       chart: {
         type: 'pie',
-        height: 150
+        height: 200,
+        options3d: {
+          enabled: true,
+          alpha: 45,
+          beta: 0
+        }
       },
       title: {
         text: null
@@ -190,6 +167,7 @@ export class CustomHighchartComponent implements OnInit {
           allowPointSelect: true,
           colors: this.globalColors,
           cursor: 'pointer',
+          depth: 35,
           dataLabels: {
             enabled: false
           },
@@ -202,7 +180,7 @@ export class CustomHighchartComponent implements OnInit {
   private renderMapChart(mapType) {
     HC_map.mapChart(this.containerId, _.extend({}, {
       credits: {
-        enabled: true,
+        enabled: false,
         text: '',
         style: {
           color: 'rgba(255, 255, 255, 0.6)'
@@ -212,7 +190,7 @@ export class CustomHighchartComponent implements OnInit {
         }
       },
       chart: {
-        spacing: 10,
+        spacing: 10
       },
       mapNavigation: {
         buttonOptions: {
@@ -309,6 +287,7 @@ export class CustomHighchartComponent implements OnInit {
       }
     }, this.highConfig.ext));
   }
+
   private renderColumnAndSplineChart() {
     Highcharts.chart(this.containerId, _.extend({}, {
       credits: {
@@ -316,7 +295,11 @@ export class CustomHighchartComponent implements OnInit {
       },
       chart: {
         zoomType: 'xy',
-        height: 280
+        height: 280,
+        options3d: {
+          enabled: true,
+          depth: 50
+        }
       },
       title: {
         text: null
@@ -356,6 +339,9 @@ export class CustomHighchartComponent implements OnInit {
           marker: {
             enabled: false
           }
+        },
+        column: {
+          depth: 25
         }
       }
     }, this.highConfig.ext));
@@ -368,7 +354,16 @@ export class CustomHighchartComponent implements OnInit {
       },
       chart: {
         type: 'column',
-        height: 280
+        height: 280,
+        options3d: {
+          enabled: true,
+          depth: 50
+        }
+      },
+      plotOptions: {
+        column: {
+          depth: 25
+        }
       },
       title: {
         text: null

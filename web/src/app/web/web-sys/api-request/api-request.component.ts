@@ -236,9 +236,9 @@ export class ApiRequestComponent implements OnInit {
     this.first_config = {
       type: 40,
       ext: {
-        chart: {
-          zoomType: 'xy'
-        },
+        // chart: {
+        //   zoomType: 'xy'
+        // },
         yAxis: [{ // Primary yAxis
           labels: {
             format: '{value}%',
@@ -302,9 +302,6 @@ export class ApiRequestComponent implements OnInit {
     this.first_config = {
       type: 40,
       ext: {
-        chart: {
-          zoomType: 'xy'
-        },
         yAxis: [{ // Primary yAxis
           labels: {
             format: '{value}s',
@@ -368,9 +365,6 @@ export class ApiRequestComponent implements OnInit {
     this.first_config = {
       type: 40,
       ext: {
-        chart: {
-          zoomType: 'xy'
-        },
         yAxis: [{ // Primary yAxis
           labels: {
             format: '{value}s',

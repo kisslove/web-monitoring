@@ -33,7 +33,7 @@ export class SysIndexComponent implements OnInit {
   appKey;
   top10Data = [];
   mapData = [];
-  total_pv_uv:any={};
+  total_pv_uv: any = {};
   constructor(
     private http: HttpClient,
     private broadcaster: Broadcaster,
@@ -72,7 +72,7 @@ export class SysIndexComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.broadcaster.broadcast('showGlobalTimer',true);
+    this.broadcaster.broadcast('showGlobalTimer', true);
   }
 
   selectOver(data, type) {
@@ -116,15 +116,15 @@ export class SysIndexComponent implements OnInit {
   }
   //渲染PV/UV对比图
   renderPvUvChart(type, data) {
-    
+
     let tempData = {
       pv: [],
       uv: []
     };
 
-    this.total_pv_uv={
-      totalPv:data.totalPv,
-      totalUv:data.totalUv
+    this.total_pv_uv = {
+      totalPv: data.totalPv,
+      totalUv: data.totalUv
     };
     _.each(data.pvAndUvVmList, (val) => {
       tempData.pv.push([new Date(val.createTime).getTime(), val.pv]);
@@ -178,20 +178,20 @@ export class SysIndexComponent implements OnInit {
       appKey: this.appKey
     }).subscribe((d: any) => {
       if (d.IsSuccess) {
-        let tempData=[];
+        let tempData = [];
         _.each(d.Data, (val) => {
           tempData.push({
-            name:val.provice,
-            value:val.pv,
-            pv:val.pv,
-            uv:val.uv
+            name: val.provice,
+            value: val.pv,
+            pv: val.pv,
+            uv: val.uv
           });
         });
-        tempData.sort(function(a,b){
-          return a.uv>b.uv?-1:1;
+        tempData.sort(function (a, b) {
+          return a.uv > b.uv ? -1 : 1;
         })
         this.mapData = _.cloneDeep(tempData);
-        this.renderGeoChart(type,tempData);
+        this.renderGeoChart(type, tempData);
       }
       this.isSpinning.spin3 = false;
     })
@@ -234,7 +234,7 @@ export class SysIndexComponent implements OnInit {
   }
   //渲染浏览器BS占比图
   renderBsChart(type, data) {
-    let tempData=[];
+    let tempData = [];
     _.each(data, (val) => {
       tempData.push([val.bs, val.count]);
     });
@@ -267,7 +267,7 @@ export class SysIndexComponent implements OnInit {
   }
   //渲染操作系统OS占比图
   renderOsChart(type, data) {
-    let tempData=[];
+    let tempData = [];
     _.each(data, (val) => {
       tempData.push([val.os, val.count]);
     });
@@ -300,7 +300,7 @@ export class SysIndexComponent implements OnInit {
   }
   //渲染分辨率PV占比图
   renderWhChart(type, data) {
-    let tempData=[];
+    let tempData = [];
     _.each(data, (val) => {
       tempData.push([val.pageWh, val.count]);
     });
