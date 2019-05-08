@@ -1,4 +1,3 @@
-const http = require('http');
 var CryptoJS = require('crypto-js');
 var userInfo = require('../business/userInfo');
 var util = require('../utils/util');
@@ -179,8 +178,8 @@ exports.getIp = function (req, res, next) {
     }
     tempIp = tempIp.split(":")[tempIp.split(":").length - 1];
     // var tempData = searcher.btreeSearchSync(tempIp);
-    searcher.binarySearch(tempIp,function(err,tempData){
-        if(err){
+    searcher.binarySearch(tempIp, function (err, tempData) {
+        if (err) {
             req.netInfo = netInfo;
             next();
         }
@@ -216,36 +215,36 @@ exports.getIp = function (req, res, next) {
  *   str：需要加密的字符串
  ****************************************************************/
 exports.encrypt = (str) => {
-        var key = CryptoJS.enc.Utf8.parse(_KEY);
-        var iv = CryptoJS.enc.Utf8.parse(_IV);
-        var encrypted = '';
-        var srcs = CryptoJS.enc.Utf8.parse(str);
-        encrypted = CryptoJS.AES.encrypt(srcs, key, {
-            iv: iv,
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7
-        });
+    var key = CryptoJS.enc.Utf8.parse(_KEY);
+    var iv = CryptoJS.enc.Utf8.parse(_IV);
+    var encrypted = '';
+    var srcs = CryptoJS.enc.Utf8.parse(str);
+    encrypted = CryptoJS.AES.encrypt(srcs, key, {
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    });
 
-        return encrypted.ciphertext.toString();
-    },
+    return encrypted.ciphertext.toString();
+};
 
-    /**************************************************************
-     *字符串解密
-     *   str：需要解密的字符串
-     ****************************************************************/
-    exports.decrypt = (str) => {
-        var key = CryptoJS.enc.Utf8.parse(_KEY);
-        var iv = CryptoJS.enc.Utf8.parse(_IV);
-        var encryptedHexStr = CryptoJS.enc.Hex.parse(str);
-        var srcs = CryptoJS.enc.Base64.stringify(encryptedHexStr);
-        var decrypt = CryptoJS.AES.decrypt(srcs, key, {
-            iv: iv,
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7
-        });
-        var decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
-        return decryptedStr.toString();
-    }
+/**************************************************************
+ *字符串解密
+    *   str：需要解密的字符串
+    ****************************************************************/
+exports.decrypt = (str) => {
+    var key = CryptoJS.enc.Utf8.parse(_KEY);
+    var iv = CryptoJS.enc.Utf8.parse(_IV);
+    var encryptedHexStr = CryptoJS.enc.Hex.parse(str);
+    var srcs = CryptoJS.enc.Base64.stringify(encryptedHexStr);
+    var decrypt = CryptoJS.AES.decrypt(srcs, key, {
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    });
+    var decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
+    return decryptedStr.toString();
+};
 
 exports.resolveToken = (req, res, next) => {
     let tempToken = req.headers["authorization"];
@@ -273,8 +272,6 @@ exports.resolveToken = (req, res, next) => {
         next();
     }
 };
-
-
 
 function getClientIP(req) {
     var ip = req.headers['x-forwarded-for'] ||

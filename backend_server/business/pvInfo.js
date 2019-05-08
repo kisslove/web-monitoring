@@ -3,7 +3,7 @@ var PvModel = require('../models/pvModel');
 var Mongoose = require('mongoose');
 var util = require('../utils/util');
 //访问明细
-exports.list = async(req) => {
+exports.list = async (req) => {
     let appKey = new Mongoose.Types.ObjectId(req.body.appKey);
     let body = util.computeSTimeAndEtime(req.body);
     let resJson = {
@@ -42,7 +42,7 @@ exports.list = async(req) => {
 //记录PV数据
 exports.create = (data) => {
     var temp = new PvModel(data);
-    temp.save(function(err, r) {
+    temp.save(function (err, r) {
         if (err) {
             console.error(err);
         }
@@ -53,7 +53,7 @@ exports.create = (data) => {
  * 应用总览-pv/uv
  * @param {*} req 
  */
-exports.pvAndUvStatis = async(req) => {
+exports.pvAndUvStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     let resJson = {
@@ -72,28 +72,28 @@ exports.pvAndUvStatis = async(req) => {
             "page": body.keywords
         }
     } : {
-        "$match": {
-            "createTime": {
-                '$gte': body.sTime,
-                '$lt': body.eTime
-            },
-            "appKey": appKey
-        }
-    };
+            "$match": {
+                "createTime": {
+                    '$gte': body.sTime,
+                    '$lt': body.eTime
+                },
+                "appKey": appKey
+            }
+        };
     let r = await PvModel.aggregate([matchCon,
         {
             "$group": {
                 "_id": {
                     "$subtract": [{
+                        "$subtract": ["$createTime", new Date(0)]
+                    },
+                    {
+                        "$mod": [{
                             "$subtract": ["$createTime", new Date(0)]
                         },
-                        {
-                            "$mod": [{
-                                    "$subtract": ["$createTime", new Date(0)]
-                                },
-                                body.timeDivider /*聚合时间段*/
-                            ]
-                        }
+                        body.timeDivider /*聚合时间段*/
+                        ]
+                    }
                     ]
                 },
                 "pageList": {
@@ -163,43 +163,43 @@ exports.pvAndUvStatis = async(req) => {
  *  应用总览-访问Top
  * @param {*} req 
  */
-exports.pageTopStatis = async(req) => {
+exports.pageTopStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     // count,page
     body = util.computeSTimeAndEtime(body);
     let r = [];
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey
-            }
-        },
-        {
-            "$group": {
-                "_id": "$page",
-                "pageList": {
-                    '$push': '$page'
-                },
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'page': "$_id",
-                "count": {
-                    "$size": '$pageList'
-                }
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey
+        }
+    },
+    {
+        "$group": {
+            "_id": "$page",
+            "pageList": {
+                '$push': '$page'
+            },
+        }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'page': "$_id",
+            "count": {
+                "$size": '$pageList'
             }
         }
+    },
+    {
+        "$sort": {
+            'count': -1
+        }
+    }
     ]).limit(body.top || 8);
     return r;
 };
@@ -208,46 +208,46 @@ exports.pageTopStatis = async(req) => {
  * 应用总览-地理位置
  * @param {*} req 
  */
-exports.geoStatis = async(req) => {
+exports.geoStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
     let r = [];
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey
-            }
-        },
-        {
-            "$group": {
-                "_id": "$mostSpecificSubdivision_nameCN",
-                "pageList": {
-                    '$push': '$page'
-                },
-                "ipList": {
-                    '$push': '$onlineip'
-                },
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'provice': "$_id",
-                "pv": {
-                    "$size": '$pageList'
-                },
-                "ipList": 1
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
-            }
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey
         }
+    },
+    {
+        "$group": {
+            "_id": "$mostSpecificSubdivision_nameCN",
+            "pageList": {
+                '$push': '$page'
+            },
+            "ipList": {
+                '$push': '$onlineip'
+            },
+        }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'provice': "$_id",
+            "pv": {
+                "$size": '$pageList'
+            },
+            "ipList": 1
+        }
+    },
+    {
+        "$sort": {
+            'count': -1
+        }
+    }
     ]);
     r.forEach(element => {
         element.pv = element.pv;
@@ -261,42 +261,42 @@ exports.geoStatis = async(req) => {
  * 应用总览-浏览器pv占比
  * @param {*} req 
  */
-exports.browserStatis = async(req) => {
+exports.browserStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
     let r = [];
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey
-            }
-        },
-        {
-            "$group": {
-                "_id": "$bs",
-                "pageList": {
-                    '$push': '$page'
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'bs': "$_id",
-                "count": {
-                    "$size": '$pageList'
-                },
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey
+        }
+    },
+    {
+        "$group": {
+            "_id": "$bs",
+            "pageList": {
+                '$push': '$page'
             }
         }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'bs': "$_id",
+            "count": {
+                "$size": '$pageList'
+            },
+        }
+    },
+    {
+        "$sort": {
+            'count': -1
+        }
+    }
     ]);
     return r;
 };
@@ -305,42 +305,42 @@ exports.browserStatis = async(req) => {
  * 应用总览-浏览器os占比
  * @param {*} req 
  */
-exports.osStatis = async(req) => {
+exports.osStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
     let r = [];
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey
-            }
-        },
-        {
-            "$group": {
-                "_id": "$os",
-                "pageList": {
-                    '$push': '$page'
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'os': "$_id",
-                "count": {
-                    "$size": '$pageList'
-                },
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey
+        }
+    },
+    {
+        "$group": {
+            "_id": "$os",
+            "pageList": {
+                '$push': '$page'
             }
         }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'os': "$_id",
+            "count": {
+                "$size": '$pageList'
+            },
+        }
+    },
+    {
+        "$sort": {
+            'count': -1
+        }
+    }
     ]);
     return r;
 };
@@ -349,42 +349,42 @@ exports.osStatis = async(req) => {
  * 应用总览-浏览器分辨率占比
  * @param {*} req 
  */
-exports.pageWhStatis = async(req) => {
+exports.pageWhStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
     let r = [];
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey
-            }
-        },
-        {
-            "$group": {
-                "_id": "$pageWh",
-                "pageList": {
-                    '$push': '$page'
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'pageWh': "$_id",
-                "count": {
-                    "$size": '$pageList'
-                }
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey
+        }
+    },
+    {
+        "$group": {
+            "_id": "$pageWh",
+            "pageList": {
+                '$push': '$page'
             }
         }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'pageWh': "$_id",
+            "count": {
+                "$size": '$pageList'
+            }
+        }
+    },
+    {
+        "$sort": {
+            'count': -1
+        }
+    }
     ]);
     return r;
 };
@@ -393,7 +393,7 @@ exports.pageWhStatis = async(req) => {
  * 应用总览-浏览器分辨率占比
  * @param {*} req 
  */
-exports.pageRankStatis = async(req) => {
+exports.pageRankStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
@@ -402,39 +402,39 @@ exports.pageRankStatis = async(req) => {
         totalCount: 0
     };
     r.pageStatis = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey,
-                "page": {
-                    '$regex': new RegExp(`${body.keywords}.*`, "gi")
-                }
-            }
-        },
-        {
-            "$group": {
-                "_id": "$page",
-                "pageList": {
-                    '$push': '$page'
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'page': "$_id",
-                "count": {
-                    "$size": '$pageList'
-                }
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey,
+            "page": {
+                '$regex': new RegExp(`${body.keywords}.*`, "gi")
             }
         }
+    },
+    {
+        "$group": {
+            "_id": "$page",
+            "pageList": {
+                '$push': '$page'
+            }
+        }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'page': "$_id",
+            "count": {
+                "$size": '$pageList'
+            }
+        }
+    },
+    {
+        "$sort": {
+            'count': -1
+        }
+    }
     ]);
 
     _.forEach(r.pageStatis, (d) => {
@@ -448,43 +448,43 @@ exports.pageRankStatis = async(req) => {
  * 访问页面-地理分布
  * @param {*} req 
  */
-exports.addressMap = async(req) => {
+exports.addressMap = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
 
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey,
-                'page': body.keywords
-            }
-        },
-        {
-            "$group": {
-                "_id": "$mostSpecificSubdivision_nameCN",
-                "pageList": {
-                    '$push': '$page'
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'provice': "$_id",
-                "pv": {
-                    "$size": '$pageList'
-                }
-            }
-        },
-        {
-            "$sort": {
-                'pv': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey,
+            'page': body.keywords
+        }
+    },
+    {
+        "$group": {
+            "_id": "$mostSpecificSubdivision_nameCN",
+            "pageList": {
+                '$push': '$page'
             }
         }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'provice': "$_id",
+            "pv": {
+                "$size": '$pageList'
+            }
+        }
+    },
+    {
+        "$sort": {
+            'pv': -1
+        }
+    }
     ]);
 
     return r;
@@ -494,7 +494,7 @@ exports.addressMap = async(req) => {
  * 访问页面-终端分布
  * @param {*} req 
  */
-exports.terminalStatis = async(req) => {
+exports.terminalStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
@@ -510,37 +510,37 @@ exports.terminalStatis = async(req) => {
         groupName = '$pageWh';
     }
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey,
-                'page': body.pageName
-            }
-        },
-        {
-            "$group": {
-                "_id": groupName,
-                "pageList": {
-                    '$push': '$page'
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'terminal': "$_id",
-                "pvCount": {
-                    "$size": '$pageList'
-                }
-            }
-        },
-        {
-            "$sort": {
-                'pvCount': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey,
+            'page': body.pageName
+        }
+    },
+    {
+        "$group": {
+            "_id": groupName,
+            "pageList": {
+                '$push': '$page'
             }
         }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'terminal': "$_id",
+            "pvCount": {
+                "$size": '$pageList'
+            }
+        }
+    },
+    {
+        "$sort": {
+            'pvCount': -1
+        }
+    }
     ]);
 
     return r;
@@ -552,7 +552,7 @@ exports.terminalStatis = async(req) => {
  * ip-列表（按访问量）用户访问路径
  * @param {*} req 
  */
-exports.userPathListStatis = async(req) => {
+exports.userPathListStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
@@ -568,14 +568,14 @@ exports.userPathListStatis = async(req) => {
             }
         }
     } : {
-        "$match": {
-            "createTime": {
-                '$gte': body.sTime,
-                '$lt': body.eTime
-            },
-            "appKey": appKey
-        }
-    };
+            "$match": {
+                "createTime": {
+                    '$gte': body.sTime,
+                    '$lt': body.eTime
+                },
+                "appKey": appKey
+            }
+        };
     r = await PvModel.aggregate([matchCon,
         {
             "$group": {
@@ -601,15 +601,7 @@ exports.userPathListStatis = async(req) => {
             "$project": {
                 "_id": 0,
                 'geo': "$_id",
-                "pathList": 1,
-                "count": {
-                    "$size": '$pathList'
-                }
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
+                "pathList": 1
             }
         }
     ]);
@@ -640,7 +632,8 @@ exports.userPathListStatis = async(req) => {
                 item.createTime = new Date(item.createTime).getTime();
             });
             el.pathList = _.uniqBy(el.pathList, "createTimeTemp");
-            el.pathList.sort(function(a, b) {
+            el.count = el.pathList.length;
+            el.pathList.sort(function (a, b) {
                 if (a.createTime === b.createTime)
                     return 0;
                 if (a.createTime - b.createTime > 0)
@@ -651,6 +644,15 @@ exports.userPathListStatis = async(req) => {
         }
     });
 
+    r.sort(function (a, b) {
+        if (a.count === b.count)
+            return 0;
+        if (a.count - b.count < 0)
+            return 1;
+        if (a.count - b.count > 0)
+            return -1;
+    });
+
     return r;
 };
 
@@ -659,41 +661,41 @@ exports.userPathListStatis = async(req) => {
  * 地理-列表（按访问量）
  * @param {*} req 
  */
-exports.geoListStatis = async(req) => {
+exports.geoListStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey
-            }
-        },
-        {
-            "$group": {
-                "_id": '$mostSpecificSubdivision_nameCN',
-                "pageList": {
-                    '$push': '$page'
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'geo': "$_id",
-                "count": {
-                    "$size": '$pageList'
-                }
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey
+        }
+    },
+    {
+        "$group": {
+            "_id": '$mostSpecificSubdivision_nameCN',
+            "pageList": {
+                '$push': '$page'
             }
         }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'geo': "$_id",
+            "count": {
+                "$size": '$pageList'
+            }
+        }
+    },
+    {
+        "$sort": {
+            'count': -1
+        }
+    }
     ]);
     let tempTotal = 0;
     _.each(r, (el) => {
@@ -710,7 +712,7 @@ exports.geoListStatis = async(req) => {
  * 终端-列表（按访问量）
  * @param {*} req 
  */
-exports.terminalListStatis = async(req) => {
+exports.terminalListStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
@@ -726,36 +728,36 @@ exports.terminalListStatis = async(req) => {
         groupName = "$pageWh";
     }
     r = await PvModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey
-            }
-        },
-        {
-            "$group": {
-                "_id": groupName,
-                "pageList": {
-                    '$push': '$page'
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'terminal': "$_id",
-                "count": {
-                    "$size": '$pageList'
-                }
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey
+        }
+    },
+    {
+        "$group": {
+            "_id": groupName,
+            "pageList": {
+                '$push': '$page'
             }
         }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'terminal': "$_id",
+            "count": {
+                "$size": '$pageList'
+            }
+        }
+    },
+    {
+        "$sort": {
+            'count': -1
+        }
+    }
     ]);
     let tempTotal = 0;
     _.each(r, (el) => {

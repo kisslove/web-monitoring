@@ -293,9 +293,6 @@ export class VisitGeoComponent implements OnInit {
     this.api_config = {
       type: 40,
       ext: {
-        chart: {
-          zoomType: 'xy'
-        },
         yAxis: [{ // Primary yAxis
           labels: {
             format: '{value}%',
