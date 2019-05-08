@@ -28,16 +28,24 @@ export class AdviseBarComponent implements OnInit {
 
   ngOnInit() {
 
-    this.render.listen(this.adviseContainer.nativeElement, "click", (event) => {
+    // this.render.listen(this.adviseContainer.nativeElement, "click", (event) => {
+    //   this.pre.pageX = Math.abs((event as any).pageX);
+    //   this.pre.pageY = Math.abs((event as any).pageY);
+      
+    //   this.tid = !this.tid;
+    //   if(this.tid){
+    //     this.msg.info('跟着走起来',{nzDuration:1000});
+    //   }else{
+    //     this.msg.warning('我走不动了',{nzDuration:1000});
+    //   }
+    // });
+    this.render.listen(this.adviseContainer.nativeElement, "mousedown", (event) => {
       this.pre.pageX = Math.abs((event as any).pageX);
       this.pre.pageY = Math.abs((event as any).pageY);
-      
-      this.tid = !this.tid;
-      if(this.tid){
-        this.msg.info('跟着走起来',{nzDuration:1000});
-      }else{
-        this.msg.warning('我走不动了',{nzDuration:1000});
-      }
+      this.tid = 1;
+    });
+    this.render.listen(this.adviseContainer.nativeElement, "mouseup", (event) => {
+      this.tid = 0;
     });
 
     this.render.listen(window, "mousemove", (event) => {
