@@ -12,6 +12,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { JwtInterceptorService, Broadcaster, ConfigService, UserService } from './monitor.common.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
+import { PublicModule } from './public/public.module';
 declare var window:any
 const routes: Routes = [
   { path: '', pathMatch:'full',redirectTo:'home' },
@@ -33,6 +34,7 @@ export class MyErrorHandler implements ErrorHandler {
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    PublicModule,
     RouterModule.forRoot(routes),
     NgZorroAntdModule.forRoot()
   ],

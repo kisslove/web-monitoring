@@ -5,6 +5,7 @@ import { TimeChoicePanelComponent } from './time-choice-panel/time-choice-panel.
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { FormsModule } from '@angular/forms';
 import { LineProgressComponent } from './line-progress/line-progress.component';
+import { AdviseBarComponent } from './advise-bar/advise-bar.component';
 
 @NgModule({
   imports: [
@@ -12,7 +13,7 @@ import { LineProgressComponent } from './line-progress/line-progress.component';
     NgZorroAntdModule,
     FormsModule
   ],
-  declarations: [CustomHighchartComponent, TimeChoicePanelComponent, LineProgressComponent],
-  exports:[CustomHighchartComponent,TimeChoicePanelComponent,LineProgressComponent]
+  declarations: [CustomHighchartComponent, TimeChoicePanelComponent, LineProgressComponent, AdviseBarComponent],
+  exports:[CustomHighchartComponent,TimeChoicePanelComponent,LineProgressComponent,AdviseBarComponent]
 })
 export class PublicModule { }

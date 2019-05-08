@@ -1,0 +1,49 @@
+.advise-container {
+  position: absolute;
+  left: 25%;
+  top: 14px;
+  z-index: 99999;
+  color: #fff;
+  padding: 16px;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  line-height: 1;
+  font-size: 12px;
+  border: solid 2px #fff;
+  background: linear-gradient(0deg, rgba(54, 137, 231, 1), rgba(61, 147, 244, 1), rgba(81, 163, 255, 1));
+  box-shadow: 0px 1px 6px 0px rgba(49, 50, 51, 0.47), 0px 1px 3px 0px rgba(186, 218, 255, 0.88);
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -khtml-user-select: none;
+  /* Konqueror */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+
+  /* Non-prefixed version, currently not supported by any browser */
+  .advise {
+    min-width: 200px;
+    min-height: 200px;
+    position: absolute;
+    left: 52px;
+    border: solid 1px #3D93F4;
+    background: #fff;
+    color: #3D93F4;
+    padding: 4px;
+    cursor: default;
+    border-radius: 4px;
+    box-shadow: 0px 0px 4px;
+  }
+  .advise-icon{
+    position: absolute;
+    left: 42px;
+    top: 22px;
+    font-size: 14px;
+  }
+}
