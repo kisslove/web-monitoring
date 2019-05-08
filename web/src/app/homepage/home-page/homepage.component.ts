@@ -3,7 +3,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import * as CryptoJS from "crypto-js";
 import { UserService } from '../../monitor.common.service';
 @Component({
@@ -31,15 +31,18 @@ export class HomepageComponent implements OnInit {
     private router: Router,
     private cookie: CookieService,
     private user:UserService,
-    private broadcaster:Broadcaster
+    private broadcaster:Broadcaster,
+    private render:Renderer2
   ) { }
 
   ngOnInit() {
     setTimeout(()=>{
       this.isLogin=this.user.getToken()?true:false;
-    },1000)
-    let temp: any = document.querySelector("#home-section");
-    temp.style = `width:100%;height:${document.body.clientHeight-50}px;`;
+    },1000);
+  }
+
+  ngAfterViewInit(): void {
+     this.render.setStyle(document.querySelector("#home-section"),"height",document.body.clientHeight-50+'px');
   }
  
   login() {

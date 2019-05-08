@@ -79,7 +79,7 @@
         </div>
         <div nz-row style="padding:16px;">
             <nz-steps [nzCurrent]="currentSelectedUserPath?.pathList.length-1" nzDirection="vertical" nzSize="small">
-                <nz-step *ngFor="let item of currentSelectedUserPath?.pathList;let i=index;" [nzTitle]="item.page" [nzDescription]="'访问时间：'+(item.createTimeShow|date:'yyyy-MM-dd HH:mm:ss')"></nz-step>
+                <nz-step *ngFor="let item of currentSelectedUserPath?.pathList;let i=index;" [nzTitle]="item.page" [nzDescription]="'访问时间：'+(item.createTimeShow|date:'yyyy-MM-dd HH:mm:ss')+(currentSelectedUserPath.pathList[i-1]?' ，间隔：'+(item.createTime-currentSelectedUserPath?.pathList[i-1].createTime)/1000+'s':'')"></nz-step>
             </nz-steps>
         </div>
     </div>

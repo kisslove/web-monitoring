@@ -2,7 +2,7 @@
 import {fromEvent as observableFromEvent,  Observable } from 'rxjs';
 
 import {debounceTime} from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Broadcaster } from './../../../monitor.common.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChildren, ElementRef, Renderer2 } from '@angular/core';
@@ -53,7 +53,8 @@ export class VisitPageComponent implements OnInit {
     private render: Renderer2,
     private http: HttpClient,
     private broadcaster: Broadcaster,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router:Router
   ) { }
 
   ngOnInit() {
@@ -475,9 +476,8 @@ export class VisitPageComponent implements OnInit {
     };
   };
 
-  gotoDetails(data){
-    console.log(data);
-    
+  gotoDetails(data,data2){
+    this.router.navigate([`../visitDetails`],{queryParams:{sTime:data2.createTime,keywords:encodeURIComponent(data.apiName),type:'api'},relativeTo:this.route});
   }
 
   ngAfterViewInit() {

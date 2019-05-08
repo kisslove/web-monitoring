@@ -61,6 +61,11 @@ export class ResourceLoadDetailsComponent implements OnInit {
           if(element.rSize){
             element.rSize=new Number(element.rSize/1024).toFixed(2);
           }
+          if(element.rDuration){
+            element.rDuration=new Number(element.rDuration).toFixed(2);
+          }else{
+            element.rDuration=0;
+          }
         });
         this.dataSet=data.Data.List;
       } else {

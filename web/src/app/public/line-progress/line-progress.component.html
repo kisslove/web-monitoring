@@ -4,7 +4,7 @@
 </div>
 
 <div  class="line-progress line-progress-center">
-  <span *ngFor="let item of lineData;let i=index;"  [ngStyle]="{'transform':'translateY('+(14+i*30.5)+'px)','background': item.color,'width':item.percent<=0.1?'1px':item.percent*100+'%'}"></span>
+  <span *ngFor="let item of lineData;let i=index;"  [ngStyle]="{'transform':'translateY('+(14+i*30.5)+'px)','background': item.color,'width':item.percent<=0.1?'1px':item.percent*99+'%'}"></span>
 </div>
 
 <div   class="line-progress line-progress-right">

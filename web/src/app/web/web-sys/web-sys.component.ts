@@ -90,7 +90,7 @@ export class WebSysComponent {
       value: 'visitDetails',
       isActive: false,
       icon: 'file'
-    }, {
+    }, { 
       label: '应用设置',
       value: 'setting',
       isActive: false,
