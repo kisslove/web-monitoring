@@ -40,10 +40,61 @@
     border-radius: 4px;
     box-shadow: 0px 0px 4px;
   }
-  .advise-icon{
+
+  .advise-icon {
     position: absolute;
     left: 42px;
     top: 22px;
     font-size: 14px;
+  }
+
+  animation:mymove 2s infinite;
+  -webkit-animation:mymove 2s infinite;
+  /*Safari and Chrome*/
+}
+
+@keyframes mymove {
+  0% {
+    box-shadow: none;
+  }
+
+  40% {
+    box-shadow: 0px 0px 10px #fff;
+    font-size: 12px;
+  }
+
+  80% {
+    box-shadow: 0px 0px 4px #fff;
+  }
+
+  100% {
+    box-shadow: 0px 0px 2px #fff;
+  }
+}
+
+@-webkit-keyframes mymove
+
+/*Safari and Chrome*/
+  {
+  0% {
+    box-shadow: none;
+  }
+
+  40% {
+    box-shadow: 0px 0px 10px gray;
+  }
+
+  80% {
+    box-shadow: 0px 0px 4px gray;
+  }
+
+  100% {
+    box-shadow: 0px 0px 2px gray;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .advise-container{
+    font-size: 10px;
   }
 }

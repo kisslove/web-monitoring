@@ -12,7 +12,7 @@ export class AdviseBarComponent implements OnInit {
   @ViewChild("adviseContainer") adviseContainer: ElementRef;
   tid;
   sub0: Subscription;
-  showAdvise:boolean=false;
+  showAdvise: boolean = false;
   pre = {
     pageX: 0,
     pageY: 0,
@@ -23,26 +23,15 @@ export class AdviseBarComponent implements OnInit {
   };
   constructor(
     private render: Renderer2,
-    private msg:NzMessageService
+    private msg: NzMessageService
   ) { }
 
   ngOnInit() {
-
-    // this.render.listen(this.adviseContainer.nativeElement, "click", (event) => {
-    //   this.pre.pageX = Math.abs((event as any).pageX);
-    //   this.pre.pageY = Math.abs((event as any).pageY);
-      
-    //   this.tid = !this.tid;
-    //   if(this.tid){
-    //     this.msg.info('跟着走起来',{nzDuration:1000});
-    //   }else{
-    //     this.msg.warning('我走不动了',{nzDuration:1000});
-    //   }
-    // });
     this.render.listen(this.adviseContainer.nativeElement, "mousedown", (event) => {
       this.pre.pageX = Math.abs((event as any).pageX);
       this.pre.pageY = Math.abs((event as any).pageY);
-      this.tid = 1;
+      if (event.target.className == "advise-container")
+        this.tid = 1;
     });
     this.render.listen(this.adviseContainer.nativeElement, "mouseup", (event) => {
       this.tid = 0;
@@ -62,9 +51,9 @@ export class AdviseBarComponent implements OnInit {
     });
   }
 
-  show(event,flag){
+  show(event, flag) {
     event.stopPropagation();
-    this.showAdvise=flag;
+    this.showAdvise = flag;
   }
 
   ngOnDestroy(): void {
