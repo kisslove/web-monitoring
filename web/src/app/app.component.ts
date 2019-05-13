@@ -16,13 +16,31 @@ export class AppComponent {
     sub0: null
   };
   showTips:boolean=true;
-  thanksList=[{
-    name:'*环',
-    notes:'请问可否开源上报js...'
+  dataItems=[{
+    url:'https://s.imooc.com/Wxv7KHc',
+    src:'1.png',
+    title:'两小时学会 Node.js stream'
   },{
-    name:'*子',
-    notes:'膜拜大佬，前端监...'
-  }]
+    url:'https://s.imooc.com/Wlba9hm',
+    src:'2.png',
+    title:'一条龙的 Node·Vue·React 服务器部署'
+  },{
+    url:'https://s.imooc.com/SNTMyFV',
+    src:'3.png',
+    title:'纯正商业级应用 Node.js Koa2开发微信小程序服务端'
+  },{
+    url:'https://s.imooc.com/SoXuPiZ',
+    src:'4.png',
+    title:'前端下一代开发语言TypeScript  从基础到axios实战'
+  },{
+    url:'https://s.imooc.com/SxjKSih',
+    src:'5.png',
+    title:'从基础到实战 手把手带你掌握新版Webpack4.0'
+  },{
+    url:'https://s.imooc.com/SYa6RSU',
+    src:'6.png',
+    title:'JavaScript版 数据结构与算法'
+  }];
   constructor(
     private user: UserService,
     private router: Router,

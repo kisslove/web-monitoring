@@ -28,8 +28,10 @@
 
   /* Non-prefixed version, currently not supported by any browser */
   .advise {
-    min-width: 200px;
+    width: 800px;
     min-height: 200px;
+    max-height: 600px;
+    overflow: auto;
     position: absolute;
     left: 52px;
     border: solid 1px #3D93F4;
@@ -39,6 +41,15 @@
     cursor: default;
     border-radius: 4px;
     box-shadow: 0px 0px 4px;
+
+    a{
+      width: 350px;
+      display: inline-block;
+      margin: 8px 2px;
+      // img{
+      //   width: 100%;
+      // }
+    }
   }
 
   .advise-icon {
@@ -93,8 +104,9 @@
   }
 }
 
-@media screen and (max-width: 300px) {
+@media screen and (max-width: 500px) {
   .advise-container{
     font-size: 10px;
+    display:none;
   }
 }

@@ -1,19 +1,11 @@
 <div class="advise-container" #adviseContainer>
-  广告招商<i nz-icon class="advise-icon" (click)="show($event,true)" title="展开" type="double-right" theme="outline"></i>
+  提升技能<i nz-icon class="advise-icon" (click)="show($event,true)" title="展开" type="double-right" theme="outline"></i>
   <div class="advise" *ngIf="showAdvise" (click)="show($event,true)">
-    <div>
-      <i nz-icon (click)="show($event,false)" title="关闭" style="float: right;cursor: pointer;" type="close-circle" theme="outline"></i></div>
-      <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=9xbvcsop" target="_blank">
-        <img src="../../../assets/images/4.png">
-      </a>
-      <a href="https://promotion.aliyun.com/ntms/act/enterprise-discount.html?userCode=9xbvcsop" target="_blank">
-      <img src="../../../assets/images/1.png">
-    </a>
-    <a href="https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=9xbvcsop" target="_blank">
-      <img src="../../../assets/images/2.png">
-    </a>
-    <a href="https://tm.aliyun.com/?userCode=9xbvcsop" target="_blank">
-      <img src="../../../assets/images/3.png">
+    <div style="text-align: right;">
+      <i nz-icon (click)="show($event,false)" title="关闭" style="cursor: pointer;" type="close-circle"
+        theme="outline"></i></div>
+    <a *ngFor="let item of data" [href]="item.url" [title]="item.title" target="_blank">
+      <img [src]="'../../../assets/images/'+item.src">
     </a>
   </div>
-</div> 
+</div>

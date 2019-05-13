@@ -1,5 +1,5 @@
 import { debounceTime } from 'rxjs/operators';
-import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2, Input } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { NzMessageService } from 'ng-zorro-antd';
 
@@ -10,6 +10,11 @@ import { NzMessageService } from 'ng-zorro-antd';
 })
 export class AdviseBarComponent implements OnInit {
   @ViewChild("adviseContainer") adviseContainer: ElementRef;
+  @Input("data") data:Array<{
+    title:string,
+    url:string,
+    src:string
+  }>;
   tid;
   sub0: Subscription;
   showAdvise: boolean = false;
