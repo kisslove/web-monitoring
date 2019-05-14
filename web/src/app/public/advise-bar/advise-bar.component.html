@@ -2,6 +2,7 @@
   提升技能<i nz-icon class="advise-icon" (click)="show($event,true)" title="展开" type="double-right" theme="outline"></i>
   <div class="advise" *ngIf="showAdvise" (click)="show($event,true)">
     <div style="text-align: right;">
+      <span style="float: left;font-weight: bolder;">慕课网课程：</span>
       <i nz-icon (click)="show($event,false)" title="关闭" style="cursor: pointer;" type="close-circle"
         theme="outline"></i></div>
     <a *ngFor="let item of data" [href]="item.url" [title]="item.title" target="_blank">
