@@ -42,15 +42,11 @@ export class HomepageComponent implements OnInit {
     setTimeout(() => {
       this.isLogin = this.user.getToken() ? true : false;
     }, 1000);
-    this.unsubscribe = fromEvent(window, "resize").pipe(
-      debounceTime(100))
-      .subscribe((event) => {
-        this._resizePageHeight();
-      });
-  }
-
-  ngAfterViewInit(): void {
-    this._resizePageHeight();
+    // this.unsubscribe = fromEvent(window, "resize").pipe(
+    //   debounceTime(100))
+    //   .subscribe((event) => {
+    //     // this._resizePageHeight();
+    //   });
   }
 
   _resizePageHeight() {
@@ -74,7 +70,7 @@ export class HomepageComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe.unsubscribe();
+    // this.unsubscribe.unsubscribe();
   }
 
   // register() {
