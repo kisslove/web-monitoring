@@ -41,6 +41,10 @@ export class AppComponent {
     src:'6.png',
     title:'JavaScript版 数据结构与算法'
   }];
+  dataItems1=[{
+    src:'weixin-gongzhonghao.jpg',
+    title:'微信公众号'
+  }];
   constructor(
     private user: UserService,
     private router: Router,

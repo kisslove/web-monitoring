@@ -1,10 +1,13 @@
-<div class="advise-container" #adviseContainer>
-  提升技能<i nz-icon class="advise-icon" (click)="show($event,true)" title="展开" type="double-right" theme="outline"></i>
+<div class="advise-container" #adviseContainer
+  [ngStyle]="{'background': setting.color,'left':setting.left,'top':setting.top}">
+  {{setting?.title}}<i nz-icon class="advise-icon" (click)="show($event,true)" title="展开" type="double-right"
+    theme="outline"></i>
   <div class="advise" *ngIf="showAdvise" (click)="show($event,true)">
-    <div style="text-align: right;">
-      <span style="float: left;font-weight: bolder;">慕课网课程：</span>
+    <div style="text-align: right;position: fixed;background: #fff;width: 586px;padding: 8px;">
+      <span style="float: left;font-weight: bolder;">{{setting?.subTitle}}</span>
       <i nz-icon (click)="show($event,false)" title="关闭" style="cursor: pointer;" type="close-circle"
         theme="outline"></i></div>
+    <br>
     <a *ngFor="let item of data" [href]="item.url" [title]="item.title" target="_blank">
       <img [src]="'../../../assets/images/'+item.src">
     </a>

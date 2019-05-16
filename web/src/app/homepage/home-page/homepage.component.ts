@@ -1,3 +1,4 @@
+import { debounceTime } from 'rxjs/operators';
 import { Broadcaster } from './../../monitor.common.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
@@ -6,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import * as CryptoJS from "crypto-js";
 import { UserService } from '../../monitor.common.service';
+import { Subscription, fromEvent } from 'rxjs';
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
@@ -24,27 +26,37 @@ export class HomepageComponent implements OnInit {
   };
   isVisible_login: boolean = false;
   isVisible_register: boolean = false;
-  isLogin:boolean=false;
+  isLogin: boolean = false;
+  unsubscribe: Subscription;
   constructor(
     private http: HttpClient,
     private msg: NzMessageService,
     private router: Router,
     private cookie: CookieService,
-    private user:UserService,
-    private broadcaster:Broadcaster,
-    private render:Renderer2
+    private user: UserService,
+    private broadcaster: Broadcaster,
+    private render: Renderer2
   ) { }
 
   ngOnInit() {
-    setTimeout(()=>{
-      this.isLogin=this.user.getToken()?true:false;
-    },1000);
+    setTimeout(() => {
+      this.isLogin = this.user.getToken() ? true : false;
+    }, 1000);
+    this.unsubscribe = fromEvent(window, "resize").pipe(
+      debounceTime(100))
+      .subscribe((event) => {
+        this._resizePageHeight();
+      });
   }
 
   ngAfterViewInit(): void {
-     this.render.setStyle(document.querySelector("#home-section"),"height",document.body.clientHeight-50+'px');
+    this._resizePageHeight();
   }
- 
+
+  _resizePageHeight() {
+    this.render.setStyle(document.querySelector("#home-section"), "height", document.body.clientHeight - 50 + 'px');
+  }
+
   login() {
     let pwd = this.encrypt(this.model.password);
     this.http.post("User/login", {
@@ -59,6 +71,10 @@ export class HomepageComponent implements OnInit {
         this.msg.error(r.Data, { nzDuration: 4000 });
       }
     })
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe.unsubscribe();
   }
 
   // register() {

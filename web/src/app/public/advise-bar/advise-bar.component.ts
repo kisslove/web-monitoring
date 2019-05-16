@@ -10,6 +10,13 @@ import { NzMessageService } from 'ng-zorro-antd';
 })
 export class AdviseBarComponent implements OnInit {
   @ViewChild("adviseContainer") adviseContainer: ElementRef;
+  @Input("setting") setting:{
+    title:string,
+    subTitle:string,
+    color:string,
+    left:string,
+    top:string
+  };
   @Input("data") data:Array<{
     title:string,
     url:string,
