@@ -3,7 +3,7 @@ import { throwError as observableThrowError, Observable, Subject } from 'rxjs';
 import * as _ from "lodash";
 import { filter, map, catchError } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { environment } from '../environments/environment';
 import {
   HttpRequest,
@@ -14,8 +14,57 @@ import {
   HttpClient,
   HttpErrorResponse
 } from '@angular/common/http';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { Router, CanDeactivate } from '@angular/router';
+
+interface BroadcastEvent {
+  key: any;
+  data?: any;
+}
+
+/**
+ * 
+ * 事件订阅-基于RxJS Subject
+ * @export
+ * @class Broadcaster
+ * example:
+  @Component({
+      selector: 'child'
+  })
+  export class ChildComponent {
+    constructor(private broadcaster: Broadcaster) {}
+    
+    registerStringBroadcast() {
+      this.broadcaster.on<string>('MyEvent')
+        .subscribe(message => {
+          ...
+        });
+    }
+
+    emitStringBroadcast() {
+      this.broadcaster.broadcast('MyEvent', 'some message');
+    }
+  }
+ */
+@Injectable()
+export class Broadcaster {
+  private _eventBus: Subject<BroadcastEvent>;
+
+  constructor() {
+    this._eventBus = new Subject<BroadcastEvent>();
+  }
+
+  broadcast(key: any, data?: any) {
+    this._eventBus.next({ key, data });
+  }
+
+  on<T>(key: any): Observable<T> {
+    return this._eventBus.asObservable().pipe(
+      filter(event => event.key === key),
+      map(event => <T>event.data));
+  }
+}
+
 
 @Injectable()
 export class UserService {
@@ -211,11 +260,15 @@ export class ConfigService {
  */
 @Injectable()
 export class JwtInterceptorService implements HttpInterceptor {
+  ref
   constructor(
     private config: ConfigService,
     private router: Router,
     private _msg: NzMessageService,
-    private user: UserService
+    private user: UserService,
+    private modalService:NzModalService,
+    private cookie:CookieService,
+    @Optional() private broadcaster:Broadcaster
   ) { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     req = req.clone({
@@ -243,6 +296,21 @@ export class JwtInterceptorService implements HttpInterceptor {
       }),
       catchError((err) => {
         if (err instanceof HttpErrorResponse) {
+          if (err.status === 401) {
+            //登录信息过期
+            if (this.ref) {
+              this.ref.close()
+          }
+          this.ref = this.modalService.confirm({
+              nzTitle: '<span>登录信息过期,请重新登录系统</span>',
+              nzOnOk: () => {
+                  this.router.navigate(['login']);
+                  this.broadcaster.broadcast("refreshUser",null);
+                  this.cookie.delete("user");
+                  this.router.navigate(['home']);
+              }
+          });
+          }
           if (err.status === 500) {
             //服务器错误
             this._msg.error(err.error.message || err.error.Message || '服务器错误', { nzDuration: 5000 });
@@ -263,53 +331,7 @@ export class JwtInterceptorService implements HttpInterceptor {
 
 
 
-interface BroadcastEvent {
-  key: any;
-  data?: any;
-}
 
-/**
- * 
- * 事件订阅-基于RxJS Subject
- * @export
- * @class Broadcaster
- * example:
-  @Component({
-      selector: 'child'
-  })
-  export class ChildComponent {
-    constructor(private broadcaster: Broadcaster) {}
-    
-    registerStringBroadcast() {
-      this.broadcaster.on<string>('MyEvent')
-        .subscribe(message => {
-          ...
-        });
-    }
-
-    emitStringBroadcast() {
-      this.broadcaster.broadcast('MyEvent', 'some message');
-    }
-  }
- */
-@Injectable()
-export class Broadcaster {
-  private _eventBus: Subject<BroadcastEvent>;
-
-  constructor() {
-    this._eventBus = new Subject<BroadcastEvent>();
-  }
-
-  broadcast(key: any, data?: any) {
-    this._eventBus.next({ key, data });
-  }
-
-  on<T>(key: any): Observable<T> {
-    return this._eventBus.asObservable().pipe(
-      filter(event => event.key === key),
-      map(event => <T>event.data));
-  }
-}
 
 
 

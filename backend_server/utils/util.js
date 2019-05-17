@@ -249,20 +249,26 @@ exports.decrypt = (str) => {
 exports.resolveToken = (req, res, next) => {
     let tempToken = req.headers["authorization"];
     if (tempToken) {
-        let s = this.decrypt(tempToken);
+        let s;
+        try {
+            s = this.decrypt(tempToken);
+        } catch (error) {
+            res.status(401).end();
+            return;
+        }
         let userId = s.split("@")[0];
         userInfo.validToken(userId).then((r) => {
             if (r.token == tempToken) {
                 req.userId = userId;
                 next();
             } else {
-                res.json(util.resJson({
+                res.status(401).json(util.resJson({
                     IsSuccess: false,
                     Data: "Token不一致"
                 }));
             }
         }, (err) => {
-            res.json(util.resJson({
+            res.status(401).json(util.resJson({
                 IsSuccess: false,
                 Data: "Token不一致"
             }));
