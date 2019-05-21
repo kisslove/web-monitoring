@@ -15,7 +15,8 @@ export class AdviseBarComponent implements OnInit {
     subTitle:string,
     color:string,
     left:string,
-    top:string
+    top:string,
+    with:number
   };
   @Input("data") data:Array<{
     title:string,

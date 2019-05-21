@@ -2,8 +2,8 @@
   [ngStyle]="{'background': setting.color,'left':setting.left,'top':setting.top}">
   {{setting?.title}}<i nz-icon class="advise-icon" (click)="show($event,true)" title="展开" type="double-right"
     theme="outline"></i>
-  <div class="advise" *ngIf="showAdvise" (click)="show($event,true)">
-    <div style="text-align: right;position: fixed;background: #fff;width: 586px;padding: 8px;">
+  <div class="advise" [ngStyle]="{'width': setting.width+'px'}" *ngIf="showAdvise" (click)="show($event,true)">
+    <div [ngStyle]="{'width': setting.width-6+'px'}" style="text-align: right;position: fixed;background: #fff;padding: 8px;">
       <span style="float: left;font-weight: bolder;">{{setting?.subTitle}}</span>
       <i nz-icon (click)="show($event,false)" title="关闭" style="cursor: pointer;" type="close-circle"
         theme="outline"></i></div>
@@ -12,4 +12,4 @@
       <img [src]="'../../../assets/images/'+item.src">
     </a>
   </div>
-</div>
+</div> 
