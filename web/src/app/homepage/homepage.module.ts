@@ -1,3 +1,4 @@
+import { PublicModule } from './../public/public.module';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { HomepageComponent } from './home-page/homepage.component';
 
@@ -13,6 +14,7 @@ const routes: Routes = [
     CommonModule,
     RouterModule,
     FormsModule,
+    PublicModule,
     NgZorroAntdModule,
     RouterModule.forChild(routes)
   ],

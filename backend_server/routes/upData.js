@@ -5,10 +5,11 @@ var pvInfo = require('../business/pvInfo');
 var apiInfo = require('../business/apiInfo');
 var perfInfo = require('../business/perfInfo');
 var resourceInfo = require('../business/resourceInfo');
+var focusClickInfo = require('../business/focusClickInfo');
 var util = require('../utils/util');
 var _ = require('lodash');
 /*上传数据 */
-router.get('', util.getIp, function(req, res, next) {
+router.get('', util.getIp, function (req, res, next) {
     let temp = JSON.parse(req.query.paramsJson);
     temp = _.extend(temp, req.netInfo);
     temp.type = req.query.type;
@@ -31,6 +32,10 @@ router.get('', util.getIp, function(req, res, next) {
             break;
         case 'resource':
             resourceInfo.create(temp);
+            res.status(200).end();
+            break;
+        case 'focusClick':
+            focusClickInfo.create(temp);
             res.status(200).end();
             break;
         default:

@@ -1,6 +1,6 @@
 <div class="advise-container" #adviseContainer
   [ngStyle]="{'background': setting.color,'left':setting.left,'top':setting.top}">
-  {{setting?.title}}<i nz-icon class="advise-icon" (click)="show($event,true)" title="展开" type="double-right"
+  {{setting?.title}}<i appMonitorABlank [title]="setting?.title" nz-icon class="advise-icon" (click)="show($event,true)" title="展开" type="double-right"
     theme="outline"></i>
   <div class="advise" [ngStyle]="{'width': setting.width+'px'}" *ngIf="showAdvise" (click)="show($event,true)">
     <div [ngStyle]="{'width': setting.width-6+'px'}" style="text-align: right;position: fixed;background: #fff;padding: 8px;">

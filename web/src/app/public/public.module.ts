@@ -6,6 +6,7 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { FormsModule } from '@angular/forms';
 import { LineProgressComponent } from './line-progress/line-progress.component';
 import { AdviseBarComponent } from './advise-bar/advise-bar.component';
+import { MonitorABlankDirective } from './monitor-a-blank.directive';
 
 @NgModule({
   imports: [
@@ -13,7 +14,7 @@ import { AdviseBarComponent } from './advise-bar/advise-bar.component';
     NgZorroAntdModule,
     FormsModule
   ],
-  declarations: [CustomHighchartComponent, TimeChoicePanelComponent, LineProgressComponent, AdviseBarComponent],
-  exports:[CustomHighchartComponent,TimeChoicePanelComponent,LineProgressComponent,AdviseBarComponent]
+  declarations: [CustomHighchartComponent, TimeChoicePanelComponent, LineProgressComponent, AdviseBarComponent, MonitorABlankDirective],
+  exports:[CustomHighchartComponent,TimeChoicePanelComponent,LineProgressComponent,AdviseBarComponent,MonitorABlankDirective]
 })
 export class PublicModule { }
