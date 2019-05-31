@@ -1,9 +1,13 @@
 <section id="home-section" style="width:100%;">
-    <!-- <video id="video-index" autoplay="true" muted="true" loop="true" src="../../../assets/video/index-4.mp4"></video> -->
-    <!-- <img src="../../../assets/images/home.jpg" alt=""> -->
+  <div style="width: 100%;height:400px;position:absolute;background: #096dd9;">
+
+  </div>
     <div id="deccription">
         <div class="title">
-            WEB-MONITOR
+            前端监控平台 - 开源监控
+        </div>
+        <div class="desc">
+           日活跃、用户行为记录、访问日志、JS错误日志、API请求详情、访问性能评估，开发者必须关心的各种运营数据
         </div>
         <div class="opt" *ngIf="isLogin">
             <button [routerLink]="[ '/dashboard' ]">立即使用</button>
@@ -28,6 +32,11 @@
     <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">
         <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="bboss"
             nzDescription="bboss是一个j2ee开源框架，为企业级应用开发提供一站式解决方案，并能有效地支撑移动应用开发。">
+        </nz-card-meta>
+    </nz-card>
+    <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">
+        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="酷娃利息对比计算工具"
+            nzDescription="一款帮你选择贷款方式的多功能利息计算工具。">
         </nz-card-meta>
     </nz-card>
     <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">

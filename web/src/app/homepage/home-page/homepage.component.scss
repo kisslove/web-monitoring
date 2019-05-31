@@ -1,16 +1,17 @@
 #home-section {
   margin-top: 50px;
-  height: 600px;
+  height: 400px;
   position: relative;
-  background: url('../../../assets/images/home.jpg') no-repeat;
+  // background: url('../../../assets/images/home.jpg') no-repeat;
   background-position: center;
   background-size: cover;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
-  box-shadow: 1px 1px 10px grey;
+
+  // box-shadow: 1px 1px 10px grey;
   #deccription {
     position: absolute;
-    top: 40%;
+    top: 30%;
     text-align: center;
     left: 0;
     right: 0;
@@ -23,7 +24,14 @@
 
     .title {
       color: #fff;
-      font-size: 80px;
+      font-size: 60px;
+    }
+
+    .desc {
+      padding: 40px;
+      font-size: 20px;
+      color: #bae7ff;
+      font-weight: 500;
     }
 
     .opt {
@@ -50,7 +58,8 @@
 #home-section2 {
   // min-height: 700px;
   padding: 50px;
-  h4{
+
+  h4 {
     text-align: center;
     font-size: 40px;
     font-weight: 600;
@@ -60,7 +69,8 @@
 
 #footer {
   height: 200px;
-  background: #3D3E49;
+  // background: #3D3E49;
+  background: #001529;
   color: #eee;
 
   .grid-fluid {
@@ -80,6 +90,7 @@
       display: inline-block;
       width: 33.33%;
       vertical-align: top;
+
       ul {
         list-style: none;
         padding-left: 0;

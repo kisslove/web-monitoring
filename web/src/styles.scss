@@ -114,3 +114,8 @@ input,
     overflow: hidden;
     word-break: break-all;
 }
+
+.ant-menu-dark, .ant-menu-dark .ant-menu-sub {
+    color: rgba(255, 255, 255, 0.65);
+    background: #096dd9 !important;
+}
