@@ -8,10 +8,10 @@
             <div nz-col class="gutter-row" nzXs="24" nzSm="8" style="margin-bottom:24px;" *ngFor="let item of sysItems">
                 <nz-card nzType="inner" [nzTitle]="emplateTitle" [nzExtra]="extraTemplate">
                     <div class="total_pv_uv">
-                        <p> 总PV:
+                        <p> PV(7天)：
                             <span>{{item.total_pv_uv?.totalPv}}</span>
                         </p>
-                        <p> 总UV:
+                        <p> UV(7天)：
                             <span>{{item.total_pv_uv?.totalUv}}</span>
                         </p>
                     </div>
@@ -30,7 +30,7 @@
 </nz-spin>
 
 
-<nz-modal [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_add" nzTitle="新建应用站点" (nzOnCancel)="cancel()" (nzOnOk)="save()">
+<nz-modal [nzMaskClosable]="false" [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_add" nzTitle="新建应用站点" (nzOnCancel)="cancel()" (nzOnOk)="save()">
     <nz-form-item>
         <nz-form-label [nzSm]="4" [nzXs]="24">站点名称</nz-form-label>
         <nz-form-control [nzSm]="18" [nzXs]="24">

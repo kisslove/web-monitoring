@@ -28,7 +28,7 @@
             <tr>
                 <th nzWidth="160px">Name</th>
                 <th nzWidth="160px">DateTime</th>
-                <th nzWidth="160px">IP</th>
+                <th nzWidth="160px">访客IP</th>
                 <th nzWidth="120px">InitiatorType</th>
                 <th nzWidth="200px">EntryType</th>
                 <th nzWidth="100px">Size</th>
@@ -49,7 +49,7 @@
                 <td>{{data.onlineip}}</td>
                 <td>{{data.rInitiatorType}}</td>
                 <td>{{data.rEntryType}}</td>
-                <td>{{data.rSize&&(data.rSize==0?'from cache':data.rSize+'KB')}}</td>
+                <td>{{(data.rSize||data.rSize==0)&&(data.rSize===0?'from cache':data.rSize+'KB')||''}}</td>
                 <td>{{data.rDuration}}ms</td>
             </tr>
         </tbody>

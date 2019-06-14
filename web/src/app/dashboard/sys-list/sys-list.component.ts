@@ -31,10 +31,12 @@ export class SysListComponent implements OnInit {
   }
 
   gotoSys(item) {
+    this.isSpinning=true;
     this.route.navigate(['sys/' + item.appKey]);
   }
 
   gotoSysSetting(item) {
+    this.isSpinning=true;
     this.route.navigate(['sys/' + item.appKey + '/setting']);
   }
 

@@ -14,7 +14,7 @@
         </div>
         <div class="opt" *ngIf="!isLogin">
             <button [routerLink]="[ '/dashboard' ]">马上体验</button> &nbsp;
-            <button appMonitorABlank (click)="isVisible_login=true;">独立账户</button>
+            <button (click)="isVisible_login=true;">独立账户</button>
         </div>
     </div>
 </section>
@@ -147,7 +147,7 @@
         </div>
     </div>
 </section>
-<nz-modal [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_login" nzTitle="登录" (nzOnOk)="login()"
+<nz-modal [nzMaskClosable]="false" [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_login" nzTitle="登录" (nzOnOk)="login()"
     (nzOnCancel)="isVisible_login=false;">
     <nz-form-item>
         <nz-form-label [nzSm]="4" [nzXs]="24">邮箱</nz-form-label>
@@ -169,7 +169,7 @@
     </nz-form-item>
 </nz-modal>
 
-<nz-modal [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_register" nzTitle="免费注册"
+<nz-modal [nzMaskClosable]="false" [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_register" nzTitle="免费注册"
     (nzOnOk)="isVisible_register=false;" (nzOnCancel)="isVisible_register=false;">
     <h4 style="color:#03A9F4 !important;">关注作者公众号，发送邮箱+密码，免费注册，获得独立账号（所创建的项目仅自己可见）。</h4>
     <div style="text-align: center;margin:4px;">
@@ -177,7 +177,7 @@
     </div>
 </nz-modal>
 
-<!-- <nz-modal [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_register" nzTitle="注册" (nzOnOk)="register()" (nzOnCancel)="isVisible_register=false;">
+<!-- <nz-modal [nzMaskClosable]="false" [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_register" nzTitle="注册" (nzOnOk)="register()" (nzOnCancel)="isVisible_register=false;">
     <nz-form-item>
         <nz-form-label [nzSm]="4" [nzXs]="24">邮箱</nz-form-label>
         <nz-form-control [nzSm]="18" [nzXs]="24">
