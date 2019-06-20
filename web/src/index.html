@@ -1,18 +1,31 @@
 <!doctype html>
 <html lang="zh">
 
-<head>
-    <meta charset="utf-8">
-    <title>前端监控平台</title>
-    <base href="/">
-    <meta name="renderer" content="webkit">
-    <meta name="keywords" content="前端监控，前端性能监控，前端异常监控，前端请求监控，web，web-monitor，monitor">
-    <meta name="description" content="前端监控，性能监控平台。The front end monitoring platform focuses on Web end experience data monitoring. Three aspects of the health of Web pages are monitored: page opening speed (speed measurement), page stability (JS Error), and external service call success rate (API).">
-    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
+    <head>
+        <meta charset="utf-8">
+        <title>前端监控平台</title>
+        <base href="/">
+        <meta name="renderer" content="webkit">
+        <meta name="keywords"
+            content="前端监控，前端性能监控，前端异常监控，前端请求监控，web，web-monitor，monitor">
+        <meta name="description" content="前端监控，性能监控平台。The front end monitoring
+            platform focuses on Web end experience data monitoring. Three
+            aspects of the health of Web pages are monitored: page opening speed
+            (speed measurement), page stability (JS Error), and external service
+            call success rate (API).">
+        <meta name="viewport"
+            content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"
+            />
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+    </head>
 
-<body>
-    <app-root></app-root>
-</body>
-</html> 
+    <body>
+        <app-root></app-root>
+        <script src="https://unpkg.com/source-map@0.7.3/dist/source-map.js"></script>
+        <script>
+            sourceMap.SourceMapConsumer.initialize({
+                "lib/mappings.wasm": "https://unpkg.com/source-map@0.7.3/lib/mappings.wasm"
+            });
+        </script>
+    </body>
+</html>

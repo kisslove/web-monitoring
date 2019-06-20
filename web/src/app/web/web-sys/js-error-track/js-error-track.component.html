@@ -1,4 +1,36 @@
 <nz-tabset style="min-height: 500px;">
+  <nz-tab nzTitle="堆栈详情">
+    <div style="display:inline-block;width:50%" [innerHTML]="data.error"></div>
+    <div style="display:inline-block;width:50%;vertical-align: top;">
+      <form id="myForm">
+        <p>
+          <label for="line-column">行号:列号 </label>
+          <input style="width:200px;" nz-input
+            [(ngModel)]="currentFile.lineColumn" name="line-column">
+        </p>
+        <p>
+          <label for="sourceMapFile">sourceMapFile </label>
+          <input id="sourceMapFile" type="file" name="sourceMapFile">
+        </p>
+        <button nz-button (click)="resolve()">开始解析</button>
+        <p style="margin-top:24px;">解析结果：</p>
+        <table id="result" border="1" cellspacing="0" cellpadding="10">
+          <tr>
+            <th>line:column</th>
+            <th> ==></th>
+            <th>source</th>
+            <th>line</th>
+            <th>column</th>
+            <th>name</th>
+          </tr>
+          <tr>
+            <td>{{currentFile.lineColumn}}</td><td> ==> </td><td>{{result?.source}}</td><td>{{result?.line}}</td><td>{{result?.column}}</td><td>{{result?.name}}</td>
+          </tr>
+        </table>
+      </form>
+
+    </div>
+  </nz-tab>
   <nz-tab nzTitle="用户行为">
     <nz-timeline>
       <nz-timeline-item>创建服务现场 2015-09-01</nz-timeline-item>
@@ -6,8 +38,5 @@
       <nz-timeline-item>技术测试异常 2015-09-01</nz-timeline-item>
       <nz-timeline-item>网络异常正在修复 2015-09-01</nz-timeline-item>
     </nz-timeline>
-  </nz-tab>
-  <nz-tab nzTitle="堆栈详情">
-    <div [innerHTML]="data.error"></div>
   </nz-tab>
 </nz-tabset>

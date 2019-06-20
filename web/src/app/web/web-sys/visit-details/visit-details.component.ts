@@ -37,7 +37,7 @@ export class VisitDetailsComponent implements OnInit {
   ngOnInit() {
 
     this.appKey = this.route.parent.snapshot.paramMap.get("appKey");
-    this.searchModel.type = this.route.snapshot.queryParams["type"] || 'pv';
+    this.searchModel.type = this.route.snapshot.queryParams["type"] || 'js';
     this.searchModel.keywords = this.route.snapshot.queryParams["keywords"]==undefined ? '' : decodeURIComponent(this.route.snapshot.queryParams["keywords"]);
     this.searchModel.sTime =this.route.snapshot.queryParams["sTime"]==undefined?new Date(new Date().setDate(new Date().getDate() - 1)):this.route.snapshot.queryParams["sTime"];
     this.searchModel.eTime =this.route.snapshot.queryParams["sTime"]==undefined? new Date():new Date(new Date(this.route.snapshot.queryParams["sTime"]).setSeconds(new Date(this.route.snapshot.queryParams["sTime"]).getSeconds() +1));
