@@ -1,0 +1,13 @@
+<nz-tabset style="min-height: 500px;">
+  <nz-tab nzTitle="用户行为">
+    <nz-timeline>
+      <nz-timeline-item>创建服务现场 2015-09-01</nz-timeline-item>
+      <nz-timeline-item>初步排除网络异常 2015-09-01</nz-timeline-item>
+      <nz-timeline-item>技术测试异常 2015-09-01</nz-timeline-item>
+      <nz-timeline-item>网络异常正在修复 2015-09-01</nz-timeline-item>
+    </nz-timeline>
+  </nz-tab>
+  <nz-tab nzTitle="堆栈详情">
+    <div [innerHTML]="data.error"></div>
+  </nz-tab>
+</nz-tabset>

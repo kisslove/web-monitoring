@@ -1,9 +1,10 @@
+import { JsErrorTrackComponent } from './../js-error-track/js-error-track.component';
 import { Broadcaster } from './../../../monitor.common.service';
 import { slideInDownAnimation } from './../../../animations';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import * as _ from 'lodash';
 @Component({
   selector: 'app-visit-details',
@@ -30,7 +31,8 @@ export class VisitDetailsComponent implements OnInit {
     private http: HttpClient,
     private msg: NzMessageService,
     private route: ActivatedRoute,
-    private broadcaster: Broadcaster
+    private broadcaster: Broadcaster,
+    private modalService:NzModalService
   ) { }
   ngOnInit() {
 
@@ -65,7 +67,7 @@ export class VisitDetailsComponent implements OnInit {
         this.loading = false;
         if (this.searchModel.type == 'js') {
           _.each(data.Data.List, (d) => {
-            d.error = decodeURIComponent(d.error);
+            d.error = decodeURIComponent(d.error).replace(/\\n/g,"<br/>");
           });
         }
         this.dataSet = data.Data.List;
@@ -83,6 +85,25 @@ export class VisitDetailsComponent implements OnInit {
   onOk(data) {
     this.searchModel.sTime = data[0];
     this.searchModel.eTime = data[1];
+  }
+
+  errorTrack(data){
+    const modal= this.modalService.create({
+      nzTitle: '错误场景还原',
+      nzMaskClosable:false,
+      nzWidth:1366,
+      nzContent: JsErrorTrackComponent,
+      nzZIndex:3000,
+      nzComponentParams: {
+        data:data
+      },
+      nzFooter: [{
+        label: '关闭',
+        onClick: () => {
+          modal.close();
+        } 
+      }]
+    });
   }
 
 }

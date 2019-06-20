@@ -85,8 +85,11 @@
                     <nz-popover [nzTitle]="" [nzPlacement]="'left'">
                         <span nz-popover>{{data.error?.substr(0,100)}}</span>
                         <ng-template #nzTemplate>
-                            <div style="width: 400px;word-break: break-all;">{{data.error}}</div>
-                        </ng-template>
+                            <a (click)="errorTrack(data)">错误场景还原</a>
+                            <div [innerHTML]='data.error' style="width: 400px;word-break: break-all;max-height: 400px;overflow: auto;"></div>
+                            <!-- <pre>{{data.error}}</pre> -->
+                            <!-- <textarea [(ngModel)]="data.error"></textarea> -->
+                        </ng-template> 
                     </nz-popover>
                 </td>
             </tr>

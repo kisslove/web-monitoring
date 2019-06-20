@@ -19,6 +19,7 @@ import { VisitGeoComponent } from './web-sys/visit-geo/visit-geo.component';
 import { VisitOsComponent } from './web-sys/visit-os/visit-os.component';
 import { ResourceLoadDetailsComponent } from './web-sys/resource-load-details/resource-load-details.component';
 import { UserPathComponent } from './web-sys/user-path/user-path.component';
+import { JsErrorTrackComponent } from './web-sys/js-error-track/js-error-track.component';
 const routes: Routes = [
   {
     path: '', component: WebSysComponent, children: [
@@ -59,6 +60,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     PublicModule
   ],
-  declarations: [BackendLogComponent,WebSysComponent, SysIndexComponent, SysSettingComponent, VisitPageComponent, VisitSpeedComponent, JsErrorComponent, ApiRequestComponent, ResourceLoadDetailsComponent, VisitDetailsComponent, VisitGeoComponent, VisitOsComponent, UserPathComponent]
+  entryComponents:[JsErrorTrackComponent],
+  declarations: [BackendLogComponent,WebSysComponent, SysIndexComponent, SysSettingComponent, VisitPageComponent, VisitSpeedComponent, JsErrorComponent, ApiRequestComponent, ResourceLoadDetailsComponent, VisitDetailsComponent, VisitGeoComponent, VisitOsComponent, UserPathComponent, JsErrorTrackComponent]
 })
 export class WebModule { }
