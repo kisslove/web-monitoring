@@ -82,15 +82,14 @@
                 <td *ngIf="searchModel.type=='api'">{{data.time}}ms</td>
 
                 <td *ngIf="searchModel.type=='js'">
-                    <nz-popover [nzTitle]="" [nzPlacement]="'left'">
+                    <a (click)="errorTrack(data)" [title]="data.error?.substr(0,100)">错误场景还原</a>
+                    <!-- <nz-popover [nzTitle]="" [nzPlacement]="'left'">
                         <span nz-popover>{{data.error?.substr(0,100)}}</span>
                         <ng-template #nzTemplate>
                             <a (click)="errorTrack(data)">错误场景还原</a>
                             <div [innerHTML]='data.error' style="width: 400px;word-break: break-all;max-height: 400px;overflow: auto;"></div>
-                            <!-- <pre>{{data.error}}</pre> -->
-                            <!-- <textarea [(ngModel)]="data.error"></textarea> -->
                         </ng-template> 
-                    </nz-popover>
+                    </nz-popover> -->
                 </td>
             </tr>
         </tbody>

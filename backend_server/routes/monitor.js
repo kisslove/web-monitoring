@@ -162,6 +162,22 @@ router.post('/PageRankStatis', function(req, res, next) {
     });
 });
 
+// 访问明细-jsErrorTrackPath
+router.post('/JsErrorTrackPath', function(req, res, next) {
+    jsError.jsErrorTrackPath(req).then((r) => {
+        res.json(util.resJson({
+            IsSuccess: true,
+            Data: r
+        }));
+    }, (err) => {
+        console.error(err);
+        res.json(util.resJson({
+            IsSuccess: false,
+            Data: null
+        }));
+    });
+});
+
 
 // 访问页面-jsErrorRate
 router.post('/JsErrorRate', function(req, res, next) {

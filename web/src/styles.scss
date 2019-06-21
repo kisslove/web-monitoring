@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-
+@import 'codemirror/lib/codemirror.css';
+@import 'codemirror/theme/monokai.css';
 ::-webkit-scrollbar {
     height: 6px;
     width: 6px;
@@ -118,4 +119,8 @@ input,
 .ant-menu-dark, .ant-menu-dark .ant-menu-sub {
     color: rgba(255, 255, 255, 0.65);
     background: #096dd9 !important;
+}
+
+.CodeMirror{
+    height: 220px;
 }

@@ -1,7 +1,8 @@
 var Mongoose = require('mongoose');
 var JsModel = require('../models/jsModel');
 var PvModel = require('../models/pvModel');
-var util=require('../utils/util');
+var ApiModel = require('../models/apiModel');
+var util = require('../utils/util');
 var _ = require('lodash');
 
 exports.list = async (req) => {
@@ -44,6 +45,39 @@ exports.list = async (req) => {
     return resJson;
 };
 
+
+/**
+ * js错误追踪用户行为路径
+ * @param {*} req 
+ */
+exports.jsErrorTrackPath = async (req) => {
+    let appKey = new Mongoose.Types.ObjectId(req.body.appKey);
+    let resJson = {
+        List: []
+    };
+    let temp = new Date(req.body.createTime);
+    let tempCon = {
+        "createTime": {
+            '$gt': new Date(temp.setMinutes(temp.getMinutes() - 2)),
+            '$lte': temp
+        },
+        "appKey": appKey,
+        "onlineip": req.body.onlineip,
+        "os": req.body.os,
+        "pageWh": req.body.pageWh,
+        "ua": req.body.ua,
+        "bs": req.body.bs
+    };
+    let result_pv = await PvModel.find(tempCon);
+    let result_api = await ApiModel.find(tempCon);
+    let list = result_pv.concat(result_api);
+    if (list.length > 0) {
+        resJson.List = _.sortBy(_.uniqBy(list,"createTime"),"createTime");
+    }
+    return resJson;
+};
+
+
 exports.create = (data) => {
     var temp = new JsModel(data);
     temp.save(function (err, r) {
@@ -61,7 +95,7 @@ exports.create = (data) => {
 exports.jsErrorRate = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body=util.computeSTimeAndEtimeAndTimeDivider(body);
+    body = util.computeSTimeAndEtimeAndTimeDivider(body);
 
     let errorRateType = body.errorRateType;
     let matchCond;
@@ -133,15 +167,15 @@ exports.jsErrorRate = async (req) => {
             "$group": {
                 "_id": {
                     "$subtract": [{
+                        "$subtract": ["$createTime", new Date(0)]
+                    },
+                    {
+                        "$mod": [{
                             "$subtract": ["$createTime", new Date(0)]
                         },
-                        {
-                            "$mod": [{
-                                    "$subtract": ["$createTime", new Date(0)]
-                                },
-                                body.timeDivider /*聚合时间段*/
-                            ]
-                        }
+                        body.timeDivider /*聚合时间段*/
+                        ]
+                    }
                     ]
                 },
                 "list": {
@@ -174,15 +208,15 @@ exports.jsErrorRate = async (req) => {
             "$group": {
                 "_id": {
                     "$subtract": [{
+                        "$subtract": ["$createTime", new Date(0)]
+                    },
+                    {
+                        "$mod": [{
                             "$subtract": ["$createTime", new Date(0)]
                         },
-                        {
-                            "$mod": [{
-                                    "$subtract": ["$createTime", new Date(0)]
-                                },
-                                body.timeDivider /*聚合时间段*/
-                            ]
-                        }
+                        body.timeDivider /*聚合时间段*/
+                        ]
+                    }
                     ]
                 },
                 "list": {
@@ -235,40 +269,40 @@ exports.jsErrorRate = async (req) => {
 exports.jsAggregate = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
-    body=util.computeSTimeAndEtime(body);
+    body = util.computeSTimeAndEtime(body);
 
     let r = await JsModel.aggregate([{
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey,
-                "page": body.keywords
-            }
-        },
-        {
-            "$group": {
-                "_id": '$error',
-                "list": {
-                    '$push': "$page"
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'count': {
-                    '$size': '$list'
-                },
-                'msg': '$_id'
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey,
+            "page": body.keywords
+        }
+    },
+    {
+        "$group": {
+            "_id": '$error',
+            "list": {
+                '$push': "$page"
             }
         }
+    },
+    {
+        "$project": {
+            "_id": 0,
+            'count': {
+                '$size': '$list'
+            },
+            'msg': '$_id'
+        }
+    },
+    {
+        "$sort": {
+            'count': -1
+        }
+    }
     ]);
 
     return r;

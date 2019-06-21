@@ -1,19 +1,22 @@
-<nz-tabset style="min-height: 500px;">
-  <nz-tab nzTitle="堆栈详情">
-    <div style="display:inline-block;width:50%" [innerHTML]="data.error"></div>
-    <div style="display:inline-block;width:50%;vertical-align: top;">
+<nz-tabset style="height: 550px;">
+  <nz-tab [nzTitle]="'堆栈详情'">
+    <div style="display:inline-block;width:50%;height: 550px;overflow: auto;padding: 8px;" [innerHTML]="data.error">
+    </div>
+    <div style="display:inline-block;width:50%;vertical-align: top;height: 550px;overflow: auto;padding: 8px;">
+      <h5>提示：如果源文件经过压缩，可以使用此功能更快找到出错位置。要求上传对应的 *.map文件,此文件不会上传服务器。</h5>
       <form id="myForm">
         <p>
-          <label for="line-column">行号:列号 </label>
-          <input style="width:200px;" nz-input
-            [(ngModel)]="currentFile.lineColumn" name="line-column">
+          <label for="line-column">输入行号和列号: </label>
+          <input style="width:200px;" placeholder="行号:列号" nz-input [(ngModel)]="currentFile.lineColumn"
+            name="line-column">
+          <button style="vertical-align: bottom;margin-left: 18px;" nzType="primary" nz-button
+            (click)="resolve()">开始解析</button>
         </p>
         <p>
-          <label for="sourceMapFile">sourceMapFile </label>
+          <label for="sourceMapFile">SourceMapFile: </label>
           <input id="sourceMapFile" type="file" name="sourceMapFile">
         </p>
-        <button nz-button (click)="resolve()">开始解析</button>
-        <p style="margin-top:24px;">解析结果：</p>
+        <p>解析结果：</p>
         <table id="result" border="1" cellspacing="0" cellpadding="10">
           <tr>
             <th>line:column</th>
@@ -24,19 +27,53 @@
             <th>name</th>
           </tr>
           <tr>
-            <td>{{currentFile.lineColumn}}</td><td> ==> </td><td>{{result?.source}}</td><td>{{result?.line}}</td><td>{{result?.column}}</td><td>{{result?.name}}</td>
+            <td>{{currentFile.lineColumn}}</td>
+            <td> ==> </td>
+            <td>{{result?.source}}</td>
+            <td>{{result?.line}}</td>
+            <td>{{result?.column}}</td>
+            <td>{{result?.name}}</td>
           </tr>
         </table>
       </form>
-
+      <div style="margin-top: 4px;">
+        <textarea style="padding-left: 24px;" nz-input id="code" name="code"></textarea>
+      </div>
     </div>
   </nz-tab>
-  <nz-tab nzTitle="用户行为">
-    <nz-timeline>
-      <nz-timeline-item>创建服务现场 2015-09-01</nz-timeline-item>
-      <nz-timeline-item>初步排除网络异常 2015-09-01</nz-timeline-item>
-      <nz-timeline-item>技术测试异常 2015-09-01</nz-timeline-item>
-      <nz-timeline-item>网络异常正在修复 2015-09-01</nz-timeline-item>
-    </nz-timeline>
+  <nz-tab nzTitle="错误出现时用户行为追踪" (nzClick)="getPath()">
+    <div style="padding:24px;height: 550px;overflow: auto;">
+      <nz-timeline>
+        <ng-container *ngFor="let item of dataSet">
+          <nz-timeline-item nzColor="green" *ngIf="item.type=='api'" [nzDot]="apiTemplate">
+            <p><span style="font-weight: bold;color:cornflowerblue;">HTTP请求</span> {{item.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</p>
+            <div>Url：{{item.api}}</div>
+            <div>状态码：{{item.code}}</div>
+            <div>耗时：{{item.time}}ms</div>  
+            <div>用户IP：{{item.onlineip}}</div>
+          </nz-timeline-item>
+          <nz-timeline-item nzColor="blueviolet" *ngIf="item.type=='pv'" [nzDot]="pvTemplate">
+            <p><span style="font-weight: bold;color:cornflowerblue;">页面跳转</span> {{item.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</p>
+            <div>页面：{{item.page}}</div>
+          </nz-timeline-item>
+        </ng-container>   
+        <nz-timeline-item nzColor="red" [nzDot]="jsErrorTemplate">
+            <p><span style="font-weight: bold;color:cornflowerblue;">JavaScript执行错误</span> {{data.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</p>
+            <div>Error：{{data.error?.substr(0,100)}}</div>
+        </nz-timeline-item>
+      </nz-timeline>
+      <ng-template #apiTemplate>
+        <i nz-icon type="api" theme="outline" style="font-size: 16px;"></i>
+      </ng-template>
+      <ng-template #pvTemplate>
+        <i nz-icon type="rise" theme="outline" style="font-size: 16px;"></i>
+      </ng-template>
+      <ng-template #jsErrorTemplate>
+        <i nz-icon theme="outline" type="exclamation-circle" style="font-size: 16px;"></i>
+      </ng-template>
+      <br>
+      <br>
+      <br>
+    </div>
   </nz-tab>
 </nz-tabset>

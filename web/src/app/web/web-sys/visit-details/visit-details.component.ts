@@ -35,9 +35,8 @@ export class VisitDetailsComponent implements OnInit {
     private modalService:NzModalService
   ) { }
   ngOnInit() {
-
     this.appKey = this.route.parent.snapshot.paramMap.get("appKey");
-    this.searchModel.type = this.route.snapshot.queryParams["type"] || 'js';
+    this.searchModel.type = this.route.snapshot.queryParams["type"] || 'pv';
     this.searchModel.keywords = this.route.snapshot.queryParams["keywords"]==undefined ? '' : decodeURIComponent(this.route.snapshot.queryParams["keywords"]);
     this.searchModel.sTime =this.route.snapshot.queryParams["sTime"]==undefined?new Date(new Date().setDate(new Date().getDate() - 1)):this.route.snapshot.queryParams["sTime"];
     this.searchModel.eTime =this.route.snapshot.queryParams["sTime"]==undefined? new Date():new Date(new Date(this.route.snapshot.queryParams["sTime"]).setSeconds(new Date(this.route.snapshot.queryParams["sTime"]).getSeconds() +1));
@@ -94,15 +93,13 @@ export class VisitDetailsComponent implements OnInit {
       nzWidth:1366,
       nzContent: JsErrorTrackComponent,
       nzZIndex:3000,
+      nzBodyStyle:{
+        padding:0
+      },
       nzComponentParams: {
         data:data
       },
-      nzFooter: [{
-        label: '关闭',
-        onClick: () => {
-          modal.close();
-        } 
-      }]
+      nzFooter:null
     });
   }
 
