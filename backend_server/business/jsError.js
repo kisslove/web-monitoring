@@ -58,7 +58,7 @@ exports.jsErrorTrackPath = async (req) => {
     let temp = new Date(req.body.createTime);
     let tempCon = {
         "createTime": {
-            '$gt': new Date(temp.setMinutes(temp.getMinutes() - 2)),
+            '$gte': new Date(new Date().setMinutes(temp.getMinutes() - 2)),
             '$lte': temp
         },
         "appKey": appKey,
