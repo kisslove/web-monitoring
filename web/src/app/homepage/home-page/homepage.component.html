@@ -1,13 +1,13 @@
 <section id="home-section" style="width:100%;">
-  <div style="width: 100%;height:400px;position:absolute;background: #096dd9;">
+    <div style="width: 100%;height:400px;position:absolute;background: #096dd9;">
 
-  </div>
+    </div>
     <div id="deccription">
         <div class="title">
             前端监控平台 - 开源监控
         </div>
         <div class="desc">
-           日活跃、用户行为记录、访问日志、JS错误日志、API请求详情、访问性能评估，开发者必须关心的各种运营数据
+            日活跃、用户行为记录、访问日志、JS错误日志、API请求详情、访问性能评估，开发者必须关心的各种运营数据
         </div>
         <div class="opt" *ngIf="isLogin">
             <button [routerLink]="[ '/dashboard' ]">立即使用</button>
@@ -26,7 +26,7 @@
         </nz-card-meta>
     </nz-card>
     <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">
-        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="cnbooks" nzDescription="【Kindle中国】_Amazon Kindle 完全购买攻略。">
+        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="cnbook" nzDescription="【Kindle中国】_Amazon Kindle 完全购买攻略。">
         </nz-card-meta>
     </nz-card>
     <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">
@@ -35,8 +35,7 @@
         </nz-card-meta>
     </nz-card>
     <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">
-        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="酷娃利息对比计算工具"
-            nzDescription="一款帮你选择贷款方式的多功能利息计算工具。">
+        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="酷娃利息对比计算工具" nzDescription="一款帮你选择贷款方式的多功能利息计算工具。">
         </nz-card-meta>
     </nz-card>
     <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">
@@ -60,57 +59,41 @@
         </nz-card-meta>
     </nz-card>
 </section>
-<section id="home-section2" style="width:100%;padding: 0px 50px;">
-    <h3 style="margin-left: 16px;">慕课推荐(专栏)</h3>
-    <ul>
+<section id="home-section2" style="width:100%;padding:0 50px;">
+    <h3 style="margin-left: 16px;">帮助文档(官方)</h3>
+    <ul style="margin-top: 16px;">
         <li>
-            <a appMonitorABlank target="_blank" href="https://s.imooc.com/WzO56cr">从 0 开始学爬虫</a>
+            <a appMonitorABlank target="_blank"
+                href="https://mp.weixin.qq.com/s/RAQmBTQZa_JWfDowFtCFzw">前端监控（web-monitor）</a>
         </li>
         <li>
-            <a appMonitorABlank target="_blank" href="https://s.imooc.com/W7Wmpdv">Webpack 从零入门到工程化实战</a>
+            <a appMonitorABlank target="_blank"
+                href="https://mp.weixin.qq.com/s/Ygjiya57R4nKpLZFQZ46BA">前端数据收集（pv/uv）</a>
         </li>
         <li>
-            <a appMonitorABlank target="_blank" href="https://s.imooc.com/WM7wYOD">用技术人的眼光看世界 • 程序员技术指北</a>
+            <a appMonitorABlank target="_blank"
+                href="https://mp.weixin.qq.com/s/OqyuIVxRtXCttgfos4sBmw">前端监控数据收集（performance）</a>
         </li>
         <li>
-            <a appMonitorABlank target="_blank" href="https://s.imooc.com/WM7wYOD">教你用 Python 进阶量化交易</a>
+            <a appMonitorABlank target="_blank"
+                href="https://mp.weixin.qq.com/s/htGrjyPGaxIT32f_KMP3FQ">前端监控数据收集（请求拦截）</a>
         </li>
         <li>
-            <a appMonitorABlank target="_blank" href="https://s.imooc.com/Wlba9hm">一条龙的 Node·Vue·React 服务器部署</a>
+            <a appMonitorABlank target="_blank"
+                href="https://mp.weixin.qq.com/s/k99UfoJdCJlrBWhDsqEffg">监控系统(用户行为追踪)</a>
         </li>
         <li>
-            <a appMonitorABlank target="_blank" href="https://s.imooc.com/Wxv7KHc">两小时学会 Node.js stream</a>
+            <a appMonitorABlank target="_blank"
+                href="https://mp.weixin.qq.com/s/LFVolLcuORyO_zvHPh9lsw">JavaScript出错场景还原</a>
         </li>
     </ul>
+
 </section>
-<section id="home-section2" style="width:100%;padding: 0px 50px;">
-    <h3 style="margin-left: 16px;">慕课推荐(实战)</h3>
-    <ul>
-        <li>
-            <a appMonitorABlank target="_blank" href="https://s.imooc.com/SnNi1QQ">剑指Java面试-Offer直通车</a>
-        </li>
-        <li>
-            <a appMonitorABlank target="_blank" href="https://s.imooc.com/SNTMyFV">纯正商业级应用－Node.js Koa2开发微信小程序服务端</a>
-        </li>
-        <li>
-            <a appMonitorABlank target="_blank" href="https://s.imooc.com/SoXuPiZ">前端下一代开发语言TypeScript 从基础到axios实战</a>
-        </li>
-        <li>
-            <a appMonitorABlank target="_blank" href="https://s.imooc.com/SYa6RSU">JavaScript版 数据结构与算法</a>
-        </li>
-        <li>
-            <a appMonitorABlank target="_blank" href="https://s.imooc.com/SXZyu9o">部署落地+业务迁移 玩转k8s进阶与企业级实践技能</a>
-        </li>
-        <li>
-            <a appMonitorABlank target="_blank" href="https://s.imooc.com/ScyFAfI">微信分享与支付专项课程 （公众号 小程序（云））</a>
-        </li>
-        <li>
-            <a appMonitorABlank target="_blank" href="https://s.imooc.com/Ssc67Nu">React新特性Hooks 重构去哪儿网火车票PWA</a>
-        </li>
-        <li>
-            <a appMonitorABlank target="_blank" href="https://s.imooc.com/SxjKSih">从基础到实战 手把手带你掌握新版Webpack4.0</a>
-        </li>
-    </ul>
+<section id="home-section2" style="width:100%;padding:25px 50px;">
+    <h3 style="margin-left: 16px;">支持作者(赏咖啡)</h3>
+    <img nz-tooltip nzTitle="关注公众号" style="width: 200px;margin: 8px 24px;" src="/assets/images/weixin-gongzhonghao.jpg" alt="公众号">
+    <img nz-tooltip nzTitle="支付宝赞赏" style="width: 175px;margin: 8px 24px;" src="/assets/images/zhifubao.png" alt="支付宝">
+    <img nz-tooltip nzTitle="微信赞赏" style="width: 175px;margin: 8px 24px;" src="/assets/images/weixin.png" alt="微信">
 </section>
 <section id="footer" style="width:100%;">
     <div class="grid-fluid">
@@ -121,15 +104,18 @@
                 <li><a appMonitorABlank target="_blank" href="https://docs.mongodb.com/" title="数据库MongoDB">MongoDB</a>
                 </li>
                 <li><a appMonitorABlank target="_blank" href="https://ant.design/" title="UI设计模式">Ant Design</a></li>
-                <li><a appMonitorABlank target="_blank" href="https://ng.ant.design/" title="Ant Design的Angular实现">NG-ZORRO</a>
+                <li><a appMonitorABlank target="_blank" href="https://ng.ant.design/"
+                        title="Ant Design的Angular实现">NG-ZORRO</a>
                 </li>
             </ul>
         </div>
         <div class="grid">
             <h3>帮助</h3>
             <ul>
-                <li><a appMonitorABlank target="_blank" href="https://github.com/kisslove/web-monitoring" title="源码仓库">GitHub</a></li>
-                <li><a appMonitorABlank target="_blank" href="/assets/images/weixin-gongzhonghao.jpg" title="关注公众号">公众号</a>
+                <li><a appMonitorABlank target="_blank" href="https://github.com/kisslove/web-monitoring"
+                        title="源码仓库">GitHub</a></li>
+                <li><a appMonitorABlank target="_blank" href="/assets/images/weixin-gongzhonghao.jpg"
+                        title="关注公众号">公众号</a>
                 </li>
                 <li><a appMonitorABlank target="_blank" href="/assets/images/weixin.png" title="微信">支持作者</a></li>
             </ul>
@@ -137,18 +123,30 @@
         <div class="grid">
             <h3>推广(招商中)</h3>
             <ul>
-                <li><a appMonitorABlank target="_blank" href="https://www.51link.com/?ruid=9095"
-                        title="发现一个非常不错的友情链接平台，可以买卖友链，可以交换友链，朋友们可以试试。">51 链</a>
-                </li>
-                <li><a appMonitorABlank target="_blank" href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=9xbvcsop">阿里云优惠购</a></li>
-                <li><a appMonitorABlank target="_blank" href="http://coolwow.myselfbuy.com/" title="一款帮你选择贷款方式的多功能利息计算工具">酷娃利息对比计算工具</a>
+                <li><a appMonitorABlank target="_blank"
+                        href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=9xbvcsop">阿里云优惠购</a></li>
+                <li><a appMonitorABlank target="_blank" href="http://coolwow.myselfbuy.com/"
+                        title="一款帮你选择贷款方式的多功能利息计算工具">酷娃利息对比计算工具</a>
                 </li>
             </ul>
         </div>
     </div>
 </section>
-<nz-modal [nzMaskClosable]="false" [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_login" nzTitle="登录" (nzOnOk)="login()"
-    (nzOnCancel)="isVisible_login=false;">
+
+<nz-back-top [nzTemplate]="tpl" [nzVisibilityHeight]="100">
+    <ng-template #tpl>
+        <div style="height: 40px;
+        width: 40px;
+        line-height: 40px;
+        border-radius: 4px;
+        background-color: #1088e9;
+        color: #fff;
+        text-align: center;
+        font-size: 20px;" class="ant-back-top-inner">UP</div>
+    </ng-template>
+</nz-back-top>
+<nz-modal [nzMaskClosable]="false" [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_login" nzTitle="登录"
+    (nzOnOk)="login()" (nzOnCancel)="isVisible_login=false;">
     <nz-form-item>
         <nz-form-label [nzSm]="4" [nzXs]="24">邮箱</nz-form-label>
         <nz-form-control [nzSm]="18" [nzXs]="24">
@@ -169,8 +167,8 @@
     </nz-form-item>
 </nz-modal>
 
-<nz-modal [nzMaskClosable]="false" [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_register" nzTitle="免费注册"
-    (nzOnOk)="isVisible_register=false;" (nzOnCancel)="isVisible_register=false;">
+<nz-modal [nzMaskClosable]="false" [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_register"
+    nzTitle="免费注册" (nzOnOk)="isVisible_register=false;" (nzOnCancel)="isVisible_register=false;">
     <h4 style="color:#03A9F4 !important;">关注作者公众号，发送邮箱+密码，免费注册，获得独立账号（所创建的项目仅自己可见）。</h4>
     <div style="text-align: center;margin:4px;">
         <img style="height:150px;width:auto;" title="微信公众号" src="../assets/images/weixin-gongzhonghao.jpg" alt="微信">
