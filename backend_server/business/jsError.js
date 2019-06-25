@@ -2,6 +2,7 @@ var Mongoose = require('mongoose');
 var JsModel = require('../models/jsModel');
 var PvModel = require('../models/pvModel');
 var ApiModel = require('../models/apiModel');
+var ConsoleModel = require('../models/consoleModel');
 var util = require('../utils/util');
 var _ = require('lodash');
 
@@ -45,7 +46,6 @@ exports.list = async (req) => {
     return resJson;
 };
 
-
 /**
  * js错误追踪用户行为路径
  * @param {*} req 
@@ -70,7 +70,8 @@ exports.jsErrorTrackPath = async (req) => {
     };
     let result_pv = await PvModel.find(tempCon);
     let result_api = await ApiModel.find(tempCon);
-    let list = result_pv.concat(result_api);
+    let result_console = await ConsoleModel.find(tempCon);
+    let list = result_pv.concat(result_api).concat(result_console);
     if (list.length > 0) {
         resJson.List = _.sortBy(_.uniqBy(list,"createTime"),"createTime");
     }

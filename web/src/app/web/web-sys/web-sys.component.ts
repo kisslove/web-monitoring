@@ -53,13 +53,12 @@ export class WebSysComponent {
       isActive: false,
       icon: 'line-chart'
     },
-    // { 
-    //   label:'JS错误率',
-    //   value:'jsError',
-    //   isActive:false,
-    //   icon:'exception'
-    // }
-    // ,
+    { 
+      label:'JS错误',
+      value:'jsError',
+      isActive:false,
+      icon:'exception'
+    },
     {
       label: 'API请求',
       value: 'apiReq',

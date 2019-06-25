@@ -5,7 +5,6 @@ var schema = new Schema({
     updateTime: { type: Date, default: Date.now },
     type: String,
     page: String,
-    prePage: String,
     appKey: Schema.Types.ObjectId,
     os: String,
     bs: String,
@@ -18,7 +17,9 @@ var schema = new Schema({
     mostSpecificSubdivision_nameCN: String,
     onlineip: String,
     isp: String,
-    organizationCN: String
+    organizationCN: String,
+    cType:String,
+    cMsg: String
 });
 
-module.exports = mongoose.model('PvDataInfo', schema);
+module.exports = mongoose.model('ConsoleDataInfo', schema);

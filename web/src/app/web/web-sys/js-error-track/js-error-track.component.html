@@ -54,7 +54,13 @@
           </nz-timeline-item>
           <nz-timeline-item nzColor="blueviolet" *ngIf="item.type=='pv'" [nzDot]="pvTemplate">
             <p><span style="font-weight: bold;color:cornflowerblue;">页面跳转</span> {{item.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</p>
-            <div>页面：{{item.page}}</div>
+            <div>from：{{item.prePage}}</div>
+            <div>to{{item.page}}</div>
+          </nz-timeline-item>
+          <nz-timeline-item nzColor="blueviolet" *ngIf="item.type=='console'" [nzDot]="consoleTemplate">
+            <p><span style="font-weight: bold;color:goldenrod;">控制台信息</span> {{item.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</p>
+            <div>type{{item.cType}}</div>
+            <div>msg:{{item.cMsg}}</div>
           </nz-timeline-item>
         </ng-container>   
         <nz-timeline-item nzColor="red" [nzDot]="jsErrorTemplate">
@@ -64,6 +70,9 @@
       </nz-timeline>
       <ng-template #apiTemplate>
         <i nz-icon type="api" theme="outline" style="font-size: 16px;"></i>
+      </ng-template>
+      <ng-template #consoleTemplate>
+        <i nz-icon type="question-circle" theme="outline" style="font-size: 16px;"></i>
       </ng-template>
       <ng-template #pvTemplate>
         <i nz-icon type="rise" theme="outline" style="font-size: 16px;"></i>

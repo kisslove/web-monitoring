@@ -6,6 +6,7 @@ var apiInfo = require('../business/apiInfo');
 var perfInfo = require('../business/perfInfo');
 var resourceInfo = require('../business/resourceInfo');
 var focusClickInfo = require('../business/focusClickInfo');
+var consoleInfo = require('../business/consoleInfo');
 var util = require('../utils/util');
 var _ = require('lodash');
 /*上传数据 */
@@ -36,6 +37,10 @@ router.get('', util.getIp, function (req, res, next) {
             break;
         case 'focusClick':
             focusClickInfo.create(temp);
+            res.status(200).end();
+            break;
+        case 'console':
+            consoleInfo.create(temp);
             res.status(200).end();
             break;
         default:
