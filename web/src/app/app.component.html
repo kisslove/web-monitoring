@@ -3,17 +3,25 @@
         <!-- <div class="logo"></div> -->
         <ul nz-menu [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 50px;">
             <li style="font-size:16px;">
-                <i [routerLink]="['/home']" class="anticon anticon-line-chart" style="margin-left: 24px;color: #eee;"></i> <span [routerLink]="['/home']" style="cursor:pointer;color: #fff;margin-left: 4px;">前端监控平台</span>
-                <span *ngIf="userName" style="position: absolute;right: 100px;">{{userName}}<span (click)="logout()" style="text-decoration: underline;font-size: 12px;margin-left: 8px;cursor: pointer;">注销</span>
+                <i [routerLink]="['/home']" class="anticon anticon-line-chart"
+                    style="margin-left: 24px;color: #eee;"></i> <span [routerLink]="['/home']"
+                    style="cursor:pointer;color: #fff;margin-left: 4px;">前端监控平台</span>
+                <span *ngIf="userName" style="position: absolute;right: 100px;">{{userName}}<span (click)="logout()"
+                        style="text-decoration: underline;font-size: 12px;margin-left: 8px;cursor: pointer;">注销</span>
                 </span>
-                <a title="github" target="_blank" href="https://github.com/kisslove/web-monitoring" style="cursor: pointer;position: absolute;right: 30px;">
-                    <img style="width: 24px;" src="../assets/images/github.png" alt="github"></a>
+                <span style="position: absolute;right: 30px;top:3px;">
+                    <iframe src="https://ghbtns.com/github-btn.html?user=kisslove&repo=web-monitoring&type=star&count=true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
+                </span>
             </li>
         </ul>
-    </nz-header> 
+    </nz-header>
 </nz-layout>
-<app-advise-bar [data]="dataItems1" [setting]="{width:300,left:'19%',top:'2px',title:'独立账户',subTitle:'关注公众号，发送“邮箱+密码”，免费注册。',color:'linear-gradient(0deg, rgb(230, 125, 16,0.7), rgb(244, 69, 61), rgba(255, 177, 81, 0.86))'}"></app-advise-bar> 
-<app-advise-bar [data]="dataItems1"  [setting]="{width:300,left:'14%',top:'2px',title:'私有部署',subTitle:'关注公众号,发送“私有部署”。',color:'linear-gradient(0deg, rgba(24, 144, 255, 0.7), rgb(244, 61, 196), rgba(255, 177, 81, 0.86))'}"></app-advise-bar> 
+<app-advise-bar [data]="dataItems1"
+    [setting]="{width:300,left:'19%',top:'2px',title:'独立账户',subTitle:'关注公众号，发送“邮箱+密码”，免费注册。',color:'linear-gradient(0deg, rgb(230, 125, 16,0.7), rgb(244, 69, 61), rgba(255, 177, 81, 0.86))'}">
+</app-advise-bar>
+<app-advise-bar [data]="dataItems1"
+    [setting]="{width:300,left:'14%',top:'2px',title:'私有部署',subTitle:'关注公众号,发送“私有部署”。',color:'linear-gradient(0deg, rgba(24, 144, 255, 0.7), rgb(244, 61, 196), rgba(255, 177, 81, 0.86))'}">
+</app-advise-bar>
 <!-- <app-advise-bar [data]="dataItems" [setting]="{left:'14%',top:'2px',title:'提升技能',subTitle:'慕课网课程：',color:'linear-gradient(0deg, rgba(54, 137, 231, 0.7), rgba(61, 147, 244, 1), rgba(81, 163, 255, 1))'}"></app-advise-bar>  -->
 <div class="layout">
     <router-outlet></router-outlet>
