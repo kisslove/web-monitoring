@@ -46,21 +46,21 @@
       <nz-timeline>
         <ng-container *ngFor="let item of dataSet">
           <nz-timeline-item nzColor="green" *ngIf="item.type=='api'" [nzDot]="apiTemplate">
-            <p><span style="font-weight: bold;color:cornflowerblue;">HTTP请求</span> {{item.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</p>
+            <p><span style="font-weight: bold;color:green;">HTTP请求</span> {{item.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</p>
             <div>Url：{{item.api}}</div>
             <div>状态码：{{item.code}}</div>
             <div>耗时：{{item.time}}ms</div>  
             <div>用户IP：{{item.onlineip}}</div>
           </nz-timeline-item>
           <nz-timeline-item nzColor="blueviolet" *ngIf="item.type=='pv'" [nzDot]="pvTemplate">
-            <p><span style="font-weight: bold;color:cornflowerblue;">页面跳转</span> {{item.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</p>
-            <div>from：{{item.prePage}}</div>
-            <div>to{{item.page}}</div>
+            <p><span style="font-weight: bold;color:blueviolet;">页面跳转</span> {{item.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</p>
+            <div>From：{{item.prePage}}</div>
+            <div>To：{{item.page}}</div>
           </nz-timeline-item>
-          <nz-timeline-item nzColor="blueviolet" *ngIf="item.type=='console'" [nzDot]="consoleTemplate">
+          <nz-timeline-item nzColor="goldenrod" *ngIf="item.type=='console'" [nzDot]="consoleTemplate">
             <p><span style="font-weight: bold;color:goldenrod;">控制台信息</span> {{item.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</p>
-            <div>type{{item.cType}}</div>
-            <div>msg:{{item.cMsg}}</div>
+            <div>Type：{{item.cType}}</div>
+            <div>Msg：{{item.cMsg}}</div>
           </nz-timeline-item>
         </ng-container>   
         <nz-timeline-item nzColor="red" [nzDot]="jsErrorTemplate">

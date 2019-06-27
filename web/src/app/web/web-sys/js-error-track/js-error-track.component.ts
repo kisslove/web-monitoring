@@ -77,6 +77,11 @@ export class JsErrorTrackComponent implements OnInit {
       appKey: this.data.appKey
     }).subscribe((data: any) => {
       if (data.IsSuccess) {
+        data.Data.List.forEach(element => {
+          if(element.type=='console'){
+            element.cMsg=decodeURIComponent(element.cMsg);
+          }
+        });
         this.dataSet = data.Data.List;
       } else {
         this.msg.error("数据加载失败");
