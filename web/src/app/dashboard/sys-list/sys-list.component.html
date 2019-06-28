@@ -9,10 +9,10 @@
                 <nz-card nzType="inner" [nzTitle]="emplateTitle" [nzExtra]="extraTemplate">
                     <div class="total_pv_uv">
                         <p> PV(7天)：
-                            <span>{{item.total_pv_uv?.totalPv}}</span>
+                            <span>{{item.total_pv_uv?.totalPv||'--'}}</span>
                         </p>
                         <p> UV(7天)：
-                            <span>{{item.total_pv_uv?.totalUv}}</span>
+                            <span>{{item.total_pv_uv?.totalUv||'--'}}</span>
                         </p>
                     </div>
                     <app-custom-highchart [config]="item.pv_uv_config"></app-custom-highchart>

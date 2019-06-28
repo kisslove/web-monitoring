@@ -30,6 +30,11 @@ export class SysIndexComponent implements OnInit {
   unsubscribe = {
     sub1: null
   };
+  compareRate={
+    js:null,
+    speed:null,
+    api:null
+  }
   appKey;
   top10Data = [];
   mapData = [];
@@ -48,7 +53,12 @@ export class SysIndexComponent implements OnInit {
       this.loadBsData(data.time, data.type);
       this.loadOsData(data.time, data.type);
       this.loadWhData(data.time, data.type);
+      this.JsErrorRateCompareAndAvg(data.time, data.type);
+      this.PerfSpeedCompareAndAvg(data.time, data.type);
+      this.ApiSuccRateCompareAndAvg(data.time, data.type);
     });
+
+    
     if (window.globalTime) {
       this.loadPvUvData(window.globalTime.time, window.globalTime.type);
       this.loadTop10Data(window.globalTime.time, window.globalTime.type);
@@ -56,6 +66,9 @@ export class SysIndexComponent implements OnInit {
       this.loadBsData(window.globalTime.time, window.globalTime.type);
       this.loadOsData(window.globalTime.time, window.globalTime.type);
       this.loadWhData(window.globalTime.time, window.globalTime.type);
+      this.JsErrorRateCompareAndAvg(window.globalTime.time, window.globalTime.type);
+      this.PerfSpeedCompareAndAvg(window.globalTime.time, window.globalTime.type);
+      this.ApiSuccRateCompareAndAvg(window.globalTime.time, window.globalTime.type);
     } else {
       this.loadPvUvData(null, 4);
       this.loadTop10Data(null, 4);
@@ -63,6 +76,9 @@ export class SysIndexComponent implements OnInit {
       this.loadBsData(null, 4);
       this.loadOsData(null, 4);
       this.loadWhData(null, 4);
+      this.JsErrorRateCompareAndAvg(null, 4);
+      this.PerfSpeedCompareAndAvg(null, 4);
+      this.ApiSuccRateCompareAndAvg(null, 4);
     }
   }
 
@@ -97,6 +113,50 @@ export class SysIndexComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  
+  
+  // 加载Api成功率
+  ApiSuccRateCompareAndAvg(time, type) {
+    this.http.post("Monitor/ApiSuccRateCompareAndAvg", {
+      TimeQuantum: type == '7' ? '' : type,
+      sTime: type == '7' ? time[0] : '',
+      eTime: type == '7' ? time[1] : '',
+      appKey: this.appKey
+    }).subscribe((d: any) => {
+      if (d.IsSuccess) {
+        this.compareRate.api=new Number(d.Data).toFixed(2);
+      }
+    })
+  }
+
+  // 加载JS错误率
+  JsErrorRateCompareAndAvg(time, type) {
+    this.http.post("Monitor/JsErrorRateCompareAndAvg", {
+      TimeQuantum: type == '7' ? '' : type,
+      sTime: type == '7' ? time[0] : '',
+      eTime: type == '7' ? time[1] : '',
+      appKey: this.appKey
+    }).subscribe((d: any) => {
+      if (d.IsSuccess) {
+        this.compareRate.js=new Number(d.Data).toFixed(2);
+      }
+    })
+  }
+
+   //加载速度
+   PerfSpeedCompareAndAvg(time, type) {
+    this.http.post("Monitor/PerfSpeedCompareAndAvg", {
+      TimeQuantum: type == '7' ? '' : type,
+      sTime: type == '7' ? time[0] : '',
+      eTime: type == '7' ? time[1] : '',
+      appKey: this.appKey
+    }).subscribe((d: any) => {
+      if (d.IsSuccess) {
+        this.compareRate.speed=new Number(d.Data).toFixed(0);
+      }
+    })
   }
 
   //加载PV/UV数据

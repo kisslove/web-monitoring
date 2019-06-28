@@ -167,6 +167,39 @@ exports.keyPerf = async (req) => {
 };
 
 /**
+ * 访问速度同比和均值
+ * @param {*} req 
+ */
+exports.perfSpeedCompareAndAvg = async (req) => {
+    let body = req.body;
+    let appKey = new Mongoose.Types.ObjectId(body.appKey);
+    body = util.computeSTimeAndEtimeAndTimeDivider(body);
+    let matchCond = {
+        "createTime": {
+            '$gte': body.sTime,
+            '$lt': body.eTime
+        },
+        "appKey": appKey
+    };
+
+    // 查询当前阶段加载速度平均值
+    let r1 = await PerfModel.find(matchCond);
+    let r1Avg=r1.reduce((acc, val) => acc + val.load, 0)/r1.length;
+    let minusResult = body.eTime - body.sTime;
+    let matchCond1 = {
+        "createTime": {
+            '$gte': new Date(body.sTime).setMilliseconds(new Date(body.sTime).getMilliseconds() - minusResult),
+            '$lt': new Date(body.eTime).setMilliseconds(new Date(body.eTime).getMilliseconds() - minusResult)
+        },
+        "appKey": appKey
+    };
+    // 查询往前推的加载速度平均值
+    let r11 = await PerfModel.find(matchCond1);
+    let r11Avg=r11.reduce((acc, val) => acc + val.load, 0)/r11.length;
+    return new Number((isNaN(r1Avg)?0:r1Avg)-(isNaN(r11Avg)?0:r11Avg));
+};
+
+/**
  * 访问速度-区间段耗时
  * @param {*} req 
  */

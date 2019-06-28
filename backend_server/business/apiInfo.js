@@ -176,6 +176,47 @@ exports.apiStatis = async (req) => {
     return r;
 };
 
+
+/**
+ * API成功率同比和均值
+ * @param {*} req 
+ */
+exports.apiSuccRateCompareAndAvg = async (req) => {
+    let body = req.body;
+    let appKey = new Mongoose.Types.ObjectId(body.appKey);
+    body = util.computeSTimeAndEtimeAndTimeDivider(body);
+    let matchCond = {
+        "createTime": {
+            '$gte': body.sTime,
+            '$lt': body.eTime
+        },
+        "appKey": appKey
+    };
+
+    // 查询当前阶段
+    let r1 = await ApiModel.find(_.assign({success:true}, matchCond)).countDocuments();
+    let r2 = await ApiModel.find(matchCond).countDocuments();
+    let rate1 = isNaN(r1 / r2) ? 0 : (r1 / r2);
+
+    let minusResult = body.eTime - body.sTime;
+    let matchCond1 = {
+        "createTime": {
+            '$gte': new Date(body.sTime).setMilliseconds(new Date(body.sTime).getMilliseconds() - minusResult),
+            '$lt': new Date(body.eTime).setMilliseconds(new Date(body.eTime).getMilliseconds() - minusResult)
+        },
+        "appKey": appKey
+    };
+    // 查询往前推
+    let r11 = await ApiModel.find(_.assign({success:true}, matchCond1)).countDocuments();
+    let r21 = await ApiModel.find(matchCond1).countDocuments();
+    let rate2 = isNaN(r11 / r21) ? 0 : (r11 / r21);
+    return new Number(rate1-rate2);
+};
+
+
+
+
+
 /**
  * API请求-APi成功率
  * @param {*} req 

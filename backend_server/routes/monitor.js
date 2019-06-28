@@ -195,6 +195,55 @@ router.post('/JsErrorRate', function(req, res, next) {
     });
 });
 
+// 应用总览（访问速度）-perfSpeedCompareAndAvg
+router.post('/PerfSpeedCompareAndAvg', function(req, res, next) {
+    perfInfo.perfSpeedCompareAndAvg(req).then((r) => {
+        res.json(util.resJson({
+            IsSuccess: true,
+            Data: r
+        }));
+    }, (err) => {
+        console.error(err);
+        res.json(util.resJson({
+            IsSuccess: false,
+            Data: null
+        }));
+    });
+});
+
+// 应用总览（JS错误率）-jsErrorRateCompareAndAvg
+router.post('/JsErrorRateCompareAndAvg', function(req, res, next) {
+    jsError.jsErrorRateCompareAndAvg(req).then((r) => {
+        res.json(util.resJson({
+            IsSuccess: true,
+            Data: r
+        }));
+    }, (err) => {
+        console.error(err);
+        res.json(util.resJson({
+            IsSuccess: false,
+            Data: null
+        }));
+    });
+});
+
+// 应用总览（Api成功率）-apiSuccRateCompareAndAvg
+router.post('/ApiSuccRateCompareAndAvg', function(req, res, next) {
+    apiInfo.apiSuccRateCompareAndAvg(req).then((r) => {
+        res.json(util.resJson({
+            IsSuccess: true,
+            Data: r
+        }));
+    }, (err) => {
+        console.error(err);
+        res.json(util.resJson({
+            IsSuccess: false,
+            Data: null
+        }));
+    });
+});
+
+
 // 访问页面-jsAggregate
 router.post('/JsAggregate', function(req, res, next) {
     jsError.jsAggregate(req).then((r) => {

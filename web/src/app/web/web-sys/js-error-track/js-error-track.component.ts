@@ -49,7 +49,6 @@ export class JsErrorTrackComponent implements OnInit {
       const rawSourceMap = fileReader.result;
       // 查找
       (window as any).sourceMap.SourceMapConsumer.with(rawSourceMap, null, consumer => {
-        console.log(consumer);
         let result = consumer.originalPositionFor({
           source: "./",
           line: +line,
