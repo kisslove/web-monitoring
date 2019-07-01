@@ -53,11 +53,11 @@ export class WebSysComponent {
       isActive: false,
       icon: 'line-chart'
     },
-    { 
-      label:'JS错误',
-      value:'jsError',
-      isActive:false,
-      icon:'exception'
+    {
+      label: 'JS错误',
+      value: 'jsError',
+      isActive: false,
+      icon: 'exception'
     },
     {
       label: 'API请求',
@@ -89,7 +89,7 @@ export class WebSysComponent {
       value: 'visitDetails',
       isActive: false,
       icon: 'file'
-    }, { 
+    }, {
       label: '应用设置',
       value: 'setting',
       isActive: false,
@@ -103,6 +103,24 @@ export class WebSysComponent {
       debounceTime(100))
       .subscribe((event) => {
         this._resizePageHeight();
+      });
+    this.unsubscribe.sub0 = observableFromEvent(document, "fullscreenchange")
+      .subscribe((event) => {
+        this.isFullScreen = this.isfull();
+      });
+    let temp2 = observableFromEvent(document, "mozfullscreenchange")
+      .subscribe((event) => {
+        this.isFullScreen = this.isfull();
+      });
+    this.unsubscribe.sub0.add(temp2);
+    let temp3 = observableFromEvent(document, "webkitfullscreenchange")
+      .subscribe((event) => {
+        this.isFullScreen = this.isfull();
+      });
+    this.unsubscribe.sub0.add(temp3);
+    let temp4 = observableFromEvent(document, "msfullscreenchange")
+      .subscribe((event) => {
+        this.isFullScreen = this.isfull();
       });
 
   }
@@ -162,5 +180,13 @@ export class WebSysComponent {
         this.msg.error("系统列表加载失败");
       }
     })
+  }
+  private isfull() {
+    return (
+      (document as any).fullscreen ||
+      (document as any).fullscreenElement ||
+      (document as any).mozFullScreenElement ||
+      (document as any).webkitFullscreenElement ||
+      null);
   }
 }
