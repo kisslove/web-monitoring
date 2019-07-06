@@ -25,7 +25,12 @@ export class UserPathComponent implements OnInit {
   };
   appKey;
   keywords;
-  userPathListData = [];
+  pageIndex=1;
+  pageSize=100;
+  userPathListData={
+    data:[],
+    total:0
+  };
   currentSelectedUserPath
   constructor(
     private render: Renderer2,
@@ -63,24 +68,58 @@ export class UserPathComponent implements OnInit {
     }
   }
 
-
-  //获取用户访问列表
-  loadUserPathList(time, type) {
+  loadMore() {
+    let time;
+    let type;
+    if (window.globalTime) {
+      time=window.globalTime.time;
+      type=window.globalTime.type;
+    } else {
+      time=null;
+      type=4;
+    }
     this.isSpinning.spin1 = true;
+    this.pageIndex+=1;
     this.http.post("Monitor/userPathListStatis", {
       TimeQuantum: type == '7' ? '' : type,
       sTime: type == '7' ? time[0] : '',
       eTime: type == '7' ? time[1] : '',
       appKey: this.appKey,
-      keywords: this.keywords
+      keywords: this.keywords,
+      pageIndex:this.pageIndex,
+      pageSize:this.pageSize
     }).subscribe((d: any) => {
       if (d.IsSuccess) {
-        if (d.Data && d.Data.length > 0) {
-          d.Data[0]['select'] = true;
+        if (d.Data && d.Data.data.length > 0) {
+          this.userPathListData.data = [...this.userPathListData.data,...d.Data.data];
+        }
+      }
+      this.isSpinning.spin1 = false;
+    });
+  }
+
+
+  //获取用户访问列表
+  loadUserPathList(time, type) {
+    this.isSpinning.spin1 = true;
+    this.pageIndex=1;
+    this.http.post("Monitor/userPathListStatis", {
+      TimeQuantum: type == '7' ? '' : type,
+      sTime: type == '7' ? time[0] : '',
+      eTime: type == '7' ? time[1] : '',
+      appKey: this.appKey,
+      keywords: this.keywords,
+      pageIndex:this.pageIndex,
+      pageSize:this.pageSize
+    }).subscribe((d: any) => {
+      if (d.IsSuccess) {
+        if (d.Data && d.Data.data.length > 0) {
+          d.Data.data[0]['select'] = true;
           this.userPathListData = d.Data;
-          this.selectUserPathListItem(d.Data[0]);
+          this.selectUserPathListItem(d.Data.data[0]);
         } else {
-          this.userPathListData = [];
+          this.userPathListData.data = [];
+          this.userPathListData.total =0;
         }
 
       }
@@ -89,7 +128,7 @@ export class UserPathComponent implements OnInit {
   }
 
   selectUserPathListItem(data) {
-    _.each(this.userPathListData, (val) => {
+    _.each(this.userPathListData.data, (val) => {
       val.select = false;
     });
     data.select = true;

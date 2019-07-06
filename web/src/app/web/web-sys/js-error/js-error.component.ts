@@ -27,7 +27,10 @@ export class JsErrorComponent implements OnInit {
   };
   appKey;
   keywords;
+  pageIndex=1;
+  pageSize=100;
   jsErrorListData = [];
+  jsErrorListDataTotal = 0;
   currentSelected
   constructor(
     private render: Renderer2,
@@ -68,9 +71,18 @@ export class JsErrorComponent implements OnInit {
   }
 
 
-  //获取jsError列表
-  loadUserPathList(time, type) {
+  loadMore() {
+    let time;
+    let type;
+    if (window.globalTime) {
+      time=window.globalTime.time;
+      type=window.globalTime.type;
+    } else {
+      time=null;
+      type=4;
+    }
     this.isSpinning.spin1 = true;
+    this.pageIndex+=1;
     this.http.post("Monitor/List", {
       TimeQuantum: type == '7' ? '' : type,
       type: "js",
@@ -78,8 +90,35 @@ export class JsErrorComponent implements OnInit {
       eTime: type == '7' ? time[1] : '',
       appKey: this.appKey,
       keywords: this.keywords||"",
-      pageSize: 100000,
-      pageIndex: 1,
+      pageSize: this.pageSize,
+      pageIndex: this.pageIndex,
+    }).subscribe((data: any) => {
+      if (data.IsSuccess) {
+        if (data.Data.List && data.Data.List.length > 0) {
+          _.each(data.Data.List, (d) => {
+            d.error = decodeURIComponent(d.error).replace(/\\n/g, "<br/>");
+          });
+          this.jsErrorListData = [...this.jsErrorListData,...data.Data.List];
+        }
+      }
+      this.isSpinning.spin1 = false;
+    });
+  }
+
+
+  //获取jsError列表
+  loadUserPathList(time, type) {
+    this.isSpinning.spin1 = true;
+    this.pageIndex=1;
+    this.http.post("Monitor/List", {
+      TimeQuantum: type == '7' ? '' : type,
+      type: "js",
+      sTime: type == '7' ? time[0] : '',
+      eTime: type == '7' ? time[1] : '',
+      appKey: this.appKey,
+      keywords: this.keywords||"",
+      pageSize: this.pageSize,
+      pageIndex: this.pageIndex,
     }).subscribe((data: any) => {
       if (data.IsSuccess) {
         if (data.Data.List && data.Data.List.length > 0) {
@@ -88,6 +127,7 @@ export class JsErrorComponent implements OnInit {
             d.error = decodeURIComponent(d.error).replace(/\\n/g, "<br/>");
           });
           this.jsErrorListData = data.Data.List;
+          this.jsErrorListDataTotal=data.Data.TotalCount;
           this.selectListItem(data.Data.List[0]);
         } else {
           this.currentSelected=null;

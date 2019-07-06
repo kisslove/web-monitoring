@@ -390,7 +390,7 @@ exports.pageWhStatis = async (req) => {
 };
 
 /**
- * 应用总览-浏览器分辨率占比
+ * 访问页面-列表
  * @param {*} req 
  */
 exports.pageRankStatis = async (req) => {
@@ -399,7 +399,8 @@ exports.pageRankStatis = async (req) => {
     body = util.computeSTimeAndEtime(body);
     let r = {
         pageStatis: [],
-        totalCount: 0
+        totalCount: 0,
+        total: 0
     };
     r.pageStatis = await PvModel.aggregate([{
         "$match": {
@@ -422,6 +423,12 @@ exports.pageRankStatis = async (req) => {
         }
     },
     {
+        "$skip": (body.pageIndex - 1) * body.pageSize
+    },
+    {
+        "$limit": body.pageSize
+    },
+    {
         "$project": {
             "_id": 0,
             'page': "$_id",
@@ -437,9 +444,42 @@ exports.pageRankStatis = async (req) => {
     }
     ]);
 
-    _.forEach(r.pageStatis, (d) => {
-        r.totalCount = r.totalCount + d.count;
-    });
+    let temp = await PvModel.aggregate([{
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey,
+            "page": {
+                '$regex': new RegExp(`${body.keywords}.*`, "gi")
+            }
+        }
+    },
+    {
+        "$group": {
+            "_id": "$page",
+            "pageList": {
+                '$push': '$page'
+            }
+        }
+    },
+    ]);
+
+    r.total = temp.length;
+
+    let temp2 = await PvModel.find({
+        "createTime": {
+            '$gte': body.sTime,
+            '$lt': body.eTime
+        },
+        "appKey": appKey,
+        "page": {
+            '$regex': new RegExp(`${body.keywords}.*`, "gi")
+        }
+    }).countDocuments();
+
+    r.totalCount = temp2;
     return r;
 };
 
@@ -556,6 +596,10 @@ exports.userPathListStatis = async (req) => {
     let body = req.body;
     let appKey = new Mongoose.Types.ObjectId(body.appKey);
     body = util.computeSTimeAndEtime(body);
+    let r = {
+        data: [],
+        total: 0
+    };
     let matchCon = body.keywords ? {
         "$match": {
             "createTime": {
@@ -576,7 +620,17 @@ exports.userPathListStatis = async (req) => {
                 "appKey": appKey
             }
         };
-    r = await PvModel.aggregate([matchCon,
+    let temp = await PvModel.aggregate([matchCon,
+        {
+            "$group": {
+                "_id": '$onlineip'
+            }
+        }
+    ]);
+
+    r.total = temp.length;
+
+    r.data = await PvModel.aggregate([matchCon,
         {
             "$group": {
                 "_id": '$onlineip',
@@ -598,6 +652,12 @@ exports.userPathListStatis = async (req) => {
             }
         },
         {
+            "$skip": (body.pageIndex - 1) * body.pageSize
+        },
+        {
+            "$limit": body.pageSize
+        },
+        {
             "$project": {
                 "_id": 0,
                 'geo': "$_id",
@@ -606,7 +666,7 @@ exports.userPathListStatis = async (req) => {
         }
     ]);
 
-    _.each(r, (el) => {
+    _.each(r.data, (el) => {
         if (el.pathList.length > 0) {
             el.os = el.pathList[0].os;
             el.bs = el.pathList[0].bs;
@@ -644,7 +704,7 @@ exports.userPathListStatis = async (req) => {
         }
     });
 
-    r.sort(function (a, b) {
+    r.data.sort(function (a, b) {
         if (a.count === b.count)
             return 0;
         if (a.count - b.count < 0)

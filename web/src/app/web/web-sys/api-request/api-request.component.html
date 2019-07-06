@@ -11,13 +11,14 @@
           </button>
         </ng-template>
         <nz-spin [nzSpinning]="isSpinning.spin1">
-          <div (click)="selectApiListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of apiListData">
+          <div (click)="selectApiListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of apiListData?.data">
             <span title="{{item.name}}" class="left" style="width:200px;">{{item.name}}</span>
             <span class="right">
               <span>{{(item.result*100).toFixed(2)}}%</span>
               <i class="anticon anticon-right"></i>
             </span>
           </div>
+          <div (click)="loadMore()" *ngIf="apiListData?.data.length<apiListData?.total" style="text-align:center;padding:4px;cursor: pointer;">加载更多</div>
         </nz-spin>
       </nz-tab>
       <nz-tab nzTitle="Msg聚类">
@@ -30,13 +31,14 @@
           </button>
         </ng-template>
         <nz-spin [nzSpinning]="isSpinning.spin1">
-          <div (click)="selectApiListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of apiListData">
+          <div (click)="selectApiListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of apiListData?.data">
             <span title="{{item.name}}" class="left" style="width:200px;">{{item.name}}</span>
             <span class="right">
               <span>{{item.result}}</span>
               <i class="anticon anticon-right"></i>
             </span>
           </div>
+          <div (click)="loadMore()" *ngIf="apiListData?.data.length<apiListData?.total" style="text-align:center;padding:4px;cursor: pointer;">加载更多</div>
         </nz-spin>
       </nz-tab>
       <nz-tab nzTitle="成功耗时">
@@ -49,13 +51,14 @@
           </button>
         </ng-template>
         <nz-spin [nzSpinning]="isSpinning.spin1">
-          <div (click)="selectApiListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of apiListData">
+          <div (click)="selectApiListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of apiListData?.data">
             <span title="{{item.name}}" class="left" style="width:200px;">{{item.name}}</span>
             <span class="right">
               <span>{{(item.result/1000).toFixed(2)}}s</span>
               <i class="anticon anticon-right"></i>
             </span>
           </div>
+          <div (click)="loadMore()" *ngIf="apiListData?.data.length<apiListData?.total" style="text-align:center;padding:4px;cursor: pointer;">加载更多</div>
         </nz-spin>
       </nz-tab>
       <nz-tab nzTitle="失败耗时">
@@ -68,13 +71,14 @@
           </button>
         </ng-template>
         <nz-spin [nzSpinning]="isSpinning.spin1">
-          <div (click)="selectApiListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of apiListData">
+          <div (click)="selectApiListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of apiListData?.data">
             <span title="{{item.name}}" class="left" style="width:200px;">{{item.name}}</span>
             <span class="right">
               <span>{{(item.result/1000).toFixed(2)}}s</span>
               <i class="anticon anticon-right"></i>
             </span>
           </div>
+          <div (click)="loadMore()" *ngIf="apiListData?.data.length<apiListData?.total" style="text-align:center;padding:4px;cursor: pointer;">加载更多</div>
         </nz-spin>
       </nz-tab>
     </nz-tabset>
@@ -84,7 +88,7 @@
       <div nz-row>
         <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
           <nz-card nzType="inner" [nzTitle]="currentSelected_first_title" [nzExtra]="extraApiSpTemplate">
-            <nz-spin *ngIf="apiListData.length>0" [nzSpinning]="isSpinning.spin2">
+            <nz-spin *ngIf="apiListData.data.length>0" [nzSpinning]="isSpinning.spin2">
               <app-custom-highchart *ngIf="currentSelectedTab!=1" [config]="first_config"></app-custom-highchart>
               <nz-table [nzShowPagination]="false" *ngIf="currentSelectedTab==1" #apiReqListTable2 [nzData]="apiReqListData" [nzPageSize]="5">
                 <thead>
@@ -114,7 +118,7 @@
       <div nz-row>
         <div nz-col class="gutter-row" style="margin-bottom:24px;" [nzSpan]="24">
           <nz-card nzType="inner" nzTitle="地理分布" [nzExtra]="extradlTemplate">
-            <nz-spin *ngIf="apiListData.length>0" [nzSpinning]="isSpinning.spin3">
+            <nz-spin *ngIf="apiListData.data.length>0" [nzSpinning]="isSpinning.spin3">
               <div nz-col [nzSpan]="17">
                 <app-custom-highchart style="width:80%;" [config]="dl_config"></app-custom-highchart>
               </div>
@@ -155,7 +159,7 @@
           <nz-card nzType="inner" nzTitle="终端分布" [nzExtra]="extraEndTemplate">
             <nz-tabset>
               <nz-tab nzTitle="浏览器">
-                <nz-spin *ngIf="apiListData.length>0"[nzSpinning]="isSpinning.spin4">
+                <nz-spin *ngIf="apiListData.data.length>0"[nzSpinning]="isSpinning.spin4">
                   <nz-table #basicBsData [nzData]="bsData" [nzShowPagination]="false">
                     <thead>
                       <tr>
@@ -177,7 +181,7 @@
               </nz-spin>
               </nz-tab>
               <nz-tab nzTitle="操作系统">
-                <nz-spin *ngIf="apiListData.length>0" [nzSpinning]="isSpinning.spin5">
+                <nz-spin *ngIf="apiListData.data.length>0" [nzSpinning]="isSpinning.spin5">
                   <nz-table #basicOsData [nzData]="osData" [nzShowPagination]="false">
                     <thead>
                       <tr>
@@ -199,7 +203,7 @@
                 </nz-spin>
               </nz-tab>
               <nz-tab nzTitle="分辨率">
-                <nz-spin *ngIf="apiListData.length>0" [nzSpinning]="isSpinning.spin6">
+                <nz-spin *ngIf="apiListData.data.length>0" [nzSpinning]="isSpinning.spin6">
                   <nz-table #basicWhData [nzData]="whData" [nzShowPagination]="false">
                     <thead>
                       <tr>

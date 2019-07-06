@@ -17,6 +17,7 @@
           <i class="anticon anticon-right"></i>
         </span>
       </div>
+      <div (click)="loadMore()" *ngIf="pageListData?.pageStatis.length<pageListData?.total" style="text-align:center;padding:4px;cursor: pointer;">加载更多</div>
     </nz-spin>
 
   </div>

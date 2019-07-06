@@ -19,6 +19,7 @@
           <i class="anticon anticon-right"></i>
         </span>
       </div>
+      <div (click)="loadMore()" *ngIf="jsErrorListData?.length<jsErrorListDataTotal" style="text-align:center;padding:4px;cursor: pointer;">加载更多</div>
     </nz-spin>
   </div>
   <div style="overflow:auto;padding:24px 16px;" #mydetailsContent nz-col nzSpan="17">

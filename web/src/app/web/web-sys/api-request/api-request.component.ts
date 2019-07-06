@@ -41,7 +41,12 @@ export class ApiRequestComponent implements OnInit {
   };
   appKey;
   keywords = '';
-  apiListData = [];
+  pageIndex=1;
+  pageSize=100;
+  apiListData = {
+    data:[],
+    total:0
+  };
   apiReqListData = [];
   mapData = [];
   bsData = [];
@@ -104,24 +109,60 @@ export class ApiRequestComponent implements OnInit {
     }
   }
 
-  //获取API列表
-  loadApiList(time, type) {
+
+  loadMore() {
+    let time;
+    let type;
+    if (window.globalTime) {
+      time=window.globalTime.time;
+      type=window.globalTime.type;
+    } else {
+      time=null;
+      type=4;
+    }
     this.isSpinning.spin1 = true;
+    this.pageIndex+=1;
     this.http.post("Monitor/ApiStatis", {
       TimeQuantum: type == '7' ? '' : type,
       sTime: type == '7' ? time[0] : '',
       eTime: type == '7' ? time[1] : '',
       appKey: this.appKey,
       keywords: this.keywords,
-      typeEnum: this.currentSelectedTab
+      typeEnum: this.currentSelectedTab,
+      pageIndex:this.pageIndex,
+      pageSize:this.pageSize
     }).subscribe((d: any) => {
       if (d.IsSuccess) {
-        if (d.Data && d.Data.length > 0) {
-          d.Data[0]['select'] = true;
+        if (d.Data && d.Data.data.length > 0) {
+          this.apiListData.data = [...this.apiListData.data,...d.Data.data];
+        }
+      }
+      this.isSpinning.spin1 = false;
+    });
+  }
+
+  //获取API列表
+  loadApiList(time, type) {
+    this.isSpinning.spin1 = true;
+    this.pageIndex=1;
+    this.http.post("Monitor/ApiStatis", {
+      TimeQuantum: type == '7' ? '' : type,
+      sTime: type == '7' ? time[0] : '',
+      eTime: type == '7' ? time[1] : '',
+      appKey: this.appKey,
+      keywords: this.keywords,
+      typeEnum: this.currentSelectedTab,
+      pageIndex:this.pageIndex,
+      pageSize:this.pageSize
+    }).subscribe((d: any) => {
+      if (d.IsSuccess) {
+        if (d.Data && d.Data.data.length > 0) {
+          d.Data.data[0]['select'] = true;
           this.apiListData = d.Data;
-          this.selectApiListItem(d.Data[0]);
+          this.selectApiListItem(d.Data.data[0]);
         } else {
-          this.apiListData = [];
+          this.apiListData.data = [];
+          this.apiListData.total = 0;
         }
       }
       this.isSpinning.spin1 = false;
@@ -129,7 +170,7 @@ export class ApiRequestComponent implements OnInit {
   }
 
   selectApiListItem(data) {
-    _.each(this.apiListData, (val) => {
+    _.each(this.apiListData.data, (val) => {
       val.select = false;
       val.result = val.result == 0 ? 0 : val.result;
     });
