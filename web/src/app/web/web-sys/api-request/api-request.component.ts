@@ -42,7 +42,7 @@ export class ApiRequestComponent implements OnInit {
   appKey;
   keywords = '';
   pageIndex=1;
-  pageSize=100;
+  pageSize=50;
   apiListData = {
     data:[],
     total:0

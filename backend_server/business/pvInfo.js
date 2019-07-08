@@ -423,12 +423,6 @@ exports.pageRankStatis = async (req) => {
         }
     },
     {
-        "$skip": (body.pageIndex - 1) * body.pageSize
-    },
-    {
-        "$limit": body.pageSize
-    },
-    {
         "$project": {
             "_id": 0,
             'page': "$_id",
@@ -441,6 +435,12 @@ exports.pageRankStatis = async (req) => {
         "$sort": {
             'count': -1
         }
+    },
+    {
+        "$skip": (body.pageIndex - 1) * body.pageSize
+    },
+    {
+        "$limit": body.pageSize
     }
     ]);
 
@@ -463,7 +463,7 @@ exports.pageRankStatis = async (req) => {
                 '$push': '$page'
             }
         }
-    },
+    }
     ]);
 
     r.total = temp.length;
@@ -652,17 +652,25 @@ exports.userPathListStatis = async (req) => {
             }
         },
         {
+            "$project": {
+                "_id": 0,
+                'geo': "$_id",
+                "pathList": 1,
+                "count": {
+                    "$size": '$pathList'
+                }
+            }
+        },
+        {
+            "$sort": {
+                'count': -1
+            }
+        },
+        {
             "$skip": (body.pageIndex - 1) * body.pageSize
         },
         {
             "$limit": body.pageSize
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'geo': "$_id",
-                "pathList": 1
-            }
         }
     ]);
 
@@ -704,14 +712,14 @@ exports.userPathListStatis = async (req) => {
         }
     });
 
-    r.data.sort(function (a, b) {
-        if (a.count === b.count)
-            return 0;
-        if (a.count - b.count < 0)
-            return 1;
-        if (a.count - b.count > 0)
-            return -1;
-    });
+    // r.data.sort(function (a, b) {
+    //     if (a.count === b.count)
+    //         return 0;
+    //     if (a.count - b.count < 0)
+    //         return 1;
+    //     if (a.count - b.count > 0)
+    //         return -1;
+    // });
 
     return r;
 };

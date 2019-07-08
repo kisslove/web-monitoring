@@ -48,7 +48,7 @@ export class VisitPageComponent implements OnInit {
   apiData = [];
   keywords = '';
   pageIndex=1;
-  pageSize=100;
+  pageSize=50;
   currentSelectedPage
   JsGroupData = [];
   constructor(
@@ -136,6 +136,10 @@ export class VisitPageComponent implements OnInit {
     }).subscribe((d: any) => {
       if (d.IsSuccess) {
         if (d.Data && d.Data.pageStatis.length > 0) {
+          _.each(d.Data.pageStatis, (val) => {
+            val.select = false;
+            val.percent = new Number((val.count / this.pageListData.totalCount) * 100).toFixed(2);
+          });
           this.pageListData.pageStatis =[...this.pageListData.pageStatis, ...d.Data.pageStatis];
         }
       }
@@ -160,6 +164,10 @@ export class VisitPageComponent implements OnInit {
         if (d.Data && d.Data.pageStatis.length > 0) {
           d.Data.pageStatis[0]['select'] = true;
           this.pageListData = d.Data;
+          _.each(this.pageListData.pageStatis, (val) => {
+            val.select = false;
+            val.percent = new Number((val.count / this.pageListData.totalCount) * 100).toFixed(2);
+          });
           this.selectPageListItem(d.Data.pageStatis[0]);
         }else{
           this.pageListData = null;
@@ -172,7 +180,6 @@ export class VisitPageComponent implements OnInit {
   selectPageListItem(data) {
     _.each(this.pageListData.pageStatis, (val) => {
       val.select = false;
-      val.percent = new Number((val.count / this.pageListData.totalCount) * 100).toFixed(2);
     });
     data.select = true;
     this.currentSelectedPage = data.page;

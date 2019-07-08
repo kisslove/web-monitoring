@@ -81,7 +81,23 @@ exports.apiStatis = async (req) => {
         {
             "$group": {
                 "_id": "$api",
-                "list": { '$push': { 'success': '$success' } }
+                "list": { '$push': { 'success': '$success' } },
+                "listSucc": { '$push': { 'success': true } },
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                'name': "$_id",
+                'list': 1,
+                "count": {
+                    "$size": '$listSucc'
+                }
+            }
+        },
+        {
+            "$sort": {
+                'count': 1
             }
         },
         {
@@ -89,21 +105,14 @@ exports.apiStatis = async (req) => {
         },
         {
             "$limit": body.pageSize
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'name': "$_id",
-                'list': 1
-            }
         }
         ]);
         _.each(r.data, (d) => {
-            let temp = [];
-            temp = _.filter(d.list, function (e) {
-                return e.success;
-            });
-            d.result = temp.length / d.list.length;
+            // let temp = [];
+            // temp = _.filter(d.list, function (e) {
+            //     return e.success;
+            // });
+            d.result = d.count / d.list.length;
             delete d['list'];
         });
 
@@ -140,17 +149,25 @@ exports.apiStatis = async (req) => {
             }
         },
         {
+            "$project": {
+                "_id": 0,
+                'name': "$_id",
+                'result': { "$size": '$list' },
+                "count": {
+                    "$size": '$list'
+                }
+            }
+        },
+        {
+            "$sort": {
+                'count': -1
+            }
+        },
+        {
             "$skip": (body.pageIndex - 1) * body.pageSize
         },
         {
             "$limit": body.pageSize
-        },
-        {
-            "$project": {
-                "_id": 0,
-                'name': "$_id",
-                'result': { "$size": '$list' }
-            }
         }
         ]);
         let temp1 = await ApiModel.aggregate([{
@@ -183,6 +200,11 @@ exports.apiStatis = async (req) => {
             "$group": {
                 "_id": "$api",
                 "result": { '$avg': '$time' }
+            }
+        },
+        {
+            "$sort": {
+                'result': -1
             }
         },
         {
@@ -230,6 +252,11 @@ exports.apiStatis = async (req) => {
             "$group": {
                 "_id": "$api",
                 "result": { '$avg': '$time' }
+            }
+        },
+        {
+            "$sort": {
+                'result': -1
             }
         },
         {

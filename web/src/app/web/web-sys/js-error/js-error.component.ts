@@ -28,7 +28,7 @@ export class JsErrorComponent implements OnInit {
   appKey;
   keywords;
   pageIndex=1;
-  pageSize=100;
+  pageSize=50;
   jsErrorListData = [];
   jsErrorListDataTotal = 0;
   currentSelected
