@@ -626,7 +626,7 @@ exports.userPathListStatis = async (req) => {
                 "_id": '$onlineip'
             }
         }
-    ]);
+    ]).read('sp').exec();
 
     r.total = temp.length;
 
@@ -672,7 +672,7 @@ exports.userPathListStatis = async (req) => {
         {
             "$limit": body.pageSize
         }
-    ]);
+    ]).read('sp').exec();
 
     _.each(r.data, (el) => {
         if (el.pathList.length > 0) {
