@@ -63,9 +63,9 @@
         </nz-card-meta>
     </nz-card>
 </section>
-<section id="home-section2" style="width:100%;padding:0 50px;">
+<section id="home-section2" style="width:100%;padding:50px;">
     <h3 style="margin-left: 16px;">帮助文档(官方)</h3>
-    <ul style="margin-top: 16px;">
+    <ul style="margin-top: 16px;font-size: 16px;line-height: 28px;">
         <li>
             <a appMonitorABlank target="_blank"
                 href="https://mp.weixin.qq.com/s/RAQmBTQZa_JWfDowFtCFzw">前端监控（web-monitor）</a>
@@ -91,8 +91,44 @@
                 href="https://mp.weixin.qq.com/s/LFVolLcuORyO_zvHPh9lsw">JavaScript出错场景还原</a>
         </li>
     </ul>
-
 </section>
+
+<section class="section-contanier" style="height: 600px;width:100%;">
+    <div class="section-overlay" style="opacity: 0.7;background-color: rgba(34, 34, 34, 0.54);"></div>
+    <div class="section-block" style="background: repeat rgb(34,34,34) 50% 50% /
+      cover fixed;background-image: url('../../../assets/images/home.jpg');">
+      <div style="color: #fff;position: relative;padding-top:
+        4%;">
+        <p style="font-size: 30px;text-align: center;">万元开源计划</p>
+        <pre style="font-size: 16px;font-family: cursive;">
+        背景：
+        项目创建至今，收到很多用户反馈。
+        在此，感谢关注、支持和使用“前端监控系统”的各位朋友们。
+        在你们的支持下，我们将继续砥砺前行，做更好的产品回馈你们。
+        </pre>
+        <pre style="font-size: 16px;font-family: cursive;">
+        困境：
+        每一个做开源项目的个人或团队，都深知开源项目的不易。
+        我们会花费无数个日日夜夜，想办法做出更好的产品。
+        时间、资金、团队都是我们所需要的。
+        </pre>
+        <pre style="font-size: 16px;font-family: cursive;">
+        想法：
+        我们不想将一个开源产品最后成为一个收费授权产品。
+        我们想将产品完全开源（目前探针部分未开源），由市场去定夺他的价值。
+        因此，提出一个“万元开源计划”。
+        通过下面支付宝、微信途径提供支持。
+        当达成我们的万元目标之后，项目将完全开源。
+        </pre> 
+        <div style="position: absolute;top: 40%;right: 5%;background: rgba(255, 255, 255, 0.46);
+        padding: 20px;
+        border-radius: 40px;">
+            <nz-progress [nzPercent]="1" nzType="circle" [nzFormat]="formatOne"></nz-progress>
+        </div>
+      </div>
+    </div> 
+  </section>
+
 <section id="home-section2" style="width:100%;padding:25px 50px;">
     <h3 style="margin-left: 16px;">支持作者(赏咖啡)</h3>
     <img nz-tooltip nzTitle="关注公众号" style="width: 200px;margin: 8px 24px;" src="/assets/images/weixin-gongzhonghao.jpg" alt="公众号">

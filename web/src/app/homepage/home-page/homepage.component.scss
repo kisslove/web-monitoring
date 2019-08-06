@@ -99,6 +99,23 @@
   }
 }
 
+
+.section-contanier {
+  position: relative;
+  width: 100%;
+}
+
+.section-overlay {
+  position: absolute;
+}
+
+
+.section-block,
+.section-overlay {
+  height: 100%;
+  width: 100%;
+}
+
 // Extra small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
   .title {

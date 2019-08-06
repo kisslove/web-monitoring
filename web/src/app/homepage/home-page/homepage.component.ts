@@ -8,6 +8,7 @@ import { Component, OnInit, Renderer2 } from '@angular/core';
 import * as CryptoJS from "crypto-js";
 import { UserService } from '../../monitor.common.service';
 import { Subscription, fromEvent } from 'rxjs';
+
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
@@ -18,7 +19,7 @@ export class HomepageComponent implements OnInit {
   _IV: "8536874512548456" //16位
   model = {
     email: '',
-    password: '',
+    password: '', 
   };
   model2 = {
     email: '',
@@ -28,6 +29,7 @@ export class HomepageComponent implements OnInit {
   isVisible_register: boolean = false;
   isLogin: boolean = false;
   unsubscribe: Subscription;
+  formatOne = value => `10,000 RMB`;
   constructor(
     private http: HttpClient,
     private msg: NzMessageService,
