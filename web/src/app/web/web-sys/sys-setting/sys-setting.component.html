@@ -1,55 +1,82 @@
 <div style="padding:24px;">
-    <h3>SDK扩展配置项</h3>
-    <p>注意：更改以下配置项后，BI探针内容也会相应的变化，需要将BI探针内容重新复制/粘贴到页面HTML中，并且部署后才会生效。</p>
+  <h3>SDK扩展配置项</h3>
+  <p>注意：更改以下配置项后，BI探针内容也会相应的变化，需要将BI探针内容重新复制/粘贴到页面HTML中，并且部署后才会生效。</p>
 
-    <div class="setting-gutter">
-        站点ID:
-        <label>{{currentSite.appKey}}</label>
+  <div class="setting-gutter">
+    站点ID:
+    <label>{{currentSite.appKey}}</label>
+  </div>
+  <div class="setting-gutter">
+    手动上报API数据:
+    <label nz-checkbox (ngModelChange)="settingChange1($event)" [ngModel]="currentSite.disableHook">勾选此项后，需手动调用
+      __ml.api() 方法上报API成功率。</label>
+  </div>
+  <div class="setting-gutter">
+    手动上传JS错误:
+    <label nz-checkbox (ngModelChange)="settingChange2($event)"
+      [ngModel]="currentSite.disableJS">需手动上传JS错误，调用__ml.error()方法上报。</label>
+  </div>
+  <div class="setting-gutter">
+    上报资源加载情况:
+    <label nz-checkbox (ngModelChange)="settingChange3($event)"
+      [ngModel]="currentSite.disableResource">勾选此项，开启页面请求资源上报。</label>
+  </div>
+  <nz-divider></nz-divider>
+  <h3>报警设置</h3>
+  <p>注意：当统计值大于设置的值后，系统会触发警报。</p>
+  <div class="setting-gutter">
+    站点ID:
+    <label>{{currentSite.appKey}}</label>
+  </div>
+  <div class="setting-gutter">
+    <p> JS错误率报警: &nbsp;<nz-switch  style="vertical-align: bottom;" [(ngModel)]="jsErrorAlarm.alarmState" nzCheckedChildren="开" nzUnCheckedChildren="关"></nz-switch>
+    </p> 
+    <div>
+      最近分钟：N=<input style="width:100px;" [disabled]="!jsErrorAlarm.alarmState" [(ngModel)]="jsErrorAlarm.alarmTimes" nz-input placeholder="单位：分钟">，错误率大于 <nz-input-number [disabled]="!jsErrorAlarm.alarmState" [(ngModel)]="jsErrorAlarm.alarmLimit" [nzMin]="0" style="width:80px;" placeholder="阈值"></nz-input-number>%，触发JS错误报警。接收人：<input style="width:200px;" [disabled]="!jsErrorAlarm.alarmState" [(ngModel)]="jsErrorAlarm.email" nz-input placeholder="邮箱"><a (click)="jsErrorUpdate()">更新配置</a>
     </div>
-    <!-- <div class="setting-gutter">
-    业务系统ID:
-    <input style="display: inline-block;width: 300px;" nz-input (input)="settingChangeInput($event)" [(ngModel)]="currentSite.systemId">
-  </div> -->
-    <div class="setting-gutter">
-        手动上报API数据:
-        <label nz-checkbox (ngModelChange)="settingChange1($event)" [ngModel]="currentSite.disableHook">勾选此项后，需手动调用 __ml.api() 方法上报API成功率。</label>
-    </div>
-    <div class="setting-gutter">
-        手动上传JS错误:
-        <label nz-checkbox (ngModelChange)="settingChange2($event)" [ngModel]="currentSite.disableJS">需手动上传JS错误，调用__ml.error()方法上报。</label>
-    </div>
-    <div class="setting-gutter">
-        上报资源加载情况:
-        <label nz-checkbox (ngModelChange)="settingChange3($event)" [ngModel]="currentSite.disableResource">勾选此项，开启页面请求资源上报。</label>
-    </div>
-    <nz-divider></nz-divider>
-    <h3>复制/粘贴BI探针</h3>
-    <p>复制下方的代码，将其粘贴在页面HTML的body中。</p>
-    <p style="margin-bottom: 4px;">注意1：需要将代码粘贴在body内容的第一行。</p>
-    <p>注意2：如果站点是https协议，请下载此<a href="http://hubing.online:8082/bundle.js" target="_blank">bundle.js</a>，部署到您的https站点，并使用服务器路径替换当前探针文件路径，如需帮助请联系作者。</p>
-    <div class="setting-code">
-        <code>
+  </div>
+  <div class="setting-gutter">
+    <p>API错误率报警: &nbsp;<nz-switch style="vertical-align: bottom;" [(ngModel)]="apiErrorAlarm.alarmState" nzCheckedChildren="开" nzUnCheckedChildren="关"></nz-switch>
+      <div>
+        最近分钟：N=<input style="width:100px;" [disabled]="!apiErrorAlarm.alarmState" [(ngModel)]="apiErrorAlarm.alarmTimes" nz-input placeholder="单位：分钟">，错误率大于 <nz-input-number [nzMin]="0" style="width:80px;" [disabled]="!apiErrorAlarm.alarmState" [(ngModel)]="apiErrorAlarm.alarmLimit" placeholder="阈值"></nz-input-number>%，触发API错误报警。接收人：<input style="width:200px;" [disabled]="!apiErrorAlarm.alarmState" [(ngModel)]="apiErrorAlarm.email" nz-input placeholder="邮箱"><a (click)="apiErrorUpdate()">更新配置</a>
+      </div>
+  </div>
+  <div class="setting-gutter">
+    <p>Perf访问速度报警: &nbsp;<nz-switch style="vertical-align: bottom;" [(ngModel)]="perfSpeedAlarm.alarmState" nzCheckedChildren="开" nzUnCheckedChildren="关"></nz-switch>
+      <div>
+        最近分钟：N=<input style="width:100px;" [disabled]="!perfSpeedAlarm.alarmState" [(ngModel)]="perfSpeedAlarm.alarmTimes" nz-input placeholder="单位：分钟">，Perf访问速度大于 <nz-input-number [nzMin]="0" style="width:80px;" [disabled]="!perfSpeedAlarm.alarmState" [(ngModel)]="perfSpeedAlarm.alarmTimes" placeholder="阈值"></nz-input-number>ms,触发访问速度报警。接收人：<input style="width:200px;" [disabled]="!perfSpeedAlarm.alarmState" [(ngModel)]="perfSpeedAlarm.email" nz-input placeholder="邮箱"><a (click)="perfSpeedUpdate()">更新配置</a>
+      </div>
+  </div>
+  <nz-divider></nz-divider>
+  <h3>复制/粘贴BI探针</h3>
+  <p>复制下方的代码，将其粘贴在页面HTML的body中。</p>
+  <p style="margin-bottom: 4px;">注意1：需要将代码粘贴在body内容的第一行。</p>
+  <p>注意2：如果站点是https协议，请下载此<a href="http://hubing.online:8082/bundle.js"
+      target="_blank">bundle.js</a>，部署到您的https站点，并使用服务器路径替换当前探针文件路径，如需帮助请联系作者。</p>
+  <div class="setting-code">
+    <code>
       {{setting.code}}
     </code>
-    </div>
-    <nz-divider></nz-divider>
-    <h3>示例展示</h3>
-    <p>1.在Angular2+中使用__ml.error(),在你应用的根模块中加载下面代码：</p>
-    <div class="setting-code">
-        <pre>
+  </div>
+  <nz-divider></nz-divider>
+  <h3>示例展示</h3>
+  <p>1.在Angular2+中使用__ml.error(),在你应用的根模块中加载下面代码：</p>
+  <div class="setting-code">
+    <pre>
       <code>
         {{tip.code1}} 
       </code>
     </pre>
-    </div>
-    <br>
-    <p>2.手动上报API成功率__ml.api(success, time, code, msg)：</p>
-    <div class="setting-code">
-        <pre>
+  </div>
+  <br>
+  <p>2.手动上报API成功率__ml.api(api,success, time, code, msg)：</p>
+  <div class="setting-code">
+    <pre>
+        api:请求接口
         success:上传是否成功(true/false )
         time:耗时(ms)
         code:返回码
         msg:消息(string/object)
     </pre>
-    </div>
+  </div>
 </div>

@@ -16,6 +16,13 @@ router.post('/RegisterSite', site.create);
 //应用设置
 router.post('/SiteSet', site.update);
 
+//js错误率报警
+router.post('/AlarmJsErrorUpdate', site.alarmJsErrorUpdate);
+//api错误率报警
+router.post('/AlarmApiErrorUpdate', site.alarmApiErrorUpdate);
+//访问速度报警
+router.post('/AlarmPerfSpeedUpdate', site.alarmPerfSpeedUpdate);
+
 
 //用户访问路径
 router.post('/userPathListStatis', function(req, res, next) {

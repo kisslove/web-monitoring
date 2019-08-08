@@ -26,6 +26,27 @@ export class SysSettingComponent implements OnInit {
     jsHackUrl: environment.jsHackUrl,
     userId:null
   };
+  jsErrorAlarm={
+    appKey:null,
+    email: null,
+    alarmTimes:null,
+    alarmState:false,
+    alarmLimit:null
+  };
+  apiErrorAlarm={
+    appKey:null,
+    email: null,
+    alarmTimes:null,
+    alarmState:false,
+    alarmLimit:null
+  };
+  perfSpeedAlarm={
+    appKey:null,
+    email: null,
+    alarmTimes:null,
+    alarmState:false,
+    alarmLimit:null
+  };
   tip = {
     code1: null
   };
@@ -105,12 +126,94 @@ export class SysSettingComponent implements OnInit {
         delete currentSys[0]['createTime'];
         delete currentSys[0]['updateTime'];
         this.currentSite = currentSys[0];
+        
+        this.jsErrorAlarm.alarmLimit=this.currentSite.alarmJsLimit;
+        this.jsErrorAlarm.alarmState=this.currentSite.alarmJsState;
+        this.jsErrorAlarm.alarmTimes=this.currentSite.alarmJsTimes;
+        this.jsErrorAlarm.email=this.currentSite.alarmJsEmail;
+
+        this.apiErrorAlarm.alarmLimit=this.currentSite.alarmAPiLimit;
+        this.apiErrorAlarm.alarmState=this.currentSite.alarmAPiState;
+        this.apiErrorAlarm.alarmTimes=this.currentSite.alarmAPiTimes;
+        this.apiErrorAlarm.email=this.currentSite.alarmAPiEmail;
+
+        this.perfSpeedAlarm.alarmLimit=this.currentSite.alarmPerfLimit;
+        this.perfSpeedAlarm.alarmState=this.currentSite.alarmPerfState;
+        this.perfSpeedAlarm.alarmTimes=this.currentSite.alarmPerfTimes;
+        this.perfSpeedAlarm.email=this.currentSite.alarmPerfEmail;
         this.generateCode();
       }
     });
   }
   private setSite() {
     this.http.post("Monitor/SiteSet", this.currentSite).subscribe((d: any) => {
+    });
+  }
+
+
+  jsErrorUpdate(){
+    if(this.jsErrorAlarm.alarmTimes===null){
+      this.msg.info('分钟数必须大于0');
+      return;
+    }
+    if(this.jsErrorAlarm.alarmLimit===null){
+      this.msg.info('阈值必须大于0');
+      return;
+    }
+    this.http.post("Monitor/AlarmJsErrorUpdate", {
+      id:this.currentSite.appKey,
+      email: this.jsErrorAlarm.email,
+      alarmTimes: this.jsErrorAlarm.alarmTimes,
+      alarmState: this.jsErrorAlarm.alarmState,
+      alarmLimit: this.jsErrorAlarm.alarmLimit
+    }).subscribe((d: any) => {
+      if(d.IsSuccess){
+        this.msg.success("设置成功");
+      }
+    });
+  }
+
+  apiErrorUpdate(){
+    if(this.apiErrorAlarm.alarmTimes===null){
+      this.msg.info('分钟数必须大于0');
+      return;
+    }
+    if(this.apiErrorAlarm.alarmLimit===null){
+      this.msg.info('阈值必须大于0');
+      return;
+    }
+    this.http.post("Monitor/AlarmApiErrorUpdate", {
+      id:this.currentSite.appKey,
+      email: this.apiErrorAlarm.email,
+      alarmTimes: this.apiErrorAlarm.alarmTimes,
+      alarmState: this.apiErrorAlarm.alarmState,
+      alarmLimit: this.apiErrorAlarm.alarmLimit
+    }).subscribe((d: any) => {
+      if(d.IsSuccess){
+        this.msg.success("设置成功");
+      }
+    });
+  } 
+
+  perfSpeedUpdate(){
+    if(this.perfSpeedAlarm.alarmTimes===null){
+      this.msg.info('分钟数必须大于0');
+      return;
+    }
+    if(this.perfSpeedAlarm.alarmLimit===null){
+      this.msg.info('阈值必须大于0');
+      return;
+    }
+    this.http.post("Monitor/AlarmPerfSpeedUpdate", {
+      id:this.currentSite.appKey,
+      email: this.perfSpeedAlarm.email,
+      alarmTimes: this.perfSpeedAlarm.alarmTimes,
+      alarmState: this.perfSpeedAlarm.alarmState,
+      alarmLimit: this.perfSpeedAlarm.alarmLimit
+    }).subscribe((d: any) => {
+      if(d.IsSuccess){
+        this.msg.success("设置成功");
+      }
     });
   }
 

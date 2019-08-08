@@ -10,6 +10,7 @@ var userRouter = require('./routes/user');
 var util=require("./utils/util");
 var mongoose = require('mongoose');
 var fs=require('fs');
+var Agenda = require('agenda');
 mongoose.connect("mongodb://127.0.0.1:27017/monitor2", {
     socketTimeoutMS: 0,
     keepAlive: true,
@@ -17,7 +18,13 @@ mongoose.connect("mongodb://127.0.0.1:27017/monitor2", {
     reconnectTries: 30
 });
 
+var mongoConnectionString = 'mongodb://127.0.0.1:27017/agendatask';
+var agenda = new Agenda({ db: { address: mongoConnectionString } });
+agenda.processEvery('30 seconds');
+agenda.start();
 var app = express();
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

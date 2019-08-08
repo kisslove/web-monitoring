@@ -10,7 +10,22 @@ var schema = new Schema({
     appKey: Schema.Types.ObjectId,
     id: Schema.Types.ObjectId,
     state: String,
-    userId: String
+    userId: String,
+
+    alarmJsState:{ type: Boolean, default: false },
+    alarmJsLimit:Number,
+    alarmJsTimes:Number,
+    alarmJsEmail:String,
+
+    alarmApiState:{ type: Boolean, default: false },
+    alarmApiLimit:Number,
+    alarmApiTimes:Number,
+    alarmApiEmail:String,
+
+    alarmPrefState:{ type: Boolean, default: false },
+    alarmPrefLimit:Number,
+    alarmPrefTimes:Number,
+    alarmPrefEmail:String,
 });
 
 module.exports = mongoose.model('SiteDataInfo', schema);
