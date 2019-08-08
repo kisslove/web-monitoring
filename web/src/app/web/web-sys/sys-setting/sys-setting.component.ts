@@ -1,8 +1,8 @@
-import { Broadcaster } from './../../../monitor.common.service';
+import { Broadcaster, UserService } from './../../../monitor.common.service';
 
-import {fromEvent as observableFromEvent,  Observable } from 'rxjs';
+import { fromEvent as observableFromEvent, Observable } from 'rxjs';
 
-import {debounceTime} from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../../../../environments/environment';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
@@ -17,35 +17,36 @@ import * as _ from 'lodash';
   styleUrls: ['./sys-setting.component.scss']
 })
 export class SysSettingComponent implements OnInit {
+  showAlarmArea = false;
   setting = {
     disableHook: false,
     disableJS: true,
-    disableResource:false,
+    disableResource: false,
     code: '',
     backendUrl: environment.uploadDataUrl,
     jsHackUrl: environment.jsHackUrl,
-    userId:null
+    userId: null
   };
-  jsErrorAlarm={
-    appKey:null,
+  jsErrorAlarm = {
+    appKey: null,
     email: null,
-    alarmTimes:null,
-    alarmState:false,
-    alarmLimit:null
+    alarmTimes: null,
+    alarmState: false,
+    alarmLimit: null
   };
-  apiErrorAlarm={
-    appKey:null,
+  apiErrorAlarm = {
+    appKey: null,
     email: null,
-    alarmTimes:null,
-    alarmState:false,
-    alarmLimit:null
+    alarmTimes: null,
+    alarmState: false,
+    alarmLimit: null
   };
-  perfSpeedAlarm={
-    appKey:null,
+  perfSpeedAlarm = {
+    appKey: null,
     email: null,
-    alarmTimes:null,
-    alarmState:false,
-    alarmLimit:null
+    alarmTimes: null,
+    alarmState: false,
+    alarmLimit: null
   };
   tip = {
     code1: null
@@ -56,12 +57,16 @@ export class SysSettingComponent implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private msg: NzMessageService,
-    private broadcaster:Broadcaster
+    private broadcaster: Broadcaster,
+    private user: UserService
   ) {
 
   }
 
   ngOnInit() {
+    if (this.user.getUserId()) {
+      this.showAlarmArea = true;
+    }
     this.currentSite.appKey = this.route.parent.snapshot.paramMap.get('appKey');
     this.tip.code1 = `
     export class MyErrorHandler implements ErrorHandler {
@@ -126,21 +131,21 @@ export class SysSettingComponent implements OnInit {
         delete currentSys[0]['createTime'];
         delete currentSys[0]['updateTime'];
         this.currentSite = currentSys[0];
-        
-        this.jsErrorAlarm.alarmLimit=this.currentSite.alarmJsLimit;
-        this.jsErrorAlarm.alarmState=this.currentSite.alarmJsState;
-        this.jsErrorAlarm.alarmTimes=this.currentSite.alarmJsTimes;
-        this.jsErrorAlarm.email=this.currentSite.alarmJsEmail;
 
-        this.apiErrorAlarm.alarmLimit=this.currentSite.alarmAPiLimit;
-        this.apiErrorAlarm.alarmState=this.currentSite.alarmAPiState;
-        this.apiErrorAlarm.alarmTimes=this.currentSite.alarmAPiTimes;
-        this.apiErrorAlarm.email=this.currentSite.alarmAPiEmail;
+        this.jsErrorAlarm.alarmLimit = this.currentSite.alarmJsLimit;
+        this.jsErrorAlarm.alarmState = this.currentSite.alarmJsState;
+        this.jsErrorAlarm.alarmTimes = this.currentSite.alarmJsTimes;
+        this.jsErrorAlarm.email = this.currentSite.alarmJsEmail;
 
-        this.perfSpeedAlarm.alarmLimit=this.currentSite.alarmPerfLimit;
-        this.perfSpeedAlarm.alarmState=this.currentSite.alarmPerfState;
-        this.perfSpeedAlarm.alarmTimes=this.currentSite.alarmPerfTimes;
-        this.perfSpeedAlarm.email=this.currentSite.alarmPerfEmail;
+        this.apiErrorAlarm.alarmLimit = this.currentSite.alarmApiLimit;
+        this.apiErrorAlarm.alarmState = this.currentSite.alarmApiState;
+        this.apiErrorAlarm.alarmTimes = this.currentSite.alarmApiTimes;
+        this.apiErrorAlarm.email = this.currentSite.alarmApiEmail;
+
+        this.perfSpeedAlarm.alarmLimit = this.currentSite.alarmPerfLimit;
+        this.perfSpeedAlarm.alarmState = this.currentSite.alarmPerfState;
+        this.perfSpeedAlarm.alarmTimes = this.currentSite.alarmPerfTimes;
+        this.perfSpeedAlarm.email = this.currentSite.alarmPerfEmail;
         this.generateCode();
       }
     });
@@ -151,67 +156,79 @@ export class SysSettingComponent implements OnInit {
   }
 
 
-  jsErrorUpdate(){
-    if(this.jsErrorAlarm.alarmTimes===null){
+  jsErrorUpdate() {
+    if (this.jsErrorAlarm.alarmTimes == null) {
       this.msg.info('分钟数必须大于0');
       return;
     }
-    if(this.jsErrorAlarm.alarmLimit===null){
+    if (this.jsErrorAlarm.alarmLimit == null) {
       this.msg.info('阈值必须大于0');
       return;
     }
+    if (!this.jsErrorAlarm.email) {
+      this.msg.info('必须填写邮箱');
+      return;
+    }
     this.http.post("Monitor/AlarmJsErrorUpdate", {
-      id:this.currentSite.appKey,
+      id: this.currentSite.appKey,
       email: this.jsErrorAlarm.email,
       alarmTimes: this.jsErrorAlarm.alarmTimes,
       alarmState: this.jsErrorAlarm.alarmState,
       alarmLimit: this.jsErrorAlarm.alarmLimit
     }).subscribe((d: any) => {
-      if(d.IsSuccess){
+      if (d.IsSuccess) {
         this.msg.success("设置成功");
       }
     });
   }
 
-  apiErrorUpdate(){
-    if(this.apiErrorAlarm.alarmTimes===null){
+  apiErrorUpdate() {
+    if (this.apiErrorAlarm.alarmTimes == null) {
       this.msg.info('分钟数必须大于0');
       return;
     }
-    if(this.apiErrorAlarm.alarmLimit===null){
+    if (this.apiErrorAlarm.alarmLimit == null) {
       this.msg.info('阈值必须大于0');
       return;
     }
+    if (!this.apiErrorAlarm.email) {
+      this.msg.info('必须填写邮箱');
+      return;
+    }
     this.http.post("Monitor/AlarmApiErrorUpdate", {
-      id:this.currentSite.appKey,
+      id: this.currentSite.appKey,
       email: this.apiErrorAlarm.email,
       alarmTimes: this.apiErrorAlarm.alarmTimes,
       alarmState: this.apiErrorAlarm.alarmState,
       alarmLimit: this.apiErrorAlarm.alarmLimit
     }).subscribe((d: any) => {
-      if(d.IsSuccess){
+      if (d.IsSuccess) {
         this.msg.success("设置成功");
       }
     });
-  } 
+  }
 
-  perfSpeedUpdate(){
-    if(this.perfSpeedAlarm.alarmTimes===null){
+  perfSpeedUpdate() {
+    if (this.perfSpeedAlarm.alarmTimes == null) {
       this.msg.info('分钟数必须大于0');
       return;
     }
-    if(this.perfSpeedAlarm.alarmLimit===null){
+    if (this.perfSpeedAlarm.alarmLimit == null) {
       this.msg.info('阈值必须大于0');
       return;
     }
+    if (!this.perfSpeedAlarm.email) {
+      this.msg.info('必须填写邮箱');
+      return;
+    }
     this.http.post("Monitor/AlarmPerfSpeedUpdate", {
-      id:this.currentSite.appKey,
+      id: this.currentSite.appKey,
       email: this.perfSpeedAlarm.email,
       alarmTimes: this.perfSpeedAlarm.alarmTimes,
       alarmState: this.perfSpeedAlarm.alarmState,
       alarmLimit: this.perfSpeedAlarm.alarmLimit
     }).subscribe((d: any) => {
-      if(d.IsSuccess){
+      if (d.IsSuccess) {
         this.msg.success("设置成功");
       }
     });
@@ -221,7 +238,7 @@ export class SysSettingComponent implements OnInit {
     this.setting.code = `<script>
     !(function (c, b, d, a) {
       c[a] || (c[a] = {});
-      c[a].config = { userId: '${this.currentSite.userId?this.currentSite.userId:''}',appKey: '${this.currentSite.appKey}', imgUrl: '${this.setting.backendUrl}?',disableHook:${this.currentSite.disableHook}, disableJS:${this.currentSite.disableJS},disableResource:${this.currentSite.disableResource?true:false} };
+      c[a].config = { userId: '${this.currentSite.userId ? this.currentSite.userId : ''}',appKey: '${this.currentSite.appKey}', imgUrl: '${this.setting.backendUrl}?',disableHook:${this.currentSite.disableHook}, disableJS:${this.currentSite.disableJS},disableResource:${this.currentSite.disableResource ? true : false} };
       var dom = document.createElement("script");
       dom.setAttribute("crossorigin", "anonymous");
       dom.setAttribute("src", d);
@@ -231,8 +248,8 @@ export class SysSettingComponent implements OnInit {
   }
 
   ngAfterContentInit(): void {
-    this.broadcaster.broadcast('showGlobalTimer',false);
-    (window as any).globalTime=null;
+    this.broadcaster.broadcast('showGlobalTimer', false);
+    (window as any).globalTime = null;
   }
 
 }
