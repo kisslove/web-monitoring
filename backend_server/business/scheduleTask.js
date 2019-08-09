@@ -72,7 +72,7 @@ async function sendEmail(options) {
 //任务1：统计用户站点js错误达到临界值
 async function checkjsErrorResult(options) {
     let appKey = new Mongoose.Types.ObjectId(options.appKey);
-    let sTime = new Date(new Date().setSeconds(new Date().getSeconds() - options.times));
+    let sTime = new Date(new Date().setMinutes(new Date().getMinutes() - options.times));
     let eTime = new Date();
     let matchCond = {
         "createTime": {
@@ -92,7 +92,7 @@ async function checkjsErrorResult(options) {
 //任务2：统计用户站点API错误率达到临界值
 async function checkApiErrorResult(options) {
     let appKey = new Mongoose.Types.ObjectId(options.appKey);
-    let sTime = new Date(new Date().setSeconds(new Date().getSeconds() - options.times));
+    let sTime = new Date(new Date().setMinutes(new Date().getMinutes() - options.times));
     let eTime = new Date();
     let matchCond = {
         "createTime": {
@@ -111,7 +111,7 @@ async function checkApiErrorResult(options) {
 //任务3：统计用户站点平均访问速度达到临界值
 async function checkPerfSpeedResult(options) {
     let appKey = new Mongoose.Types.ObjectId(options.appKey);
-    let sTime = new Date(new Date().setSeconds(new Date().getSeconds() - options.times));
+    let sTime = new Date(new Date().setMinutes(new Date().getMinutes() - options.times));
     let eTime = new Date();
     let matchCond = {
         "createTime": {
