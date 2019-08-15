@@ -81,8 +81,12 @@ export class CustomHighchartComponent implements OnInit {
         enabled: false
       },
       chart: {
-        type: 'spline',
-        height: 280
+        type: 'column',
+        height: 280,
+        options3d: {
+          enabled: true,
+          depth: 50
+        }
       },
       title: {
         text: null

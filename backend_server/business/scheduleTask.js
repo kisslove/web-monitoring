@@ -127,7 +127,7 @@ async function checkPerfSpeedResult(options) {
 }
 
 
-//创建发送邮件任务
+//创建/取消发送邮件任务
 /*  
 options.email 邮件
 options.alarmType 邮件类型（jsError,apiError,perfSpeed）
