@@ -19,7 +19,7 @@ export class HomepageComponent implements OnInit {
   _IV: "8536874512548456" //16位
   model = {
     email: '',
-    password: '', 
+    password: '',
   };
   model2 = {
     email: '',
