@@ -1,7 +1,7 @@
 
 export const environment = {
   production: true,
-  apiUrl:'http://hubing.online:8081/',
-  uploadDataUrl:'http://hubing.online:8081/Up',
-  jsHackUrl:'http://hubing.online:8082/bundle.js'
+  apiUrl:'https://backsite.hubing.online/',
+  uploadDataUrl:'https://backsite.hubing.online/Up',
+  jsHackUrl:'https://hubing.online/bundle.js'
 };
