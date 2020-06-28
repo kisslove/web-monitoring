@@ -83,7 +83,7 @@ export class SysListComponent implements OnInit {
    //加载PV/UV数据
    loadPvUvData(data) {
     this.http.post("Monitor/PvAndUvStatis", {
-      TimeQuantum: 6,
+      TimeQuantum: 4,
       sTime:  '',
       eTime: '',
       appKey: data.appKey

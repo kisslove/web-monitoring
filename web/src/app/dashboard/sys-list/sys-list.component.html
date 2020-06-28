@@ -10,10 +10,10 @@
             <div nz-col class="gutter-row" nzXs="24" nzSm="8" style="margin-bottom:24px;" *ngFor="let item of sysItems">
                 <nz-card nzType="inner" [nzTitle]="emplateTitle" [nzExtra]="extraTemplate">
                     <div class="total_pv_uv">
-                        <p> PV(7天)：
+                        <p> PV(最近24小时)：
                             <span>{{item.total_pv_uv?.totalPv||'--'}}</span>
                         </p>
-                        <p> UV(7天)：
+                        <p> UV(最近24小时)：
                             <span>{{item.total_pv_uv?.totalUv||'--'}}</span>
                         </p>
                     </div>
