@@ -29,7 +29,7 @@
         "codemirror": "^5.48.0",
         "core-js": "^2.4.1",
         "crypto-js": "^3.1.9-1",
-        "highcharts": "^6.1.0",
+        "highcharts": "^8.2.0",
         "lodash": "^4.17.10",
         "ng-zorro-antd": "^1.4.0",
         "ngx-cookie-service": "^1.0.10",
