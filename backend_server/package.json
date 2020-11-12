@@ -17,6 +17,7 @@
         "lodash": "^4.17.10",
         "mongoose": "^5.2.9",
         "morgan": "~1.9.0",
-        "nodemailer": "^6.3.0"
+        "nodemailer": "^6.3.0",
+        "supervisor": "^0.12.0"
     }
 }
