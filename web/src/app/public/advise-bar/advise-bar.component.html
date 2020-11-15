@@ -1,4 +1,4 @@
-<div class="advise-container" #adviseContainer
+<div class="advise-container" (click)="show($event,true)" #adviseContainer
   [ngStyle]="{'background': setting.color,'left':setting.left,'top':setting.top}">
   {{setting?.title}}<i appMonitorABlank [title]="setting?.title" nz-icon class="advise-icon" (click)="show($event,true)" title="展开" type="double-right"
     theme="outline"></i>

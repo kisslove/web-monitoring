@@ -1,244 +1,543 @@
-<section id="home-section" style="width:100%;">
-    <div style="width: 100%;height:400px;position:absolute;background: #096dd9;">
-
+<section id="home-section" style="width: 100%">
+  <div
+    style="width: 100%; height: 400px; position: absolute; background: #096dd9"
+  ></div>
+  <div id="deccription">
+    <div class="title">前端监控平台 - 开源监控</div>
+    <div class="desc">
+      日活跃、用户行为记录、访问日志、JS错误日志、API请求详情、访问性能评估，开发者必须关心的各种运营数据
     </div>
-    <div id="deccription">
-        <div class="title">
-            前端监控平台 - 开源监控
-        </div>
-        <div class="desc">
-            日活跃、用户行为记录、访问日志、JS错误日志、API请求详情、访问性能评估，开发者必须关心的各种运营数据
-        </div>
-        <div class="opt" *ngIf="isLogin">
-            <button [routerLink]="[ '/dashboard' ]">立即使用</button>
-        </div>
-        <div class="opt" *ngIf="!isLogin">
-            <button [routerLink]="[ '/dashboard' ]">马上体验</button> &nbsp;
-            <button (click)="isVisible_login=true;">独立账户</button>
-        </div>
+    <div class="opt" *ngIf="isLogin">
+      <button [routerLink]="['/dashboard']">立即使用</button>
     </div>
+    <div class="opt" *ngIf="!isLogin">
+      <button [routerLink]="['/dashboard']">马上体验</button> &nbsp;
+      <button (click)="isVisible_login = true">独立账户</button>
+    </div>
+  </div>
 </section>
 
-<section id="home-section2" style="width:100%;">
-    <h4>谁在使用</h4>
-    <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">
-        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="前端性能监控平台"
-            nzDescription="从不同维度去统计用户真实访问站点的情况，再现用户访问场景，帮助你快速定位问题。">
-        </nz-card-meta>
-    </nz-card>
-    <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">
-        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="cnbook" nzDescription="【Kindle中国】_Amazon Kindle 完全购买攻略。">
-        </nz-card-meta>
-    </nz-card>
-    <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">
-        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="bboss"
-            nzDescription="bboss是一个j2ee开源框架，为企业级应用开发提供一站式解决方案，并能有效地支撑移动应用开发。">
-        </nz-card-meta>
-    </nz-card>
-    <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">
-        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="酷娃利息对比计算工具" nzDescription="一款帮你选择贷款方式的多功能利息计算工具。">
-        </nz-card-meta>
-    </nz-card>
-    <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">
-        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="IP转换工具" nzDescription="可以快速，准确，可靠的将IP转换成位置的工具，并对外提供接口。">
-        </nz-card-meta>
-    </nz-card>
-    <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">
-        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="……" nzDescription="More">
-        </nz-card-meta>
-    </nz-card>
-    <ng-template #avatarTemplate>
-        <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
-    </ng-template>
-    <h3 style="margin-left: 16px;">虚位以待(推广位)……</h3>
-    <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;" [nzLoading]="true">
-        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="Card title" nzDescription="This is the description">
-        </nz-card-meta>
-    </nz-card>
-    <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;" [nzLoading]="true">
-        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="Card title" nzDescription="This is the description">
-        </nz-card-meta>
-    </nz-card>
-    <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;" [nzLoading]="true">
-        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="Card title" nzDescription="This is the description">
-        </nz-card-meta>
-    </nz-card>
+<section id="home-section2" style="width: 100%">
+  <h4>谁在使用</h4>
+  <nz-card
+    style="
+      width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      margin: 16px;
+    "
+  >
+    <nz-card-meta
+      [nzAvatar]="avatarTemplate"
+      nzTitle="前端性能监控平台"
+      nzDescription="从不同维度去统计用户真实访问站点的情况，再现用户访问场景，帮助你快速定位问题。"
+    >
+    </nz-card-meta>
+  </nz-card>
+  <nz-card
+    style="
+      width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      margin: 16px;
+    "
+  >
+    <nz-card-meta
+      [nzAvatar]="avatarTemplate"
+      nzTitle="cnbook"
+      nzDescription="【Kindle中国】_Amazon Kindle 完全购买攻略。"
+    >
+    </nz-card-meta>
+  </nz-card>
+  <nz-card
+    style="
+      width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      margin: 16px;
+    "
+  >
+    <nz-card-meta
+      [nzAvatar]="avatarTemplate"
+      nzTitle="bboss"
+      nzDescription="bboss是一个j2ee开源框架，为企业级应用开发提供一站式解决方案，并能有效地支撑移动应用开发。"
+    >
+    </nz-card-meta>
+  </nz-card>
+  <nz-card
+    style="
+      width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      margin: 16px;
+    "
+  >
+    <nz-card-meta
+      [nzAvatar]="avatarTemplate"
+      nzTitle="酷娃利息对比计算工具"
+      nzDescription="一款帮你选择贷款方式的多功能利息计算工具。"
+    >
+    </nz-card-meta>
+  </nz-card>
+  <nz-card
+    style="
+      width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      margin: 16px;
+    "
+  >
+    <nz-card-meta
+      [nzAvatar]="avatarTemplate"
+      nzTitle="IP转换工具"
+      nzDescription="可以快速，准确，可靠的将IP转换成位置的工具，并对外提供接口。"
+    >
+    </nz-card-meta>
+  </nz-card>
+  <nz-card
+    style="
+      width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      margin: 16px;
+    "
+  >
+    <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="……" nzDescription="More">
+    </nz-card-meta>
+  </nz-card>
+  <ng-template #avatarTemplate>
+    <nz-avatar
+      nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+    ></nz-avatar>
+  </ng-template>
 </section>
 
-<section id="home-section2" style="width:100%;padding:50px;">
-    <h3 style="margin-left: 16px;">帮助文档(官方)</h3>
-    <ul style="margin-top: 16px;font-size: 16px;line-height: 28px;">
-        <li>
-            <a appMonitorABlank target="_blank"
-                href="https://mp.weixin.qq.com/s/RAQmBTQZa_JWfDowFtCFzw">前端监控（web-monitor）</a>
-        </li>
-        <li>
-            <a appMonitorABlank target="_blank"
-                href="https://mp.weixin.qq.com/s/Ygjiya57R4nKpLZFQZ46BA">前端数据收集（pv/uv）</a>
-        </li>
-        <li>
-            <a appMonitorABlank target="_blank"
-                href="https://mp.weixin.qq.com/s/OqyuIVxRtXCttgfos4sBmw">前端监控数据收集（performance）</a>
-        </li>
-        <li>
-            <a appMonitorABlank target="_blank"
-                href="https://mp.weixin.qq.com/s/htGrjyPGaxIT32f_KMP3FQ">前端监控数据收集（请求拦截）</a>
-        </li>
-        <li>
-            <a appMonitorABlank target="_blank"
-                href="https://mp.weixin.qq.com/s/k99UfoJdCJlrBWhDsqEffg">监控系统(用户行为追踪)</a>
-        </li>
-        <li>
-            <a appMonitorABlank target="_blank"
-                href="https://mp.weixin.qq.com/s/LFVolLcuORyO_zvHPh9lsw">JavaScript出错场景还原</a>
-        </li>
-    </ul>
+<section id="home-section2" style="width: 100%; padding: 50px">
+  <h3 style="margin-left: 16px">帮助文档(官方)</h3>
+  <ul style="margin-top: 16px; font-size: 16px; line-height: 28px">
+    <li>
+      <a
+        appMonitorABlank
+        target="_blank"
+        href="https://mp.weixin.qq.com/s/RAQmBTQZa_JWfDowFtCFzw"
+        >前端监控（web-monitor）</a
+      >
+    </li>
+    <li>
+      <a
+        appMonitorABlank
+        target="_blank"
+        href="https://mp.weixin.qq.com/s/Ygjiya57R4nKpLZFQZ46BA"
+        >前端数据收集（pv/uv）</a
+      >
+    </li>
+    <li>
+      <a
+        appMonitorABlank
+        target="_blank"
+        href="https://mp.weixin.qq.com/s/OqyuIVxRtXCttgfos4sBmw"
+        >前端监控数据收集（performance）</a
+      >
+    </li>
+    <li>
+      <a
+        appMonitorABlank
+        target="_blank"
+        href="https://mp.weixin.qq.com/s/htGrjyPGaxIT32f_KMP3FQ"
+        >前端监控数据收集（请求拦截）</a
+      >
+    </li>
+    <li>
+      <a
+        appMonitorABlank
+        target="_blank"
+        href="https://mp.weixin.qq.com/s/k99UfoJdCJlrBWhDsqEffg"
+        >监控系统(用户行为追踪)</a
+      >
+    </li>
+    <li>
+      <a
+        appMonitorABlank
+        target="_blank"
+        href="https://mp.weixin.qq.com/s/LFVolLcuORyO_zvHPh9lsw"
+        >JavaScript出错场景还原</a
+      >
+    </li>
+  </ul>
 </section>
 
-<section class="section-contanier" style="height: 700px;width:100%;">
-    <div class="section-overlay" style="opacity: 0.7;background-color: rgba(34, 34, 34, 0.54);"></div>
-    <div class="section-block" style="background: repeat rgb(34,34,34) 50% 50% /
-      cover fixed;background-image: url('../../../assets/images/home.jpg');">
-        <div style="color: #fff;position: relative;padding-top:
-        4%;">
-            <p style="font-size: 30px;text-align: center;">开源支持</p>
-            <pre style="font-size: 16px;font-family: cursive;">
+<section class="section-contanier" style="height: 700px; width: 100%">
+  <div
+    class="section-overlay"
+    style="opacity: 0.7; background-color: rgba(34, 34, 34, 0.54)"
+  ></div>
+  <div
+    class="section-block"
+    style="
+      background: repeat rgb(34, 34, 34) 50% 50% / cover fixed;
+      background-image: url('../../../assets/images/home.jpg');
+    "
+  >
+    <div style="color: #fff; position: relative; padding-top: 4%">
+      <p style="font-size: 30px; text-align: center">开源支持</p>
+      <pre style="font-size: 16px; font-family: cursive">
         背景：
         项目创建至今，收到很多用户反馈。
         在此，感谢关注、支持和使用“前端监控系统”的各位朋友们。
         在你们的支持下，我们将继续砥砺前行，做更好的产品回馈你们。
-        </pre>
-            <pre style="font-size: 16px;font-family: cursive;">
+        </pre
+      >
+      <pre style="font-size: 16px; font-family: cursive">
         困境：
         每一个做开源项目的个人或团队，都深知开源项目的不易。
         我们会花费无数个日日夜夜，想办法做出更好的产品。
         时间、资金、团队都是我们所需要的。
         可以通过下面支付宝、微信途径提供支持。
         再次感谢您们的支持。
-        </pre>
-            <h3 style="margin-left: 64px;color:#fff;">支持作者(赏咖啡)</h3>
-            <img nz-tooltip nzTitle="关注公众号" style="width: 175px;margin: 8px 64px;"
-                src="/assets/images/weixin-gongzhonghao.jpg" alt="公众号">
-            <img nz-tooltip nzTitle="支付宝赞赏" style="width: 175px;margin: 8px 24px;" src="/assets/images/zhifubao.png"
-                alt="支付宝">
-            <img nz-tooltip nzTitle="微信赞赏" style="width: 175px;margin: 8px 24px;" src="/assets/images/weixin.png"
-                alt="微信">
-        </div>
-
+        </pre
+      >
+      <h3 style="margin-left: 64px; color: #fff">支持作者(赏咖啡)</h3>
+      <img
+        nz-tooltip
+        nzTitle="关注公众号"
+        style="width: 175px; margin: 8px 64px"
+        src="/assets/images/weixin-gongzhonghao.jpg"
+        alt="公众号"
+      />
+      <img
+        nz-tooltip
+        nzTitle="支付宝赞赏"
+        style="width: 175px; margin: 8px 24px"
+        src="/assets/images/zhifubao.png"
+        alt="支付宝"
+      />
+      <img
+        nz-tooltip
+        nzTitle="微信赞赏"
+        style="width: 175px; margin: 8px 24px"
+        src="/assets/images/weixin.png"
+        alt="微信"
+      />
     </div>
+  </div>
 </section>
 
-<section id="home-section2" style="width:100%;background: rgba(204, 204, 204, 0.28);">
-    <h4>业务范围</h4>
-    <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">
-        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="前端监控平台个性化定制"
-            nzDescription="根据用户要求定制开发前端监控系统，个性化设置图表分析，数据展示，助你及时解决线上问题。">
-        </nz-card-meta>
-    </nz-card>
-    <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">
-        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="个人/企业网站开发" nzDescription="专注各类软件开发，打造安全优质的网络平台，价格实惠，低于同类竞品。">
-        </nz-card-meta>
-    </nz-card>
-    <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">
-        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="小程序开发" nzDescription="引流新渠道，无需下载，扫码即可使用。">
-        </nz-card-meta>
-    </nz-card>
-    <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">
-        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="前/后端/架构咨询服务" nzDescription="专注解决开发、线上过程中的各种疑难问题，服务费用低至10元。">
-        </nz-card-meta>
-    </nz-card>
-    <nz-card style="width: 300px;display: inline-block;vertical-align: top;margin: 16px;">
-        <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="联系方式" nzDescription="微信/QQ:676022504">
-        </nz-card-meta>
-    </nz-card>
+<section
+  id="home-section2"
+  style="width: 100%; background: rgba(204, 204, 204, 0.28)"
+>
+  <h4>业务范围</h4>
+  <nz-card
+    style="
+      width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      margin: 16px;
+    "
+  >
+    <nz-card-meta
+      [nzAvatar]="avatarTemplate"
+      nzTitle="前端监控平台个性化定制"
+      nzDescription="根据用户要求定制开发前端监控系统，个性化设置图表分析，数据展示，助你及时解决线上问题。"
+    >
+    </nz-card-meta>
+  </nz-card>
+  <nz-card
+    style="
+      width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      margin: 16px;
+    "
+  >
+    <nz-card-meta
+      [nzAvatar]="avatarTemplate"
+      nzTitle="个人/企业网站开发"
+      nzDescription="专注各类软件开发，打造安全优质的网络平台，价格实惠，低于同类竞品。"
+    >
+    </nz-card-meta>
+  </nz-card>
+  <nz-card
+    style="
+      width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      margin: 16px;
+    "
+  >
+    <nz-card-meta
+      [nzAvatar]="avatarTemplate"
+      nzTitle="小程序开发"
+      nzDescription="引流新渠道，无需下载，扫码即可使用。"
+    >
+    </nz-card-meta>
+  </nz-card>
+  <nz-card
+    style="
+      width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      margin: 16px;
+    "
+  >
+    <nz-card-meta
+      [nzAvatar]="avatarTemplate"
+      nzTitle="前/后端/架构咨询服务"
+      nzDescription="专注解决开发、线上过程中的各种疑难问题，服务费用低至10元。"
+    >
+    </nz-card-meta>
+  </nz-card>
+  <nz-card
+    style="
+      width: 300px;
+      display: inline-block;
+      vertical-align: top;
+      margin: 16px;
+    "
+  >
+    <nz-card-meta
+      [nzAvatar]="avatarTemplate"
+      nzTitle="联系方式"
+      nzDescription="微信/QQ:676022504"
+    >
+    </nz-card-meta>
+  </nz-card>
 </section>
 
-<section id="footer" style="width:100%;">
-    <div class="grid-fluid">
-        <div class="grid">
-            <h3>资源</h3>
-            <ul>
-                <li><a appMonitorABlank target="_blank" href="https://angular.cn/" title="Angular官网">Angular</a></li>
-                <li><a appMonitorABlank target="_blank" href="https://docs.mongodb.com/" title="数据库MongoDB">MongoDB</a>
-                </li>
-                <li><a appMonitorABlank target="_blank" href="https://ant.design/" title="UI设计模式">Ant Design</a></li>
-                <li><a appMonitorABlank target="_blank" href="https://ng.ant.design/"
-                        title="Ant Design的Angular实现">NG-ZORRO</a>
-                </li>
-            </ul>
+<section id="home-section2">
+  <h4>好读书，读好书</h4>
+  <div nz-row style="padding: 0 16px; text-align: center" nzGutter="24">
+    <div
+      nz-col
+      nzSpan="8"
+      style="margin-bottom: 32px"
+      *ngFor="let item of booksData"
+    >
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <img
+            style="
+              width: 180px;
+              height: 180px;
+              margin: auto;
+              display: block;
+              margin-bottom: 8px;
+              background: rgb(158 158 158 / 35%);
+              padding: 8px;
+            "
+            [src]="item['商品主图']"
+          />
         </div>
-        <div class="grid">
-            <h3>帮助</h3>
-            <ul>
-                <li><a appMonitorABlank target="_blank" href="https://github.com/kisslove/web-monitoring"
-                        title="源码仓库">GitHub</a></li>
-                <li><a appMonitorABlank target="_blank" href="/assets/images/weixin-gongzhonghao.jpg"
-                        title="关注公众号">公众号</a>
-                </li>
-                <li><a appMonitorABlank target="_blank" href="/assets/images/weixin.png" title="微信">支持作者</a></li>
-            </ul>
+        <div nz-col nzSpan="24">
+          <a [href]="item['淘宝客短链接(300天内有效)']" target="_blank">
+            {{ item["商品名称"] }}</a
+          >
         </div>
-        <div class="grid">
-            <h3>推广(招商中)</h3>
-            <ul>
-                <li><a appMonitorABlank target="_blank"
-                        href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=9xbvcsop">阿里云优惠购</a></li>
-                <li><a appMonitorABlank target="_blank" href="http://coolwow.myselfbuy.com/"
-                        title="一款帮你选择贷款方式的多功能利息计算工具">酷娃利息对比计算工具</a>
-                </li>
-                <li><a appMonitorABlank target="_blank" href="http://hubing.online:8086"
-                        title="一款开源将IP转换成位置的工具，对外提供接口">在线IP转换工具</a>
-                </li>
-            </ul>
-        </div>
+      </div>
     </div>
-    <div style="color:gray;text-align: center;background: #001529;padding: 24px;">
-        <a href="http://www.beian.miit.gov.cn" target="_blank">备案号：蜀ICP备20008065号-1</a>
+  </div>
+</section>
+
+<section id="footer" style="width: 100%">
+  <div class="grid-fluid">
+    <div class="grid">
+      <h3>资源</h3>
+      <ul>
+        <li>
+          <a
+            appMonitorABlank
+            target="_blank"
+            href="https://angular.cn/"
+            title="Angular官网"
+            >Angular</a
+          >
+        </li>
+        <li>
+          <a
+            appMonitorABlank
+            target="_blank"
+            href="https://docs.mongodb.com/"
+            title="数据库MongoDB"
+            >MongoDB</a
+          >
+        </li>
+        <li>
+          <a
+            appMonitorABlank
+            target="_blank"
+            href="https://ant.design/"
+            title="UI设计模式"
+            >Ant Design</a
+          >
+        </li>
+        <li>
+          <a
+            appMonitorABlank
+            target="_blank"
+            href="https://ng.ant.design/"
+            title="Ant Design的Angular实现"
+            >NG-ZORRO</a
+          >
+        </li>
+      </ul>
     </div>
+    <div class="grid">
+      <h3>帮助</h3>
+      <ul>
+        <li>
+          <a
+            appMonitorABlank
+            target="_blank"
+            href="https://github.com/kisslove/web-monitoring"
+            title="源码仓库"
+            >GitHub</a
+          >
+        </li>
+        <li>
+          <a
+            appMonitorABlank
+            target="_blank"
+            href="/assets/images/weixin-gongzhonghao.jpg"
+            title="关注公众号"
+            >公众号</a
+          >
+        </li>
+        <li>
+          <a
+            appMonitorABlank
+            target="_blank"
+            href="/assets/images/weixin.png"
+            title="微信"
+            >支持作者</a
+          >
+        </li>
+      </ul>
+    </div>
+    <div class="grid">
+      <h3>推广(招商中)</h3>
+      <ul>
+        <li>
+          <a
+            appMonitorABlank
+            target="_blank"
+            href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=9xbvcsop"
+            >阿里云优惠购</a
+          >
+        </li>
+        <li>
+          <a
+            appMonitorABlank
+            target="_blank"
+            href="http://coolwow.myselfbuy.com/"
+            title="一款帮你选择贷款方式的多功能利息计算工具"
+            >酷娃利息对比计算工具</a
+          >
+        </li>
+        <li>
+          <a
+            appMonitorABlank
+            target="_blank"
+            href="https://github.com/kisslove/ip2region"
+            title="一款开源将IP转换成位置的工具，对外提供接口"
+            >IP转换工具</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div
+    style="color: gray; text-align: center; background: #001529; padding: 24px"
+  >
+    <a href="http://www.beian.miit.gov.cn" target="_blank"
+      >备案号：蜀ICP备20008065号-1</a
+    >
+  </div>
 </section>
 
 <nz-back-top [nzTemplate]="tpl" [nzVisibilityHeight]="100">
-    <ng-template #tpl>
-        <div style="height: 40px;
+  <ng-template #tpl>
+    <div
+      style="
+        height: 40px;
         width: 40px;
         line-height: 40px;
         border-radius: 4px;
         background-color: #1088e9;
         color: #fff;
         text-align: center;
-        font-size: 20px;" class="ant-back-top-inner">UP</div>
-    </ng-template>
+        font-size: 20px;
+      "
+      class="ant-back-top-inner"
+    >
+      顶
+    </div>
+  </ng-template>
 </nz-back-top>
-<nz-modal [nzMaskClosable]="false" [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_login" nzTitle="登录"
-    (nzOnOk)="login()" (nzOnCancel)="isVisible_login=false;">
-    <nz-form-item>
-        <nz-form-label [nzSm]="4" [nzXs]="24">邮箱</nz-form-label>
-        <nz-form-control [nzSm]="18" [nzXs]="24">
-            <input nz-input [(ngModel)]="model.email" name="email">
-        </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-        <nz-form-label [nzSm]="4" [nzXs]="24">密码</nz-form-label>
-        <nz-form-control [nzSm]="18" [nzXs]="24">
-            <input nz-input type="password" [(ngModel)]="model.password" name="password">
-        </nz-form-control>
-    </nz-form-item>
-    <nz-form-item style="margin-bottom:0;">
-        <nz-form-control [nzSm]="24" [nzXs]="24" style="text-align: right;width:90%;">
-            <span>没有账户?</span><span appMonitorABlank (click)="isVisible_login=false;isVisible_register=true;"
-                style="margin-left: 24px;text-decoration: underline;cursor: pointer;">马上注册</span>
-        </nz-form-control>
-    </nz-form-item>
+<nz-modal
+  [nzMaskClosable]="false"
+  [nzOkText]="'确认'"
+  [nzCancelText]="'取消'"
+  [(nzVisible)]="isVisible_login"
+  nzTitle="登录"
+  (nzOnOk)="login()"
+  (nzOnCancel)="isVisible_login = false"
+>
+  <nz-form-item>
+    <nz-form-label [nzSm]="4" [nzXs]="24">邮箱</nz-form-label>
+    <nz-form-control [nzSm]="18" [nzXs]="24">
+      <input nz-input [(ngModel)]="model.email" name="email" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="4" [nzXs]="24">密码</nz-form-label>
+    <nz-form-control [nzSm]="18" [nzXs]="24">
+      <input
+        nz-input
+        type="password"
+        [(ngModel)]="model.password"
+        name="password"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item style="margin-bottom: 0">
+    <nz-form-control
+      [nzSm]="24"
+      [nzXs]="24"
+      style="text-align: right; width: 90%"
+    >
+      <span>没有账户?</span
+      ><span
+        appMonitorABlank
+        (click)="isVisible_login = false; isVisible_register = true"
+        style="margin-left: 24px; text-decoration: underline; cursor: pointer"
+        >马上注册</span
+      >
+    </nz-form-control>
+  </nz-form-item>
 </nz-modal>
 
-<nz-modal [nzMaskClosable]="false" [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_register"
-    nzTitle="独立账号" (nzOnOk)="isVisible_register=false;" (nzOnCancel)="isVisible_register=false;">
-    <h4 style="color:#03A9F4 !important;">关注作者公众号，发送独立账号（所创建的项目仅自己可见）。</h4>
-    <div style="text-align: center;margin:4px;">
-        <img style="height:150px;width:auto;" title="微信公众号" src="../assets/images/weixin-gongzhonghao.jpg" alt="微信">
-    </div>
+<nz-modal
+  [nzMaskClosable]="false"
+  [nzOkText]="'确认'"
+  [nzCancelText]="'取消'"
+  [(nzVisible)]="isVisible_register"
+  nzTitle="独立账号"
+  (nzOnOk)="isVisible_register = false"
+  (nzOnCancel)="isVisible_register = false"
+>
+  <h4 style="color: #03a9f4 !important">
+    关注作者公众号，发送独立账号（所创建的项目仅自己可见）。
+  </h4>
+  <div style="text-align: center; margin: 4px">
+    <img
+      style="height: 150px; width: auto"
+      title="微信公众号"
+      src="../assets/images/weixin-gongzhonghao.jpg"
+      alt="微信"
+    />
+  </div>
 </nz-modal>
- 
+
 <!-- <nz-modal [nzMaskClosable]="false" [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_register" nzTitle="注册" (nzOnOk)="register()" (nzOnCancel)="isVisible_register=false;">
     <nz-form-item>
         <nz-form-label [nzSm]="4" [nzXs]="24">邮箱</nz-form-label>
