@@ -19,7 +19,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/monitor2", {
     useNewUrlParser: true,
     reconnectTries: 30
 }).then(()=>{
-    userInfo.createAdmin('hbpersonal@163.com')
+    // userInfo.createAdmin('xxx.com')
 });
 
 //开启任务
