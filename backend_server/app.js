@@ -7,6 +7,7 @@ var indexRouter = require('./routes/index');
 var monitorRouter = require('./routes/monitor');
 var upDataRouter = require('./routes/upData');
 var userRouter = require('./routes/user');
+var userInfo = require('./business/userInfo');
 var ScheduleTask = require('./business/scheduleTask');
 
 var util = require("./utils/util");
@@ -17,6 +18,8 @@ mongoose.connect("mongodb://127.0.0.1:27017/monitor2", {
     keepAlive: true,
     useNewUrlParser: true,
     reconnectTries: 30
+}).then(()=>{
+    userInfo.createAdmin('hbpersonal@163.com')
 });
 
 //开启任务
@@ -69,7 +72,6 @@ app.use(function (err, req, res, next) {
     res.sendStatus(err.status || 500);
     // res.render('error');
 });
-
 
 
 module.exports = app;

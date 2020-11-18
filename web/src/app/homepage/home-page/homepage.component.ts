@@ -30,6 +30,7 @@ export class HomepageComponent implements OnInit {
   isLogin: boolean = false;
   unsubscribe: Subscription;
   booksData = [];
+  isAdmin = false;
   constructor(
     private http: HttpClient,
     private msg: NzMessageService,
@@ -41,6 +42,7 @@ export class HomepageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.isAdmin = this.user.isAdmin();
     setTimeout(() => {
       this.isLogin = this.user.getToken() ? true : false;
     }, 1000);
@@ -93,21 +95,21 @@ export class HomepageComponent implements OnInit {
     // this.unsubscribe.unsubscribe();
   }
 
-  // register() {
-  //   let pwd = this.encrypt(this.model2.password);
-  //   this.http.post("User/register", {
-  //     email: this.model2.email,
-  //     password: pwd
-  //   }).subscribe((r: any) => {
-  //     if (r.IsSuccess) {
-  //       this.cookie.set("user", JSON.stringify(r.Data), new Date(new Date().setMonth(new Date().getMonth() + 1)));
-  //       this.broadcaster.broadcast("refreshUser");
-  //       this.router.navigate(['dashboard']);
-  //     } else {
-  //       this.msg.error(r.Data, { nzDuration: 4000 });
-  //     }
-  //   })
-  // }
+  register() {
+    let pwd = this.encrypt(this.model2.password);
+    this.http.post("User/register", {
+      email: this.model2.email,
+      password: pwd
+    }).subscribe((r: any) => {
+      if (r.IsSuccess) {
+        this.cookie.set("user", JSON.stringify(r.Data), new Date(new Date().setMonth(new Date().getMonth() + 1)));
+        this.broadcaster.broadcast("refreshUser");
+        this.router.navigate(['dashboard']);
+      } else {
+        this.msg.error(r.Data, { nzDuration: 4000 });
+      }
+    })
+  }
 
   private encrypt(str) {
     var key = CryptoJS.enc.Utf8.parse(this._KEY);

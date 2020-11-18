@@ -78,6 +78,10 @@ export class UserService {
     return this._cookie.get('user') && JSON.parse(this._cookie.get('user'))['userId'] || '';
   }
 
+  isAdmin() {
+    return this.getUserId()==='5c3dce2b5a0e170a74e608c6';
+  }
+
   getUserName() {
     return this._cookie.get('user') && JSON.parse(this._cookie.get('user'))['userName'] || '';
   }

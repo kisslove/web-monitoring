@@ -11,17 +11,17 @@ var resourceInfo = require('../business/resourceInfo');
 /* dashboard */
 router.post('/SiteList', site.list);
 router.get('/SiteList', site.list);
-router.post('/RegisterSite', site.create);
+router.post('/RegisterSite',util.needToken, site.create);
 
 //应用设置
 router.post('/SiteSet', site.update);
 
 //js错误率报警
-router.post('/AlarmJsErrorUpdate', site.alarmJsErrorUpdate);
+router.post('/AlarmJsErrorUpdate',util.needToken, site.alarmJsErrorUpdate);
 //api错误率报警
-router.post('/AlarmApiErrorUpdate', site.alarmApiErrorUpdate);
+router.post('/AlarmApiErrorUpdate',util.needToken, site.alarmApiErrorUpdate);
 //访问速度报警
-router.post('/AlarmPerfSpeedUpdate', site.alarmPerfSpeedUpdate);
+router.post('/AlarmPerfSpeedUpdate',util.needToken, site.alarmPerfSpeedUpdate);
 
 
 //用户访问路径

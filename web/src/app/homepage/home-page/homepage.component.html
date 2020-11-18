@@ -9,6 +9,10 @@
     </div>
     <div class="opt" *ngIf="isLogin">
       <button [routerLink]="['/dashboard']">立即使用</button>
+      &nbsp;
+      <button *ngIf="isAdmin" (click)="isVisible_register = true">
+        创建用户
+      </button>
     </div>
     <div class="opt" *ngIf="!isLogin">
       <button [routerLink]="['/dashboard']">马上体验</button> &nbsp;
@@ -329,8 +333,8 @@
           />
         </div>
         <div nz-col nzSpan="24">
-          <a [href]="item['淘宝客短链接(300天内有效)']" target="_blank">
-            {{ item["商品名称"] }}</a
+          <a [href]="item['淘宝客短链接(300天内有效)']" target="_blank" [title]="item['商品名称']">
+            {{ item["商品名称"].length>40?item["商品名称"].substr(0,39)+'...':item["商品名称"] }}</a
           >
         </div>
       </div>
@@ -473,6 +477,7 @@
     </div>
   </ng-template>
 </nz-back-top>
+
 <nz-modal
   [nzMaskClosable]="false"
   [nzOkText]="'确认'"
@@ -510,8 +515,8 @@
         appMonitorABlank
         (click)="isVisible_login = false; isVisible_register = true"
         style="margin-left: 24px; text-decoration: underline; cursor: pointer"
-        >马上注册</span
-      >
+        >{{ isAdmin ? "创建新用户" : "马上注册" }}
+      </span>
     </nz-form-control>
   </nz-form-item>
 </nz-modal>
@@ -521,34 +526,41 @@
   [nzOkText]="'确认'"
   [nzCancelText]="'取消'"
   [(nzVisible)]="isVisible_register"
-  nzTitle="独立账号"
-  (nzOnOk)="isVisible_register = false"
+  [nzTitle]="isAdmin ? '创建用户' : '独立账号'"
+  (nzOnOk)="isAdmin ? register() : (isVisible_register = false)"
   (nzOnCancel)="isVisible_register = false"
 >
-  <h4 style="color: #03a9f4 !important">
-    关注作者公众号，发送独立账号（所创建的项目仅自己可见）。
-  </h4>
-  <div style="text-align: center; margin: 4px">
-    <img
-      style="height: 150px; width: auto"
-      title="微信公众号"
-      src="../assets/images/weixin-gongzhonghao.jpg"
-      alt="微信"
-    />
+  <div *ngIf="!isAdmin">
+    <h4 style="color: #03a9f4 !important">
+      关注作者公众号，发送独立账号（所创建的项目仅自己可见）。
+    </h4>
+    <div style="text-align: center; margin: 4px">
+      <img
+        style="height: 150px; width: auto"
+        title="微信公众号"
+        src="../assets/images/weixin-gongzhonghao.jpg"
+        alt="微信"
+      />
+    </div>
+  </div>
+
+  <div *ngIf="isAdmin">
+    <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24">邮箱</nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <input nz-input [(ngModel)]="model2.email" name="email" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="4" [nzXs]="24">密码</nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <input
+          nz-input
+          type="password"
+          [(ngModel)]="model2.password"
+          name="password"
+        />
+      </nz-form-control>
+    </nz-form-item>
   </div>
 </nz-modal>
-
-<!-- <nz-modal [nzMaskClosable]="false" [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_register" nzTitle="注册" (nzOnOk)="register()" (nzOnCancel)="isVisible_register=false;">
-    <nz-form-item>
-        <nz-form-label [nzSm]="4" [nzXs]="24">邮箱</nz-form-label>
-        <nz-form-control [nzSm]="18" [nzXs]="24">
-            <input nz-input [(ngModel)]="model2.email" name="email">
-        </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-        <nz-form-label [nzSm]="4" [nzXs]="24">密码</nz-form-label>
-        <nz-form-control [nzSm]="18" [nzXs]="24">
-            <input nz-input type="password" [(ngModel)]="model2.password" name="password">
-        </nz-form-control>
-    </nz-form-item>
-</nz-modal>    -->
