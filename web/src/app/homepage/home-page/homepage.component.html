@@ -308,40 +308,6 @@
   </nz-card>
 </section>
 
-<section id="home-section2">
-  <h4>好读书，读好书</h4>
-  <div nz-row style="padding: 0 16px; text-align: center" nzGutter="24">
-    <div
-      nz-col
-      nzSpan="8"
-      style="margin-bottom: 32px"
-      *ngFor="let item of booksData"
-    >
-      <div nz-row>
-        <div nz-col nzSpan="24">
-          <img
-            style="
-              width: 180px;
-              height: 180px;
-              margin: auto;
-              display: block;
-              margin-bottom: 8px;
-              background: rgb(158 158 158 / 35%);
-              padding: 8px;
-            "
-            [src]="item['商品主图']"
-          />
-        </div>
-        <div nz-col nzSpan="24">
-          <a [href]="item['淘宝客短链接(300天内有效)']" target="_blank" [title]="item['商品名称']">
-            {{ item["商品名称"].length>40?item["商品名称"].substr(0,39)+'...':item["商品名称"] }}</a
-          >
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section id="footer" style="width: 100%">
   <div class="grid-fluid">
     <div class="grid">

@@ -29,7 +29,6 @@ export class HomepageComponent implements OnInit {
   isVisible_register: boolean = false;
   isLogin: boolean = false;
   unsubscribe: Subscription;
-  booksData = [];
   isAdmin = false;
   constructor(
     private http: HttpClient,
@@ -46,14 +45,6 @@ export class HomepageComponent implements OnInit {
     setTimeout(() => {
       this.isLogin = this.user.getToken() ? true : false;
     }, 1000);
-
-    fetch("../../../assets/books.json").then(async (r) => {
-      let data = await r.json();
-      console.log(data, 123);
-      if (data.length > 0) {
-        this.booksData = data;
-      }
-    });
     // this.unsubscribe = fromEvent(window, "resize").pipe(
     //   debounceTime(100))
     //   .subscribe((event) => {
