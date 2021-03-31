@@ -22,10 +22,10 @@ var schema = new Schema({
     alarmApiTimes:Number,
     alarmApiEmail:String,
 
-    alarmPrefState:{ type: Boolean, default: false },
-    alarmPrefLimit:Number,
-    alarmPrefTimes:Number,
-    alarmPrefEmail:String,
+    alarmPerfState:{ type: Boolean, default: false },
+    alarmPerfLimit:Number,
+    alarmPerfTimes:Number,
+    alarmPerfEmail:String,
 });
 
 module.exports = mongoose.model('SiteDataInfo', schema);
