@@ -11,9 +11,10 @@ var userInfo = require('./business/userInfo');
 var ScheduleTask = require('./business/scheduleTask');
 
 var util = require("./utils/util");
+var setting=require("./setting.json");
 var mongoose = require('mongoose');
 var fs = require('fs');
-mongoose.connect("mongodb://127.0.0.1:27017/monitor2", {
+mongoose.connect(`mongodb://${setting.mongoDB.address}/monitor`, {
     socketTimeoutMS: 0,
     keepAlive: true,
     useNewUrlParser: true,

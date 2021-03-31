@@ -69,7 +69,6 @@ export class SysListComponent implements OnInit {
       })
       .subscribe((data: any) => {
         if (data.IsSuccess) {
-          // this.broadcaster.broadcast("getTreeData");
           this.msg.success("创建成功");
           this.list();
           setTimeout(() => {
