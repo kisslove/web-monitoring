@@ -21,101 +21,62 @@
   </div>
 </section>
 
-<section id="home-section2" style="width: 100%">
-  <h4>谁在使用</h4>
-  <nz-card
-    style="
-      width: 300px;
-      display: inline-block;
-      vertical-align: top;
-      margin: 16px;
-    "
-  >
-    <nz-card-meta
-      [nzAvatar]="avatarTemplate"
-      nzTitle="前端性能监控平台"
-      nzDescription="从不同维度去统计用户真实访问站点的情况，再现用户访问场景，帮助你快速定位问题。"
+<section id="home-section2" style="width: 100%; background: aliceblue">
+  <h4>使用流程</h4>
+  <div style="width: 1146px; margin: auto">
+    <nz-card
+      *ngFor="let item of usedProcessItems; let i = index"
+      class="custom-card"
+      style="width: 350px; text-align: center"
     >
-    </nz-card-meta>
-  </nz-card>
-  <nz-card
-    style="
-      width: 300px;
-      display: inline-block;
-      vertical-align: top;
-      margin: 16px;
-    "
-  >
-    <nz-card-meta
-      [nzAvatar]="avatarTemplate"
-      nzTitle="cnbook"
-      nzDescription="【Kindle中国】_Amazon Kindle 完全购买攻略。"
-    >
-    </nz-card-meta>
-  </nz-card>
-  <nz-card
-    style="
-      width: 300px;
-      display: inline-block;
-      vertical-align: top;
-      margin: 16px;
-    "
-  >
-    <nz-card-meta
-      [nzAvatar]="avatarTemplate"
-      nzTitle="bboss"
-      nzDescription="bboss是一个j2ee开源框架，为企业级应用开发提供一站式解决方案，并能有效地支撑移动应用开发。"
-    >
-    </nz-card-meta>
-  </nz-card>
-  <nz-card
-    style="
-      width: 300px;
-      display: inline-block;
-      vertical-align: top;
-      margin: 16px;
-    "
-  >
-    <nz-card-meta
-      [nzAvatar]="avatarTemplate"
-      nzTitle="酷娃利息对比计算工具"
-      nzDescription="一款帮你选择贷款方式的多功能利息计算工具。"
-    >
-    </nz-card-meta>
-  </nz-card>
-  <nz-card
-    style="
-      width: 300px;
-      display: inline-block;
-      vertical-align: top;
-      margin: 16px;
-    "
-  >
-    <nz-card-meta
-      [nzAvatar]="avatarTemplate"
-      nzTitle="IP转换工具"
-      nzDescription="可以快速，准确，可靠的将IP转换成位置的工具，并对外提供接口。"
-    >
-    </nz-card-meta>
-  </nz-card>
-  <nz-card
-    style="
-      width: 300px;
-      display: inline-block;
-      vertical-align: top;
-      margin: 16px;
-    "
-  >
-    <nz-card-meta [nzAvatar]="avatarTemplate" nzTitle="……" nzDescription="More">
-    </nz-card-meta>
-  </nz-card>
-  <ng-template #avatarTemplate>
-    <nz-avatar
-      nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-    ></nz-avatar>
-  </ng-template>
+      <div>
+        <img
+          style="
+            margin: 14px auto 34px;
+            display: block;
+            width: 64px;
+            height: 64px;
+          "
+          alt="example"
+          [src]="'../../../assets/images/icon/' + item.avatar"
+        />
+      </div>
+      <div style="font-size: 22px">
+        {{ item.title }}
+      </div>
+      <div style="margin: 8px 0">
+        {{ item.description }}
+      </div>
+    </nz-card>
+  </div>
 </section>
 
+<section id="home-section2" style="width: 100%">
+  <h4>谁在使用</h4>
+  <div style="width: 1328px; margin: auto">
+    <nz-card
+      *ngFor="let item of whoUsedItems; let i = index"
+      class="custom-card"
+      style="width: 300px"
+    >
+      <div style="font-size: 22px">
+        <img
+          style="width: 24px; height: 24px"
+          alt="example"
+          [src]="'../../../assets/images/icon/' + item.avatar"
+        />
+        <span
+          class="ant-card-meta-title"
+          style="vertical-align: middle; margin-left: 4px"
+          >{{ item.title }}</span
+        >
+      </div>
+      <div style="margin: 8px 0">
+        {{ item.description }}
+      </div>
+    </nz-card>
+  </div>
+</section>
 <section id="home-section2" style="width: 100%; padding: 50px">
   <h3 style="margin-left: 16px">帮助文档(官方)</h3>
   <ul style="margin-top: 16px; font-size: 16px; line-height: 28px">
@@ -231,81 +192,20 @@
   style="width: 100%; background: rgba(204, 204, 204, 0.28)"
 >
   <h4>业务范围</h4>
-  <nz-card
-    style="
-      width: 300px;
-      display: inline-block;
-      vertical-align: top;
-      margin: 16px;
-    "
-  >
-    <nz-card-meta
-      [nzAvatar]="avatarTemplate"
-      nzTitle="前端监控平台个性化定制"
-      nzDescription="根据用户要求定制开发前端监控系统，个性化设置图表分析，数据展示，助你及时解决线上问题。"
+  <div style="width: 1328px; margin: auto">
+    <nz-card
+      *ngFor="let item of bussinessItems; let i = index"
+      class="custom-card"
+      style="width: 300px"
     >
-    </nz-card-meta>
-  </nz-card>
-  <nz-card
-    style="
-      width: 300px;
-      display: inline-block;
-      vertical-align: top;
-      margin: 16px;
-    "
-  >
-    <nz-card-meta
-      [nzAvatar]="avatarTemplate"
-      nzTitle="个人/企业网站开发"
-      nzDescription="专注各类软件开发，打造安全优质的网络平台，价格实惠，低于同类竞品。"
-    >
-    </nz-card-meta>
-  </nz-card>
-  <nz-card
-    style="
-      width: 300px;
-      display: inline-block;
-      vertical-align: top;
-      margin: 16px;
-    "
-  >
-    <nz-card-meta
-      [nzAvatar]="avatarTemplate"
-      nzTitle="小程序开发"
-      nzDescription="引流新渠道，无需下载，扫码即可使用。"
-    >
-    </nz-card-meta>
-  </nz-card>
-  <nz-card
-    style="
-      width: 300px;
-      display: inline-block;
-      vertical-align: top;
-      margin: 16px;
-    "
-  >
-    <nz-card-meta
-      [nzAvatar]="avatarTemplate"
-      nzTitle="前/后端/架构咨询服务"
-      nzDescription="专注解决开发、线上过程中的各种疑难问题，服务费用低至10元。"
-    >
-    </nz-card-meta>
-  </nz-card>
-  <nz-card
-    style="
-      width: 300px;
-      display: inline-block;
-      vertical-align: top;
-      margin: 16px;
-    "
-  >
-    <nz-card-meta
-      [nzAvatar]="avatarTemplate"
-      nzTitle="联系方式"
-      nzDescription="微信/QQ:676022504"
-    >
-    </nz-card-meta>
-  </nz-card>
+      <nz-card-meta
+        [nzAvatar]="item.avatar"
+        [nzTitle]="item.title"
+        [nzDescription]="item.description"
+      >
+      </nz-card-meta>
+    </nz-card>
+  </div>
 </section>
 
 <section id="footer" style="width: 100%">
@@ -380,6 +280,9 @@
             title="微信"
             >支持作者</a
           >
+        </li>
+        <li>
+          <a title="微信/QQ:676022504">联系方式</a>
         </li>
       </ul>
     </div>
