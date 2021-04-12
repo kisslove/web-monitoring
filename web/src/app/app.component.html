@@ -1,27 +1,76 @@
 <nz-layout class="layout">
-    <nz-header style="position: fixed;left: 0;right: 0;top:0;z-index: 100;">
-        <!-- <div class="logo"></div> -->
-        <ul nz-menu [nzTheme]="'dark'" [nzMode]="'horizontal'" style="line-height: 50px;">
-            <li style="font-size:16px;">
-                <i [routerLink]="['/home']" class="anticon anticon-line-chart"
-                    style="margin-left: 24px;color: #eee;"></i> <span [routerLink]="['/home']"
-                    style="cursor:pointer;color: #fff;margin-left: 4px;">前端监控平台</span>
-                <span *ngIf="userName" style="position: absolute;right: 200px;">{{userName}}<span (click)="logout()"
-                        style="text-decoration: underline;font-size: 12px;margin-left: 8px;cursor: pointer;">注销</span>
-                </span>
-                <span style="position: absolute;right: 30px;top:3px;">
-                    <iframe src="https://ghbtns.com/github-btn.html?user=kisslove&repo=web-monitoring&type=star&count=true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
-                </span>
-            </li>
-        </ul>
-    </nz-header>
+  <nz-header style="position: fixed; left: 0; right: 0; top: 0; z-index: 100">
+    <ul
+      nz-menu
+      [nzTheme]="'dark'"
+      [nzMode]="'horizontal'"
+      style="line-height: 50px"
+    >
+      <li style="font-size: 16px">
+        <i
+          [routerLink]="['/home']"
+          class="anticon anticon-line-chart"
+          style="margin-left: 24px; color: #eee"
+        ></i>
+        <span
+          [routerLink]="['/home']"
+          style="cursor: pointer; color: #fff; margin-left: 4px"
+          >前端监控平台</span
+        >
+
+        <span style="position: absolute; right: 30px; top: 3px">
+          <span *ngIf="userName" style="margin-right: 40px"
+            >{{ userName
+            }}<span
+              (click)="logout()"
+              style="
+                text-decoration: underline;
+                font-size: 12px;
+                margin-left: 8px;
+                cursor: pointer;
+              "
+              >注销</span
+            >
+          </span>
+          <iframe
+            style="vertical-align: middle"
+            src="https://ghbtns.com/github-btn.html?user=kisslove&repo=web-monitoring&type=star&count=true"
+            frameborder="0"
+            scrolling="0"
+            width="100px"
+            height="20px"
+          ></iframe>
+        </span>
+      </li>
+    </ul>
+  </nz-header>
 </nz-layout>
-<app-advise-bar [data]="dataItems1"
-    [setting]="{width:300,left:'19%',top:'2px',title:'独立账户',subTitle:'关注公众号,发送“独立账号”,项目仅自己可见。',color:'linear-gradient(0deg, rgb(230, 125, 16,0.7), rgb(244, 69, 61), rgba(255, 177, 81, 0.86))'}">
+<app-advise-bar
+  [data]="dataItems1"
+  [setting]="{
+    width: 300,
+    left: '19%',
+    top: '2px',
+    title: '独立账户',
+    subTitle: '关注公众号,发送“独立账号”,项目仅自己可见。',
+    color:
+      'linear-gradient(0deg, rgb(230, 125, 16,0.7), rgb(244, 69, 61), rgba(255, 177, 81, 0.86))'
+  }"
+>
 </app-advise-bar>
-<app-advise-bar [data]="dataItems1"
-    [setting]="{width:300,left:'14%',top:'2px',title:'私有部署',subTitle:'关注公众号,发送“私有部署”,收取一定服务费。',color:'linear-gradient(0deg, rgba(24, 144, 255, 0.7), rgb(244, 61, 196), rgba(255, 177, 81, 0.86))'}">
+<app-advise-bar
+  [data]="dataItems1"
+  [setting]="{
+    width: 300,
+    left: '14%',
+    top: '2px',
+    title: '私有部署',
+    subTitle: '关注公众号,发送“私有部署”,收取一定服务费。',
+    color:
+      'linear-gradient(0deg, rgba(24, 144, 255, 0.7), rgb(244, 61, 196), rgba(255, 177, 81, 0.86))'
+  }"
+>
 </app-advise-bar>
 <div class="layout">
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>

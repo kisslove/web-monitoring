@@ -34,6 +34,7 @@ export class HomepageComponent implements OnInit {
   bussinessItems: Array<ICardProps> = [];
   whoUsedItems: Array<ICardProps> = [];
   usedProcessItems: Array<ICardProps> = [];
+  proItems: Array<ICardProps> = [];
   isVisible_login: boolean = false;
   isVisible_register: boolean = false;
   isLogin: boolean = false;
@@ -54,6 +55,33 @@ export class HomepageComponent implements OnInit {
     setTimeout(() => {
       this.isLogin = this.user.getToken() ? true : false;
     }, 1000);
+
+    this.proItems = [
+      {
+        avatar: "safe.png",
+        title: "无业务侵入影响",
+        description:
+          "项目使用探针植入，自动上报数据，不影响业务系统使用。",
+      },
+      {
+        avatar: "multi.png",
+        title: "捕获采集指标丰富",
+        description:
+          "日活跃、用户行为记录、访问日志、JS错误日志、API请求详情、访问性能评估。",
+      },
+      {
+        avatar: "q.png",
+        title: "快速定位问题",
+        description:
+          "提供出错上下文，重现错误场景。",
+      },
+      {
+        avatar: "alarm.png",
+        title: "智能报警服务",
+        description:
+          "灵活设置报警阈值，即时发现问题，不影响用户正常使用。",
+      },
+    ];
 
     this.bussinessItems = [
       {

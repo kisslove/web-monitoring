@@ -135,9 +135,10 @@ input,
     display: inline-block !important;
     vertical-align: top;
     margin: 16px !important;
-    box-shadow: 0 0 20px 0 #ddd;
+    box-shadow: 0 0 20px 0 rgb(223,229,232);
     transition: all .3s;
     transform: translateY(0);
+    border: none !important;
     &:hover{
         box-shadow: 0 10px 10px #aaa;
         transform: translateY(-8px);

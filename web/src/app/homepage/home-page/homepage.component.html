@@ -21,13 +21,43 @@
   </div>
 </section>
 
-<section id="home-section2" style="width: 100%; background: aliceblue">
+<section id="home-section2" style="width: 100%">
+  <h4>核心优势</h4>
+  <div style="width: 1328px; margin: auto">
+    <nz-card
+      *ngFor="let item of proItems; let i = index"
+      class="custom-card"
+      style="width: 600px; text-align: center"
+    >
+      <div>
+        <img
+          style="
+            margin: 14px auto 34px;
+            display: block;
+            width: 64px;
+            height: 64px;
+          "
+          alt="example"
+          [src]="'../../../assets/images/icon/' + item.avatar"
+        />
+      </div>
+      <div style="font-size: 22px">
+        {{ item.title }}
+      </div>
+      <div style="margin: 8px 0">
+        {{ item.description }}
+      </div>
+    </nz-card>
+  </div>
+</section>
+
+<section id="home-section2" style="width: 100%">
   <h4>使用流程</h4>
-  <div style="width: 1146px; margin: auto">
+  <div style="width: 1328px; margin: auto">
     <nz-card
       *ngFor="let item of usedProcessItems; let i = index"
       class="custom-card"
-      style="width: 350px; text-align: center"
+      style="width: 410px; text-align: center"
     >
       <div>
         <img
@@ -77,9 +107,47 @@
     </nz-card>
   </div>
 </section>
-<section id="home-section2" style="width: 100%; padding: 50px">
-  <h3 style="margin-left: 16px">帮助文档(官方)</h3>
-  <ul style="margin-top: 16px; font-size: 16px; line-height: 28px">
+
+<section id="home-section2" style="width: 100%">
+  <h4>业务范围</h4>
+  <div style="width: 1328px; margin: auto">
+    <nz-card
+      *ngFor="let item of bussinessItems; let i = index"
+      class="custom-card"
+      style="width: 300px"
+    >
+      <nz-card-meta
+        [nzAvatar]="item.avatar"
+        [nzTitle]="item.title"
+        [nzDescription]="item.description"
+      >
+      </nz-card-meta>
+    </nz-card>
+  </div>
+</section>
+
+<section
+  id="home-section2"
+  style="
+    width: 100%;
+    padding: 24px 6%;
+    background-image: linear-gradient(
+      -180deg,
+      #fff 0,
+      #f7faff 63%,
+      #e9f3ff 100%
+    );
+  "
+>
+  <h3 style="text-align: center">帮助文档(官方)</h3>
+  <ul
+    style="
+      margin-top: 16px;
+      font-size: 16px;
+      line-height: 28px;
+      list-style: lower-greek;
+    "
+  >
     <li>
       <a
         appMonitorABlank
@@ -164,47 +232,26 @@
       <h3 style="margin-left: 64px; color: #fff">支持作者(赏咖啡)</h3>
       <img
         nz-tooltip
-        nzTitle="关注公众号"
-        style="width: 175px; margin: 8px 64px"
-        src="/assets/images/weixin-gongzhonghao.jpg"
-        alt="公众号"
-      />
-      <img
-        nz-tooltip
         nzTitle="支付宝赞赏"
-        style="width: 175px; margin: 8px 24px"
+        style="width: 175px; margin: 8px 64px"
         src="/assets/images/zhifubao.png"
         alt="支付宝"
       />
       <img
         nz-tooltip
         nzTitle="微信赞赏"
-        style="width: 175px; margin: 8px 24px"
+        style="width: 175px; margin: 8px 0px"
         src="/assets/images/weixin.png"
         alt="微信"
       />
+      <img
+        nz-tooltip
+        nzTitle="关注公众号"
+        style="width: 175px; margin: 8px 84px"
+        src="/assets/images/weixin-gongzhonghao.jpg"
+        alt="公众号"
+      />
     </div>
-  </div>
-</section>
-
-<section
-  id="home-section2"
-  style="width: 100%; background: rgba(204, 204, 204, 0.28)"
->
-  <h4>业务范围</h4>
-  <div style="width: 1328px; margin: auto">
-    <nz-card
-      *ngFor="let item of bussinessItems; let i = index"
-      class="custom-card"
-      style="width: 300px"
-    >
-      <nz-card-meta
-        [nzAvatar]="item.avatar"
-        [nzTitle]="item.title"
-        [nzDescription]="item.description"
-      >
-      </nz-card-meta>
-    </nz-card>
   </div>
 </section>
 
