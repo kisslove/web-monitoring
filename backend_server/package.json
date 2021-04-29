@@ -3,7 +3,10 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "start": "supervisor ./bin/www"
+        "dev": "supervisor ./bin/www",
+        "start": "pm2 start bin/init.js --name web-monitoring/backend_server",
+        "stop": "pm2 stop web-monitoring/backend_server",
+        "restart": "npm run stop && npm run start"
     },
     "dependencies": {
         "agenda": "^2.0.2",
