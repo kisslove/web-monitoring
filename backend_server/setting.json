@@ -1,8 +1,10 @@
 {
   "mongoDB": {
-    "address": "127.0.0.1:27017"
+    "address": "127.0.0.1:27017",
+    "dockerAddress":"database:27017"
   },
   "nodemailer": {
+    "enable":false,
     "host": "smtpdm.aliyun.com",
     "port": 25,
     "secureConnection": true, 

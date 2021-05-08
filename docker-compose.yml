@@ -1,0 +1,26 @@
+version: "3.7"
+services:
+  database:
+    image: mongo
+    restart: always
+    volumes:
+      - ~/data/db:/data/db
+    networks:
+      - webapp-network
+  backend:
+    image: hubing/monitor-backend
+    depends_on:
+      - database
+    ports:
+      - 9000:9000
+    networks:
+      - webapp-network
+  web:
+    image: hubing/monitor-web
+    ports:
+      - 9010:80
+    networks:
+      - webapp-network
+networks:
+  webapp-network:
+    driver: bridge

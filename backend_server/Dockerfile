@@ -1,16 +1,12 @@
 # 基于 node 镜像
+
 FROM node
-
-ADD ./bin/start.sh /etc/start.sh
-
+RUN rm -rf /www
 RUN mkdir /www
 WORKDIR /www
 
-ADD package.json /www
-RUN npm i
-
 COPY . /www
-
+RUN npm install
+RUN npm i -g pm2
 EXPOSE 9000
-
-CMD ["/bin/bash","/etc/start.sh"]
+CMD pm2 start bin/init.js --name web-monitoring/backend_server_docker --no-daemon

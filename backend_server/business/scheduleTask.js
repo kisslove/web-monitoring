@@ -8,7 +8,11 @@ var PerfModel = require("../models/perfModel");
 var SiteModel = require("../models/siteModel");
 var _ = require("lodash");
 var setting = require("../setting.json");
-const mongoConnectionString = `mongodb://${setting.mongoDB.address}/agendatask`;
+// 判断是否是docker部署方式
+var isDocker = process.env.name === "web-monitoring/backend_server_docker";
+const mongoConnectionString = `mongodb://${
+  isDocker ? setting.mongoDB.dockerAddress : setting.mongoDB.address
+}/agendatask`;
 const agenda = new Agenda({ db: { address: mongoConnectionString } });
 agenda.processEvery("30 seconds");
 

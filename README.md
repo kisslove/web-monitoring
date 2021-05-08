@@ -17,6 +17,7 @@
 - [x] 前端：Angular5+,ant-design
 - [x] 后端：Nodejs+Express
 - [x] 数据库：Mongoose+MongoDB
+- [x] Docker：一键部署Docker环境
 
 
 ------
@@ -112,4 +113,5 @@ Vue.prototype.$throw = (error)=> errorHandler(error,this);
 微信：
 
 ![file-list](https://github.com/kisslove/web-front-end-monitoring/blob/master/Demo/weixin.png)
+
 

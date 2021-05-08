@@ -1,0 +1,1 @@
+npm install&&npm run build-docker&&docker build -t hubing/monitor-web .
