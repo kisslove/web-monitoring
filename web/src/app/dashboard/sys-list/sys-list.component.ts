@@ -72,7 +72,11 @@ export class SysListComponent implements OnInit {
           this.msg.success("创建成功");
           this.list();
           setTimeout(() => {
-            scrollTo(0, 10000);
+            scrollTo({
+              top: 10000,
+              left: 0,
+              behavior: "smooth",
+            });
           }, 1000);
           this.isVisible_add = false;
         } else {
@@ -127,6 +131,15 @@ export class SysListComponent implements OnInit {
             data: tempData.uv,
           },
         ],
+        legend: false,
+        chart: {
+          type: "column",
+          height: 124,
+          options3d: {
+            enabled: true,
+            depth: 50,
+          },
+        },
       },
     };
   }

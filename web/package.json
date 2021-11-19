@@ -34,6 +34,7 @@
         "lodash": "^4.17.10",
         "ng-zorro-antd": "^1.4.0",
         "ngx-cookie-service": "^1.0.10",
+        "node-sass": "^6.0.1",
         "rxjs": "^6.2.2",
         "rxjs-compat": "^6.0.0-rc.0",
         "web-animations-js": "^2.3.1",
