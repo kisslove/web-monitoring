@@ -62,6 +62,11 @@ export class SysListComponent implements OnInit {
       this.msg.info("站点名称必填");
       return;
     }
+
+    if (this.sysItems.findIndex((r) => r.appName === this.appName) !== -1) {
+      this.msg.info("站点名称已存在");
+      return;
+    }
     this.http
       .post("Monitor/RegisterSite", {
         appName: this.appName,
