@@ -17,6 +17,7 @@ export class SysListComponent implements OnInit {
   systemId = "";
   isSpinning: boolean = true;
   validUser = true;
+  isSaving: boolean = false;
   pv_uv_config: HighchartConfig;
   total_pv_uv: any = {};
   constructor(
@@ -67,27 +68,35 @@ export class SysListComponent implements OnInit {
       this.msg.info("站点名称已存在");
       return;
     }
+    this.isSaving = true;
     this.http
       .post("Monitor/RegisterSite", {
         appName: this.appName,
         systemId: this.systemId,
       })
-      .subscribe((data: any) => {
-        if (data.IsSuccess) {
-          this.msg.success("创建成功");
-          this.list();
-          setTimeout(() => {
-            scrollTo({
-              top: 10000,
-              left: 0,
-              behavior: "smooth",
-            });
-          }, 1000);
-          this.isVisible_add = false;
-        } else {
+      .subscribe(
+        (data: any) => {
+          this.isSaving = false;
+          if (data.IsSuccess) {
+            this.msg.success("创建成功");
+            this.list();
+            setTimeout(() => {
+              scrollTo({
+                top: 10000,
+                left: 0,
+                behavior: "smooth",
+              });
+            }, 1000);
+            this.isVisible_add = false;
+          } else {
+            this.msg.error("创建失败");
+          }
+        },
+        () => {
+          this.isSaving = false;
           this.msg.error("创建失败");
         }
-      });
+      );
   }
 
   cancel() {

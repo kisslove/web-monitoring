@@ -31,7 +31,7 @@
 </nz-spin>
 
 
-<nz-modal [nzMaskClosable]="false" [nzOkText]="'确认'" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_add" nzTitle="新建应用站点" (nzOnCancel)="cancel()" (nzOnOk)="save()">
+<nz-modal [nzMaskClosable]="false" [nzOkText]="'确认'" [nzOkLoading]="isSaving" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_add" nzTitle="新建应用站点" (nzOnCancel)="cancel()" (nzOnOk)="save()">
     <nz-form-item>
         <nz-form-label [nzSm]="4" [nzXs]="24">站点名称</nz-form-label>
         <nz-form-control [nzSm]="18" [nzXs]="24">
