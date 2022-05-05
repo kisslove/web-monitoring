@@ -51,6 +51,7 @@ export class SysListComponent implements OnInit {
       if (data.IsSuccess) {
         this.sysItems = data.Data;
         _.each(this.sysItems, (r) => {
+          r.isSpinning = true;
           this.loadPvUvData(r);
         });
       }
@@ -156,5 +157,6 @@ export class SysListComponent implements OnInit {
         },
       },
     };
+    item.isSpinning = false;
   }
 }

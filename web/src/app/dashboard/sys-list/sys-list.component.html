@@ -1,41 +1,77 @@
 <nz-spin [nzSpinning]="isSpinning" *ngIf="validUser">
-    <div style="margin-top:50px;min-height: 500px;padding:24px;">
-        <nz-alert style="font-size:12px;" nzBanner nzMessage="提示：对于用户创建的测试项目，如长时间未使用，系统将定时删除，如需帮助请联系作者。"></nz-alert>
-        <br>
-        <p style="text-align:right">
-            <button nz-button nzType="primary" (click)="addSys()">新建应用站点</button>
-        </p>
-        <div nz-row [nzGutter]="24">
-            <div nz-col class="gutter-row" nzXs="24" nzSm="8" style="margin-bottom:24px;" *ngFor="let item of sysItems">
-                <nz-card nzType="inner" [nzTitle]="emplateTitle" [nzExtra]="extraTemplate">
-                    <div class="total_pv_uv">
-                        <p> PV(最近24小时)：
-                            <span>{{item.total_pv_uv?.totalPv||'--'}}</span>
-                        </p>
-                        <p> UV(最近24小时)：
-                            <span>{{item.total_pv_uv?.totalUv||'--'}}</span>
-                        </p>
-                    </div>
-                    <app-custom-highchart [config]="item.pv_uv_config"></app-custom-highchart>
-                </nz-card>
-                <ng-template #emplateTitle>
-                    <a (click)="gotoSys(item)">{{item.appName}}</a>
-                </ng-template>
-                <ng-template #extraTemplate>
-                    <i class="anticon anticon-setting" style="cursor: pointer;" (click)="gotoSysSetting(item)"></i>
-                </ng-template>
+  <div style="margin-top: 50px; min-height: 500px; padding: 24px">
+    <nz-alert
+      style="font-size: 12px"
+      nzBanner
+      nzMessage="提示：对于用户创建的测试项目，如长时间未使用，系统将定时删除，如需帮助请联系作者。下面列表为最近24小时数据。"
+    ></nz-alert>
+    <br />
+    <p style="text-align: right">
+      <button nz-button nzType="primary" (click)="addSys()">
+        新建应用站点
+      </button>
+    </p>
+    <div nz-row [nzGutter]="24">
+      <div
+        nz-col
+        class="gutter-row"
+        nzXs="24"
+        nzSm="8"
+        style="margin-bottom: 24px"
+        *ngFor="let item of sysItems"
+      >
+        <nz-spin [nzSpinning]="item.isSpinning">
+          <nz-card
+            style="box-shadow: 0px 0px 3px rgb(223, 217, 217)"
+            nzType="inner"
+            [nzTitle]="emplateTitle"
+            [nzExtra]="extraTemplate"
+          >
+            <div class="total_pv_uv">
+              <p>
+                PV：
+                <span>{{ item.total_pv_uv?.totalPv || "--" }}</span>
+              </p>
+              <p>
+                UV：
+                <span>{{ item.total_pv_uv?.totalUv || "--" }}</span>
+              </p>
             </div>
-        </div>
-    </div>
 
+            <app-custom-highchart
+              [config]="item.pv_uv_config"
+            ></app-custom-highchart>
+          </nz-card>
+        </nz-spin>
+        <ng-template #emplateTitle>
+          <a (click)="gotoSys(item)">{{ item.appName }}</a>
+        </ng-template>
+        <ng-template #extraTemplate>
+          <i
+            class="anticon anticon-setting"
+            style="cursor: pointer"
+            (click)="gotoSysSetting(item)"
+          ></i>
+        </ng-template>
+      </div>
+    </div>
+  </div>
 </nz-spin>
 
-
-<nz-modal [nzMaskClosable]="false" [nzOkText]="'确认'" [nzOkLoading]="isSaving" [nzCancelText]="'取消'" [(nzVisible)]="isVisible_add" nzTitle="新建应用站点" (nzOnCancel)="cancel()" (nzOnOk)="save()">
-    <nz-form-item>
-        <nz-form-label [nzSm]="4" [nzXs]="24">站点名称</nz-form-label>
-        <nz-form-control [nzSm]="18" [nzXs]="24">
-            <input nz-input [(ngModel)]="appName" name="title">
-        </nz-form-control>
-    </nz-form-item>
+<nz-modal
+  [nzMaskClosable]="false"
+  [nzOkText]="'确认'"
+  [nzOkLoading]="isSaving"
+  [nzCancelText]="'取消'"
+  [(nzVisible)]="isVisible_add"
+  nzTitle="新建应用站点"
+  (nzOnCancel)="cancel()"
+  (nzOnOk)="save()"
+>
+  <nz-form-item>
+    <nz-form-label [nzSm]="4" [nzXs]="24">站点名称</nz-form-label>
+    <nz-form-control [nzSm]="18" [nzXs]="24">
+      <input nz-input [(ngModel)]="appName" name="title" />
+    </nz-form-control>
+  </nz-form-item>
 </nz-modal>
