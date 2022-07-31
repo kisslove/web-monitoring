@@ -28,6 +28,8 @@ exports.list = async (req) => {
             "mostSpecificSubdivision_nameCN": {
                 '$regex': new RegExp(`${req.body.keywords}.*`, "gi")
             }
+        }, {
+            "visitedUserId": req.body.keywords
         }]
     };
     resJson.TotalCount = await PvModel.find(tempCon).countDocuments();
@@ -72,14 +74,14 @@ exports.pvAndUvStatis = async (req) => {
             "page": body.keywords
         }
     } : {
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey
-            }
-        };
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey
+        }
+    };
     let r = await PvModel.aggregate([matchCon,
         {
             "$group": {
@@ -101,6 +103,9 @@ exports.pvAndUvStatis = async (req) => {
                 },
                 "ipList": {
                     '$push': '$onlineip'
+                },
+                "visitedUserList": {
+                    '$push': '$visitedUserId'
                 }
             }
         },
@@ -108,6 +113,7 @@ exports.pvAndUvStatis = async (req) => {
             "$project": {
                 "_id": 0,
                 'ipList': 1,
+                "visitedUserList": 1,
                 "pv": {
                     "$size": '$pageList'
                 },
@@ -124,8 +130,14 @@ exports.pvAndUvStatis = async (req) => {
     ]);
 
     r.forEach(element => {
-        element.uv = _.uniq(element.ipList).length;
+        // 使用用户访问id替代原有ip
+        if (element.visitedUserList.length > 0) {
+            element.uv = _.uniq(element.visitedUserList).length;
+        } else {
+            element.uv = _.uniq(element.ipList).length;
+        }
         delete element['ipList'];
+        delete element['visitedUserList'];
     });
     resJson.pvAndUvVmList = r;
 
@@ -139,12 +151,16 @@ exports.pvAndUvStatis = async (req) => {
                 },
                 "uvList": {
                     '$push': '$onlineip'
+                },
+                "visitedUserList": {
+                    '$push': '$visitedUserId'
                 }
             }
         }, {
             '$project': {
                 "_id": 0,
                 'uvList': 1,
+                'visitedUserList': 1,
                 "pv": {
                     "$size": '$pvList'
                 },
@@ -153,7 +169,12 @@ exports.pvAndUvStatis = async (req) => {
     ]);
     r1.forEach(element => {
         resJson.totalPv = element.pv;
-        resJson.totalUv = _.uniq(element.uvList).length;
+        // 使用用户访问id替代原有ip
+        if (element.visitedUserList.length > 0) {
+            resJson.totalUv = _.uniq(element.visitedUserList).length;
+        } else {
+            resJson.totalUv = _.uniq(element.uvList).length;
+        }
     });
 
     return resJson;
@@ -231,6 +252,9 @@ exports.geoStatis = async (req) => {
             "ipList": {
                 '$push': '$onlineip'
             },
+            "visitedUserList": {
+                '$push': '$visitedUserId'
+            }
         }
     },
     {
@@ -240,7 +264,8 @@ exports.geoStatis = async (req) => {
             "pv": {
                 "$size": '$pageList'
             },
-            "ipList": 1
+            "ipList": 1,
+            visitedUserList: 1
         }
     },
     {
@@ -251,8 +276,14 @@ exports.geoStatis = async (req) => {
     ]);
     r.forEach(element => {
         element.pv = element.pv;
-        element.uv = _.uniq(element.ipList).length;
+        if (element.visitedUserList.length > 0) {
+            element.uv = _.uniq(element.visitedUserList).length;
+        } else {
+
+            element.uv = _.uniq(element.ipList).length;
+        }
         delete element['ipList'];
+        delete element['visitedUserList'];
     });
     return r;
 };
@@ -607,23 +638,28 @@ exports.userPathListStatis = async (req) => {
                 '$lt': body.eTime
             },
             "appKey": appKey,
-            "onlineip": {
-                '$regex': new RegExp(`${body.keywords}.*`, "gi")
-            }
+            $or: [{
+                "onlineip": {
+                    '$regex': new RegExp(`${body.keywords}.*`, "gi")
+                }
+            }, {
+                "visitedUserId": body.keywords
+            }]
         }
     } : {
-            "$match": {
-                "createTime": {
-                    '$gte': body.sTime,
-                    '$lt': body.eTime
-                },
-                "appKey": appKey
-            }
-        };
+        "$match": {
+            "createTime": {
+                '$gte': body.sTime,
+                '$lt': body.eTime
+            },
+            "appKey": appKey
+        }
+    };
+
     let temp = await PvModel.aggregate([matchCon,
         {
             "$group": {
-                "_id": '$onlineip'
+                "_id": { onlineip: '$onlineip', "visitedUserId": "$visitedUserId" }
             }
         }
     ]).read('sp').exec();
@@ -633,7 +669,7 @@ exports.userPathListStatis = async (req) => {
     r.data = await PvModel.aggregate([matchCon,
         {
             "$group": {
-                "_id": '$onlineip',
+                "_id": { onlineip: '$onlineip', "visitedUserId": "$visitedUserId" },
                 "pathList": {
                     '$push': {
                         page: '$page',
@@ -646,7 +682,8 @@ exports.userPathListStatis = async (req) => {
                         mostSpecificSubdivision_nameCN: '$mostSpecificSubdivision_nameCN',
                         onlineip: '$onlineip',
                         isp: '$isp',
-                        organizationCN: '$organizationCN'
+                        organizationCN: '$organizationCN',
+                        visitedUserId: "$visitedUserId"
                     }
                 }
             }
@@ -654,7 +691,7 @@ exports.userPathListStatis = async (req) => {
         {
             "$project": {
                 "_id": 0,
-                'geo': "$_id",
+                'geo': "$onlineip",
                 "pathList": 1,
                 "count": {
                     "$size": '$pathList'
@@ -685,6 +722,7 @@ exports.userPathListStatis = async (req) => {
             el.onlineip = el.pathList[0].onlineip;
             el.isp = el.pathList[0].isp;
             el.organizationCN = el.pathList[0].organizationCN;
+            el.visitedUserId = el.pathList[0].visitedUserId;
             el.pathList.forEach((item) => {
                 delete item['os'];
                 delete item['bs'];
@@ -695,6 +733,7 @@ exports.userPathListStatis = async (req) => {
                 delete item['onlineip'];
                 delete item['isp'];
                 delete item['organizationCN'];
+                delete item['visitedUserId'];
                 item.createTimeShow = item.createTime;
                 item.createTimeTemp = new Date(item.createTime).getTime().toString().substr(0, 10);
                 item.createTime = new Date(item.createTime).getTime();
@@ -704,10 +743,10 @@ exports.userPathListStatis = async (req) => {
             el.pathList.sort(function (a, b) {
                 if (a.createTime === b.createTime)
                     return 0;
-                if (a.createTime - b.createTime > 0)
-                    return 1;
                 if (a.createTime - b.createTime < 0)
                     return -1;
+                if (a.createTime - b.createTime > 0)
+                    return 1;
             });
         }
     });

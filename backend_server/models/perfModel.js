@@ -30,7 +30,8 @@ var schema = new Schema({
     tti: Number,
     ready: Number,
     load: Number,
-    navt: String
+    navt: String,
+    visitedUserId: String,
 });
 
 module.exports = mongoose.model('PerfDataInfo', schema);

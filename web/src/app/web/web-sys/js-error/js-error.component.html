@@ -1,8 +1,22 @@
-<div nz-row style="padding-left:24px;">
-  <div style="overflow:auto;padding:24px 8px;border-right: 1px solid #e6ebef;" #mydetailsContent nz-col nzSpan="7">
+<div nz-row style="padding-left: 24px">
+  <div
+    style="overflow: auto; padding: 24px 8px; border-right: 1px solid #e6ebef"
+    #mydetailsContent
+    nz-col
+    nzSpan="7"
+  >
     <h4>按JS错误时间排行</h4>
-    <nz-input-group nzSearch [nzSuffix]="suffixIconButton" style="    margin-bottom: 8px;">
-      <input type="text" [(ngModel)]="keywords" nz-input placeholder="请输入要查询的关键字">
+    <nz-input-group
+      nzSearch
+      [nzSuffix]="suffixIconButton"
+      style="margin-bottom: 8px"
+    >
+      <input
+        type="text"
+        [(ngModel)]="keywords"
+        nz-input
+        placeholder="请输入要查询的关键字"
+      />
     </nz-input-group>
     <ng-template #suffixIconButton>
       <button nz-button nzType="primary" (click)="search()" nzSearch>
@@ -10,77 +24,95 @@
       </button>
     </ng-template>
     <nz-spin [nzSpinning]="isSpinning.spin1">
-      <div (click)="selectListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of
-          jsErrorListData">
-        <span title="{{item.geo}}" class="left"
-          style="width:200px;">{{item.error.substr(0,60)}}</span>
+      <div
+        (click)="selectListItem(item)"
+        class="custom-default-list"
+        [ngClass]="{ selected: item.select }"
+        *ngFor="let item of jsErrorListData"
+      >
+        <span title="{{ item.geo }}" class="left" style="width: 200px">{{
+          item.error.substr(0, 60)
+        }}</span>
         <span class="right">
-          <span>{{item.createTime|date:'yyyy-MM-dd HH:mm'}}</span>
+          <span>{{ item.createTime | date: "yyyy-MM-dd HH:mm" }}</span>
           <i class="anticon anticon-right"></i>
         </span>
       </div>
-      <div (click)="loadMore()" *ngIf="jsErrorListData?.length<jsErrorListDataTotal" style="text-align:center;padding:4px;cursor: pointer;">加载更多</div>
+      <div
+        (click)="loadMore()"
+        *ngIf="jsErrorListData?.length < jsErrorListDataTotal"
+        style="text-align: center; padding: 4px; cursor: pointer"
+      >
+        加载更多
+      </div>
     </nz-spin>
   </div>
-  <div style="overflow:auto;padding:24px 16px;" #mydetailsContent nz-col nzSpan="17">
+  <div
+    style="overflow: auto; padding: 24px 16px"
+    #mydetailsContent
+    nz-col
+    nzSpan="17"
+  >
     <div nz-row>
       <div>
         <div nz-row [nzGutter]="8">
           <div nz-col [nzSpan]="6">
-            <nz-card style="min-height: 100px !important;" nzTitle="用户IP">
-              <p>{{currentSelected?.onlineip}}</p>
+            <nz-card style="min-height: 150px !important" nzTitle="影响用户">
+              <div>IP：{{ currentSelected?.onlineip }}</div>
+              <div style="font-size: 10px">
+                标识：{{ currentSelected?.visitedUserId }}
+              </div>
             </nz-card>
           </div>
           <div nz-col [nzSpan]="6">
-            <nz-card style="min-height: 100px !important;" nzTitle="操作系统">
-              <p>{{currentSelected?.os}}</p>
+            <nz-card style="min-height: 150px !important" nzTitle="操作系统">
+              <p>{{ currentSelected?.os }}</p>
             </nz-card>
           </div>
           <div nz-col [nzSpan]="6">
-            <nz-card style="min-height: 100px !important;" nzTitle="浏览器">
-              <p>{{currentSelected?.bs}}</p>
+            <nz-card style="min-height: 150px !important" nzTitle="浏览器">
+              <p>{{ currentSelected?.bs }}</p>
             </nz-card>
           </div>
           <div nz-col [nzSpan]="6">
-            <nz-card style="min-height: 100px !important;" nzTitle="分辨率">
-              <p>{{currentSelected?.pageWh}}</p>
+            <nz-card style="min-height: 150px !important" nzTitle="分辨率">
+              <p>{{ currentSelected?.pageWh }}</p>
             </nz-card>
           </div>
         </div>
       </div>
     </div>
     <div nz-row>
-      <div style="padding-top:8px;">
+      <div style="padding-top: 8px">
         <div nz-row [nzGutter]="8">
           <div nz-col [nzSpan]="6">
-            <nz-card style="min-height: 100px !important;" nzTitle="国家">
-              <p>{{currentSelected?.country_nameCN}}</p>
+            <nz-card style="min-height: 100px !important" nzTitle="国家">
+              <p>{{ currentSelected?.country_nameCN }}</p>
             </nz-card>
           </div>
           <div nz-col [nzSpan]="6">
-            <nz-card style="min-height: 100px !important;" nzTitle="省份">
-              <p>{{currentSelected?.mostSpecificSubdivision_nameCN}}</p>
+            <nz-card style="min-height: 100px !important" nzTitle="省份">
+              <p>{{ currentSelected?.mostSpecificSubdivision_nameCN }}</p>
             </nz-card>
           </div>
           <div nz-col [nzSpan]="6">
-            <nz-card style="min-height: 100px !important;" nzTitle="城市">
-              <p>{{currentSelected?.city_nameCN}}</p>
+            <nz-card style="min-height: 100px !important" nzTitle="城市">
+              <p>{{ currentSelected?.city_nameCN }}</p>
             </nz-card>
           </div>
           <div nz-col [nzSpan]="6">
-            <nz-card style="min-height: 100px !important;" nzTitle="服务商">
-              <p>{{currentSelected?.isp}}</p>
+            <nz-card style="min-height: 100px !important" nzTitle="服务商">
+              <p>{{ currentSelected?.isp }}</p>
             </nz-card>
           </div>
         </div>
       </div>
     </div>
-    <div *ngIf="currentSelected" nz-row style="padding-top:32px;">
+    <div *ngIf="currentSelected" nz-row style="padding-top: 32px">
       <button nz-button (click)="errorTrack()">错误场景还原</button>
     </div>
-    <div *ngIf="currentSelected" nz-row style="padding:16px 0px;">
-      <div [innerHTML]="currentSelected?.error">
-      </div>
-    </div> 
+    <div *ngIf="currentSelected" nz-row style="padding: 16px 0px">
+      <div [innerHTML]="currentSelected?.error"></div>
+    </div>
   </div>
 </div>

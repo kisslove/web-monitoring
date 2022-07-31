@@ -7,5 +7,6 @@ export const environment = {
   production: false,
   apiUrl: "http://localhost:9000/",
   uploadDataUrl: "http://localhost:9000/Up",
-  jsHackUrl: "https://hubing.online/bundle.js",
+  jsHackUrl: "http://localhost:8080/bundle.js",
+  // jsHackUrl: "https://hubing.online/bundle.js",
 };

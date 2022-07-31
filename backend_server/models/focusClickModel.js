@@ -20,7 +20,8 @@ var schema = new Schema({
     organizationCN: String,
     title: String,
     href: String,
-    text: String
+    text: String,
+    visitedUserId: String,
 });
 
 module.exports = mongoose.model('FocusClickModel', schema);

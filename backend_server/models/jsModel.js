@@ -18,7 +18,8 @@ var schema = new Schema({
     onlineip: String,
     isp: String,
     organizationCN: String,
-    error: String
+    error: String,
+    visitedUserId: String,
 });
 
 module.exports = mongoose.model('JsDataInfo', schema);

@@ -29,6 +29,7 @@
                 <th nzWidth="160px">Name</th>
                 <th nzWidth="160px">DateTime</th>
                 <th nzWidth="160px">访客IP</th>
+                <th nzWidth="160px">用户标识</th>
                 <th nzWidth="120px">InitiatorType</th>
                 <th nzWidth="200px">EntryType</th>
                 <th nzWidth="100px">Size</th>
@@ -47,6 +48,7 @@
                 </td>
                 <td>{{data.createTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                 <td>{{data.onlineip}}</td>
+                <td>{{ data.visitedUserId }}</td>
                 <td>{{data.rInitiatorType}}</td>
                 <td>{{data.rEntryType}}</td>
                 <td>{{(data.rSize||data.rSize==0)&&(data.rSize===0?'from cache':data.rSize+'KB')||''}}</td>

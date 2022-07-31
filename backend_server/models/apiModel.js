@@ -22,7 +22,8 @@ var schema = new Schema({
     success: Boolean,
     time: Number,
     code: Number,
-    msg: String
+    msg: String,
+    visitedUserId: String,
 });
 
 module.exports = mongoose.model('ApiDataInfo', schema);

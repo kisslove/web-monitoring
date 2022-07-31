@@ -18,7 +18,8 @@ var schema = new Schema({
     mostSpecificSubdivision_nameCN: String,
     onlineip: String,
     isp: String,
-    organizationCN: String
+    organizationCN: String,
+    visitedUserId: String,
 });
 
 module.exports = mongoose.model('PvDataInfo', schema);

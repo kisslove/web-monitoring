@@ -22,7 +22,8 @@ var schema = new Schema({
     rEntryType: String,
     rInitiatorType: String,
     rDuration: Number, //单位ms
-    rSize: Number
+    rSize: Number,
+    visitedUserId: String,
 });
 
 module.exports = mongoose.model('ResourceDataInfo', schema);

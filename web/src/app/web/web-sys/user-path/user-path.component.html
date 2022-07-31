@@ -1,87 +1,144 @@
-<div nz-row style="padding-left:24px;">
-    <div style="overflow:auto;padding:24px 8px;border-right: 1px solid #e6ebef;" #mydetailsContent nz-col nzSpan="7">
-        <h4>按用户访问路径数排行</h4>
-        <nz-input-group nzSearch [nzSuffix]="suffixIconButton" style="    margin-bottom: 8px;">
-            <input type="text" [(ngModel)]="keywords" nz-input placeholder="请输入要查询的关键字">
-        </nz-input-group>
-        <ng-template #suffixIconButton>
-            <button nz-button nzType="primary" (click)="search()" nzSearch>
-            <i class="anticon anticon-search" ></i>
-          </button>
-        </ng-template>
-        <nz-spin [nzSpinning]="isSpinning.spin1">
-            <div (click)="selectUserPathListItem(item)" class="custom-default-list" [ngClass]="{'selected': item.select}" *ngFor="let item of
-        userPathListData?.data">
-                <span title="{{item.geo}}" class="left" style="width:200px;">{{item.onlineip}}({{item.mostSpecificSubdivision_nameCN}})</span>
-                <span class="right">
-          <span>总路径：{{item.count}}</span>
-                <i class="anticon anticon-right"></i>
-                </span>
-            </div>
-            <div (click)="loadMore()" *ngIf="userPathListData?.data.length<userPathListData?.total" style="text-align:center;padding:4px;cursor: pointer;">加载更多</div>
-        </nz-spin>
-
+<div nz-row style="padding-left: 24px">
+  <div
+    style="overflow: auto; padding: 24px 8px; border-right: 1px solid #e6ebef"
+    #mydetailsContent
+    nz-col
+    nzSpan="7"
+  >
+    <h4>按用户访问路径数排行</h4>
+    <nz-input-group
+      nzSearch
+      [nzSuffix]="suffixIconButton"
+      style="margin-bottom: 8px"
+    >
+      <input
+        type="text"
+        [(ngModel)]="keywords"
+        nz-input
+        placeholder="请输入要查询的关键字"
+      />
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" (click)="search()" nzSearch>
+        <i class="anticon anticon-search"></i>
+      </button>
+    </ng-template>
+    <nz-spin [nzSpinning]="isSpinning.spin1">
+      <div
+        (click)="selectUserPathListItem(item)"
+        class="custom-default-list"
+        [ngClass]="{ selected: item.select }"
+        *ngFor="let item of userPathListData?.data"
+      >
+        <span title="{{ item.geo }}" class="left" style="width: 200px"
+          >{{ item.onlineip }}({{ item.mostSpecificSubdivision_nameCN }})</span
+        >
+        <span class="right">
+          <span>总路径：{{ item.count }}</span>
+          <i class="anticon anticon-right"></i>
+        </span>
+      </div>
+      <div
+        (click)="loadMore()"
+        *ngIf="userPathListData?.data.length < userPathListData?.total"
+        style="text-align: center; padding: 4px; cursor: pointer"
+      >
+        加载更多
+      </div>
+    </nz-spin>
+  </div>
+  <div
+    style="overflow: auto; padding: 24px 16px"
+    #mydetailsContent
+    nz-col
+    nzSpan="17"
+  >
+    <div nz-row>
+      <div>
+        <div nz-row [nzGutter]="8">
+          <div nz-col [nzSpan]="6">
+            <nz-card style="min-height: 150px !important" nzTitle="用户">
+              <div>IP：{{ currentSelectedUserPath?.onlineip }}</div>
+              <div style="font-size: 10px">
+                标识：{{ currentSelectedUserPath?.visitedUserId }}
+              </div>
+            </nz-card>
+          </div>
+          <div nz-col [nzSpan]="6">
+            <nz-card style="min-height: 150px !important" nzTitle="操作系统">
+              <p>{{ currentSelectedUserPath?.os }}</p>
+            </nz-card>
+          </div>
+          <div nz-col [nzSpan]="6">
+            <nz-card style="min-height: 150px !important" nzTitle="浏览器">
+              <p>{{ currentSelectedUserPath?.bs }}</p>
+            </nz-card>
+          </div>
+          <div nz-col [nzSpan]="6">
+            <nz-card style="min-height: 150px !important" nzTitle="分辨率">
+              <p>{{ currentSelectedUserPath?.pageWh }}</p>
+            </nz-card>
+          </div>
+        </div>
+      </div>
     </div>
-    <div style="overflow:auto;padding:24px 16px;" #mydetailsContent nz-col nzSpan="17">
-        <div nz-row>
-            <div>
-                <div nz-row [nzGutter]="8">
-                    <div nz-col [nzSpan]="6">
-                        <nz-card style="min-height: 100px !important;" nzTitle="用户IP">
-                            <p>{{currentSelectedUserPath?.onlineip}}</p>
-                        </nz-card>
-                    </div>
-                    <div nz-col [nzSpan]="6">
-                        <nz-card style="min-height: 100px !important;" nzTitle="操作系统">
-                            <p>{{currentSelectedUserPath?.os}}</p>
-                        </nz-card>
-                    </div>
-                    <div nz-col [nzSpan]="6">
-                        <nz-card style="min-height: 100px !important;" nzTitle="浏览器">
-                            <p>{{currentSelectedUserPath?.bs}}</p>
-                        </nz-card>
-                    </div>
-                    <div nz-col [nzSpan]="6">
-                        <nz-card style="min-height: 100px !important;" nzTitle="分辨率">
-                            <p>{{currentSelectedUserPath?.pageWh}}</p>
-                        </nz-card>
-                    </div>
-                </div>
-            </div>
+    <div nz-row>
+      <div style="padding-top: 8px">
+        <div nz-row [nzGutter]="8">
+          <div nz-col [nzSpan]="6">
+            <nz-card style="min-height: 100px !important" nzTitle="国家">
+              <p>{{ currentSelectedUserPath?.country_nameCN }}</p>
+            </nz-card>
+          </div>
+          <div nz-col [nzSpan]="6">
+            <nz-card style="min-height: 100px !important" nzTitle="省份">
+              <p>
+                {{ currentSelectedUserPath?.mostSpecificSubdivision_nameCN }}
+              </p>
+            </nz-card>
+          </div>
+          <div nz-col [nzSpan]="6">
+            <nz-card style="min-height: 100px !important" nzTitle="城市">
+              <p>{{ currentSelectedUserPath?.city_nameCN }}</p>
+            </nz-card>
+          </div>
+          <div nz-col [nzSpan]="6">
+            <nz-card style="min-height: 100px !important" nzTitle="服务商">
+              <p>{{ currentSelectedUserPath?.isp }}</p>
+            </nz-card>
+          </div>
         </div>
-        <div nz-row>
-            <div style="padding-top:8px;">
-                <div nz-row [nzGutter]="8">
-                    <div nz-col [nzSpan]="6">
-                        <nz-card style="min-height: 100px !important;" nzTitle="国家">
-                            <p>{{currentSelectedUserPath?.country_nameCN}}</p>
-                        </nz-card>
-                    </div>
-                    <div nz-col [nzSpan]="6">
-                        <nz-card style="min-height: 100px !important;" nzTitle="省份">
-                            <p>{{currentSelectedUserPath?.mostSpecificSubdivision_nameCN}}</p>
-                        </nz-card>
-                    </div>
-                    <div nz-col [nzSpan]="6">
-                        <nz-card style="min-height: 100px !important;" nzTitle="城市">
-                            <p>{{currentSelectedUserPath?.city_nameCN}}</p>
-                        </nz-card>
-                    </div>
-                    <div nz-col [nzSpan]="6">
-                        <nz-card style="min-height: 100px !important;" nzTitle="服务商">
-                            <p>{{currentSelectedUserPath?.isp}}</p>
-                        </nz-card>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div nz-row style="padding-top:8px;">
-            <h4>关键路径记录：</h4>
-        </div>
-        <div nz-row style="padding:16px;">
-            <nz-steps [nzCurrent]="currentSelectedUserPath?.pathList.length-1" nzDirection="vertical" nzSize="small">
-                <nz-step *ngFor="let item of currentSelectedUserPath?.pathList;let i=index;" [nzTitle]="item.page" [nzDescription]="'访问时间：'+(item.createTimeShow|date:'yyyy-MM-dd HH:mm:ss')+(currentSelectedUserPath.pathList[i-1]?' ，间隔：'+(item.createTime-currentSelectedUserPath?.pathList[i-1].createTime)/1000+'s':'')"></nz-step>
-            </nz-steps>
-        </div>
+      </div>
     </div>
+    <div
+      *ngIf="currentSelectedUserPath?.pathList?.length"
+      nz-row
+      style="padding-top: 8px"
+    >
+      <h4>用户关键访问路径记录：</h4>
+    </div>
+    <div nz-row style="padding: 16px">
+      <nz-steps
+        [nzCurrent]="currentSelectedUserPath?.pathList.length - 1"
+        nzDirection="vertical"
+        nzSize="small"
+      >
+        <nz-step
+          *ngFor="let item of currentSelectedUserPath?.pathList; let i = index"
+          [nzTitle]="item.page"
+          [nzDescription]="
+            '访问时间：' +
+            (item.createTimeShow | date: 'yyyy-MM-dd HH:mm:ss') +
+            (currentSelectedUserPath.pathList[i - 1]
+              ? ' ，间隔：' +
+                (item.createTime -
+                  currentSelectedUserPath?.pathList[i - 1].createTime) /
+                  1000 +
+                's'
+              : '')
+          "
+        ></nz-step>
+      </nz-steps>
+    </div>
+  </div>
 </div>

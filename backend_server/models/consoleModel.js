@@ -19,7 +19,8 @@ var schema = new Schema({
     isp: String,
     organizationCN: String,
     cType:String,
-    cMsg: String
+    cMsg: String,
+    visitedUserId: String,
 });
 
 module.exports = mongoose.model('ConsoleDataInfo', schema);

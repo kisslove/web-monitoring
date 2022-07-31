@@ -35,6 +35,8 @@ exports.list = async (req) => {
             "error": {
                 '$regex': new RegExp(`${req.body.keywords}.*`, "gi")
             }
+        }, {
+            "visitedUserId": req.body.keywords
         }]
     };
     resJson.TotalCount = await JsModel.find(tempCon).countDocuments();
@@ -122,7 +124,7 @@ exports.jsErrorRateCompareAndAvg = async (req) => {
     let r11 = await JsModel.find(matchCond1).countDocuments();
     let r21 = await PvModel.find(matchCond1).countDocuments();
     let rate2 = isNaN(r11 / r21) ? 0 : (r11 / r21);
-    return new Number(rate1-rate2);
+    return new Number(rate1 - rate2);
 };
 
 
