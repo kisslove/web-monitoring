@@ -52,6 +52,7 @@ exports.list = async (req) => {
 };
 
 exports.create = (data) => {
+    data.msg = data.msg == "{}" ? '' : data.msg
     var temp = new ApiModel(data);
     temp.save(function (err, r) {
         if (err) {
